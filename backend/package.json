@@ -1,5 +1,43 @@
 {
+  "name": "mindcare-backend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "create-demo-users": "node sampleData/createDemoUser.js",
+    "load-counselor-data": "node dataInitialization/loadCounselorData.js",
+    "create-test-data": "node scripts/createTestData.js",
+    "create-simple-test": "node sampleData/createSimpleTestData.js",
+    "verify-test-data": "node sampleData/verifyAndFixTestData.js",
+    "test-connection": "node sampleData/testUserCounselorConnection.js",
+    "create-password-counselor": "node sampleData/createPasswordEnabledCounselor.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarafkushagra/MindCare.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sarafkushagra/MindCare/issues"
+  },
+  "homepage": "https://github.com/sarafkushagra/MindCare#readme",
+  "description": "",
   "dependencies": {
-    "express": "^5.1.0"
+    "@faker-js/faker": "^10.0.0",
+    "bcrypt": "^6.0.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.8.0",
+    "nodemailer": "^7.0.5",
+    "nodemon": "^3.1.10",
+    "socket.io": "^4.8.1",
+    "uuid": "^13.0.0",
+    "validator": "^13.15.15"
   }
 }

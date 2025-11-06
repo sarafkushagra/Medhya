@@ -1,0 +1,1902 @@
+[
+  {
+    "_id": "82b20c3adf2c89f3214d8ce2",
+    "alertId": "5deb1d56-8f68-4528-b2a0-42bb1a9e6166",
+    "severity": "medium",
+    "type": "severe_anxiety",
+    "studentId": "yGnkoedA",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 86,
+    "keywordsTrigger": [
+      "hopeless",
+      "suicide"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T09:30:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:30:00Z",
+    "updatedAt": "2025-08-29T09:30:00Z"
+  },
+  {
+    "_id": "0f59085678c638e0a846b242",
+    "alertId": "b93149ce-96ca-492c-988d-f499f58dab1f",
+    "severity": "medium",
+    "type": "suicidal_thoughts",
+    "studentId": "sKBUibvp",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 66,
+    "keywordsTrigger": [
+      "suicide",
+      "stress"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T09:32:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:32:00Z",
+    "updatedAt": "2025-08-29T09:32:00Z"
+  },
+  {
+    "_id": "d649e5274571e4a8a91c2e4e",
+    "alertId": "58aadd3c-aec5-48c2-b582-9c8a83cc4e7b",
+    "severity": "high",
+    "type": "self_harm",
+    "studentId": "FqePTVQx",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 85,
+    "keywordsTrigger": [
+      "self-harm",
+      "hopeless"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T09:34:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:34:00Z",
+    "updatedAt": "2025-08-29T09:34:00Z"
+  },
+  {
+    "_id": "3922057709ab6c9337d8fd47",
+    "alertId": "4062ac8b-ce58-4b3e-8a9e-2381c2a5689c",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "MJuKlljl",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 92,
+    "keywordsTrigger": [
+      "end life",
+      "stress"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T09:36:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:36:00Z",
+    "updatedAt": "2025-08-29T09:36:00Z"
+  },
+  {
+    "_id": "eea79a237a1c63f11f2274fb",
+    "alertId": "d8ab9a5e-671f-4d9a-90ef-23308b2789ab",
+    "severity": "low",
+    "type": "suicidal_thoughts",
+    "studentId": "xCLkGiVl",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 95,
+    "keywordsTrigger": [
+      "suicide",
+      "self-harm"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T09:38:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:38:00Z",
+    "updatedAt": "2025-08-29T09:38:00Z"
+  },
+  {
+    "_id": "94294f9ec8ce9d1777f4ec7c",
+    "alertId": "948fd8c6-9458-43f0-8df3-465ba9fea85d",
+    "severity": "high",
+    "type": "suicidal_thoughts",
+    "studentId": "tpRlurjN",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 50,
+    "keywordsTrigger": [
+      "stress",
+      "hopeless"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T09:40:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:40:00Z",
+    "updatedAt": "2025-08-29T09:40:00Z"
+  },
+  {
+    "_id": "a852e76595bacd1c73560b31",
+    "alertId": "48639f74-adf3-4bd6-866e-008df09bc0e2",
+    "severity": "low",
+    "type": "suicidal_thoughts",
+    "studentId": "dNJbbZFD",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 50,
+    "keywordsTrigger": [
+      "suicide",
+      "self-harm"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T09:42:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:42:00Z",
+    "updatedAt": "2025-08-29T09:42:00Z"
+  },
+  {
+    "_id": "bccd3f0bde59575f08918203",
+    "alertId": "3967a7f5-1a26-4bd5-9361-235904587299",
+    "severity": "medium",
+    "type": "self_harm",
+    "studentId": "hPKgregN",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 55,
+    "keywordsTrigger": [
+      "self-harm",
+      "anxiety"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T09:44:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:44:00Z",
+    "updatedAt": "2025-08-29T09:44:00Z"
+  },
+  {
+    "_id": "ca1517b618f9a15713d7a8b2",
+    "alertId": "a42e1793-99fe-4ba1-9a9b-bd87cc4c2ed0",
+    "severity": "low",
+    "type": "severe_anxiety",
+    "studentId": "eaHrQkRb",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 83,
+    "keywordsTrigger": [
+      "self-harm",
+      "hopeless"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T09:46:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:46:00Z",
+    "updatedAt": "2025-08-29T09:46:00Z"
+  },
+  {
+    "_id": "47964fc6afc3b823a4b61987",
+    "alertId": "21e22416-4d08-47fb-803f-b9dfd33bb590",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "bXFPogZO",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 96,
+    "keywordsTrigger": [
+      "self-harm",
+      "suicide"
+    ],
+    "previousAlerts": 3,
+    "timestamp": "2025-08-29T09:48:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:48:00Z",
+    "updatedAt": "2025-08-29T09:48:00Z"
+  },
+  {
+    "_id": "cf94c0e3fbd28145ec049ee4",
+    "alertId": "ffbab99b-abf2-4054-b19a-1e4b1776cf60",
+    "severity": "medium",
+    "type": "severe_anxiety",
+    "studentId": "XnQSsocS",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 53,
+    "keywordsTrigger": [
+      "hopeless",
+      "stress"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T09:50:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:50:00Z",
+    "updatedAt": "2025-08-29T09:50:00Z"
+  },
+  {
+    "_id": "017fac041c2e398af7d7a564",
+    "alertId": "6cd0a041-7b5c-448f-a93a-db53616a0721",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "LBlbCRnQ",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 72,
+    "keywordsTrigger": [
+      "hopeless",
+      "stress"
+    ],
+    "previousAlerts": 3,
+    "timestamp": "2025-08-29T09:52:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:52:00Z",
+    "updatedAt": "2025-08-29T09:52:00Z"
+  },
+  {
+    "_id": "1cd386ce5f67275533c680a3",
+    "alertId": "668ef86d-580d-4af1-a3dc-014a80ca30fa",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "zCsJlEAi",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 79,
+    "keywordsTrigger": [
+      "stress",
+      "self-harm"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T09:54:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:54:00Z",
+    "updatedAt": "2025-08-29T09:54:00Z"
+  },
+  {
+    "_id": "07f0b71f6927f3b518c556be",
+    "alertId": "719bc3d9-8185-4df1-acce-57991d9f035f",
+    "severity": "high",
+    "type": "self_harm",
+    "studentId": "XANVnowG",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 99,
+    "keywordsTrigger": [
+      "self-harm",
+      "stress"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T09:56:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:56:00Z",
+    "updatedAt": "2025-08-29T09:56:00Z"
+  },
+  {
+    "_id": "4a4f127b58c5c1a4b5e9ce01",
+    "alertId": "9cda219b-fb63-47f2-9580-6517e9e7e06b",
+    "severity": "medium",
+    "type": "severe_anxiety",
+    "studentId": "xLgXzvvw",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 84,
+    "keywordsTrigger": [
+      "hopeless",
+      "stress"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T09:58:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T09:58:00Z",
+    "updatedAt": "2025-08-29T09:58:00Z"
+  },
+  {
+    "_id": "af8df17114a3b9d390297d05",
+    "alertId": "ebdefb91-2449-45db-b3a2-5981fe5c15cb",
+    "severity": "medium",
+    "type": "self_harm",
+    "studentId": "tLddHbPP",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 99,
+    "keywordsTrigger": [
+      "hopeless",
+      "stress"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T10:00:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:00:00Z",
+    "updatedAt": "2025-08-29T10:00:00Z"
+  },
+  {
+    "_id": "ea608a65be7f67e089528725",
+    "alertId": "126d738d-16fd-457c-b594-c8f76a883730",
+    "severity": "medium",
+    "type": "suicidal_thoughts",
+    "studentId": "RADFmdos",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 54,
+    "keywordsTrigger": [
+      "end life",
+      "hopeless"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T10:02:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:02:00Z",
+    "updatedAt": "2025-08-29T10:02:00Z"
+  },
+  {
+    "_id": "7651f78dc82cfa4013f39f95",
+    "alertId": "d70e8a2c-5c19-44d1-b310-02bc44faf286",
+    "severity": "medium",
+    "type": "severe_anxiety",
+    "studentId": "kTgWgJSI",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 70,
+    "keywordsTrigger": [
+      "hopeless",
+      "self-harm"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T10:04:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:04:00Z",
+    "updatedAt": "2025-08-29T10:04:00Z"
+  },
+  {
+    "_id": "5d32bbca5034ee106789732f",
+    "alertId": "7f13d049-abca-450a-ab37-5242c3052a88",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "mWXetxvM",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 85,
+    "keywordsTrigger": [
+      "end life",
+      "stress"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T10:06:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:06:00Z",
+    "updatedAt": "2025-08-29T10:06:00Z"
+  },
+  {
+    "_id": "d619b46c74a71c902890e070",
+    "alertId": "bc1b1358-7498-4977-8269-22d288d7e9c1",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "XUxGpIYb",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 56,
+    "keywordsTrigger": [
+      "stress",
+      "hopeless"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T10:08:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:08:00Z",
+    "updatedAt": "2025-08-29T10:08:00Z"
+  },
+  {
+    "_id": "6c1e1efae4f7b6d5f9c32bf7",
+    "alertId": "83660e64-8cc1-489c-bf2d-dbfb4e40e9de",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "ebcmSDQi",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 70,
+    "keywordsTrigger": [
+      "stress",
+      "suicide"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T10:10:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:10:00Z",
+    "updatedAt": "2025-08-29T10:10:00Z"
+  },
+  {
+    "_id": "572c29debd56574b222db28f",
+    "alertId": "3ca8cb55-a8c6-4c13-87ba-5362d2ad10a3",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "SSUbbpgh",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 55,
+    "keywordsTrigger": [
+      "suicide",
+      "end life"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T10:12:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:12:00Z",
+    "updatedAt": "2025-08-29T10:12:00Z"
+  },
+  {
+    "_id": "1307c758b8b8bcdb6110bdf2",
+    "alertId": "9b22e184-6867-477c-9577-e7b0cc74952d",
+    "severity": "low",
+    "type": "severe_anxiety",
+    "studentId": "BVCuzRAj",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 70,
+    "keywordsTrigger": [
+      "self-harm",
+      "suicide"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T10:14:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:14:00Z",
+    "updatedAt": "2025-08-29T10:14:00Z"
+  },
+  {
+    "_id": "a6848c1fd47bd1f519745d22",
+    "alertId": "67671cc4-b7bd-421d-82c6-d2cbb223d85a",
+    "severity": "medium",
+    "type": "self_harm",
+    "studentId": "djnahvXG",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 62,
+    "keywordsTrigger": [
+      "end life",
+      "self-harm"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T10:16:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:16:00Z",
+    "updatedAt": "2025-08-29T10:16:00Z"
+  },
+  {
+    "_id": "489c51f8296a52bce22385f8",
+    "alertId": "926ba1e0-1d39-4711-8127-00f92a14e9d1",
+    "severity": "high",
+    "type": "suicidal_thoughts",
+    "studentId": "fmkUrVYI",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 87,
+    "keywordsTrigger": [
+      "stress",
+      "hopeless"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T10:18:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:18:00Z",
+    "updatedAt": "2025-08-29T10:18:00Z"
+  },
+  {
+    "_id": "0a78c2904326145739a9bbe4",
+    "alertId": "c1d9f1b0-c5ab-4688-ab77-6d9fbc6540e9",
+    "severity": "medium",
+    "type": "self_harm",
+    "studentId": "jyzdkdgk",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 97,
+    "keywordsTrigger": [
+      "suicide",
+      "hopeless"
+    ],
+    "previousAlerts": 3,
+    "timestamp": "2025-08-29T10:20:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:20:00Z",
+    "updatedAt": "2025-08-29T10:20:00Z"
+  },
+  {
+    "_id": "6be0281065a333889b98b822",
+    "alertId": "f32b05cc-8179-40df-abec-abe5ef8e6e88",
+    "severity": "medium",
+    "type": "self_harm",
+    "studentId": "cHfzbAmd",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 81,
+    "keywordsTrigger": [
+      "hopeless",
+      "suicide"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T10:22:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:22:00Z",
+    "updatedAt": "2025-08-29T10:22:00Z"
+  },
+  {
+    "_id": "9b1402e79887949b998c81fa",
+    "alertId": "52948a92-fe78-49e2-827d-16ccfa29c1f3",
+    "severity": "high",
+    "type": "self_harm",
+    "studentId": "IgCUWiXw",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 85,
+    "keywordsTrigger": [
+      "hopeless",
+      "stress"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T10:24:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:24:00Z",
+    "updatedAt": "2025-08-29T10:24:00Z"
+  },
+  {
+    "_id": "4a2ec9b78db04e4a40ea3aa3",
+    "alertId": "1c33dc94-ccf8-4bf0-9435-d6f6e7713cab",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "BOLSBhCV",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 98,
+    "keywordsTrigger": [
+      "self-harm",
+      "anxiety"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T10:26:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:26:00Z",
+    "updatedAt": "2025-08-29T10:26:00Z"
+  },
+  {
+    "_id": "5c32e5171c585f1f7068ca79",
+    "alertId": "d5c57841-84ce-4613-b9d5-188919c6fcb4",
+    "severity": "low",
+    "type": "suicidal_thoughts",
+    "studentId": "qJTFYSPv",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 53,
+    "keywordsTrigger": [
+      "suicide",
+      "hopeless"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T10:28:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:28:00Z",
+    "updatedAt": "2025-08-29T10:28:00Z"
+  },
+  {
+    "_id": "b1bd4db14b724bb1ba50ab9c",
+    "alertId": "17dab578-a770-430c-9142-bad292071f54",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "CwHdVKNL",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 88,
+    "keywordsTrigger": [
+      "hopeless",
+      "anxiety"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T10:30:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:30:00Z",
+    "updatedAt": "2025-08-29T10:30:00Z"
+  },
+  {
+    "_id": "d1dd5030b160a3d782738774",
+    "alertId": "f8d72f0e-2bd1-4815-851d-684b40503dbc",
+    "severity": "high",
+    "type": "suicidal_thoughts",
+    "studentId": "GWGRyyGu",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 55,
+    "keywordsTrigger": [
+      "end life",
+      "anxiety"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T10:32:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:32:00Z",
+    "updatedAt": "2025-08-29T10:32:00Z"
+  },
+  {
+    "_id": "7b1f20344a3e57d844bf5586",
+    "alertId": "48e0d1d3-1f16-40f8-9c01-4edde753164c",
+    "severity": "low",
+    "type": "suicidal_thoughts",
+    "studentId": "AlTWKxby",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 62,
+    "keywordsTrigger": [
+      "stress",
+      "anxiety"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T10:34:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:34:00Z",
+    "updatedAt": "2025-08-29T10:34:00Z"
+  },
+  {
+    "_id": "066c1e03bdc74b773b6d9b01",
+    "alertId": "bb174d0f-4657-4c83-9a47-37713db03806",
+    "severity": "low",
+    "type": "severe_anxiety",
+    "studentId": "PVxEUVjJ",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 82,
+    "keywordsTrigger": [
+      "self-harm",
+      "suicide"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T10:36:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:36:00Z",
+    "updatedAt": "2025-08-29T10:36:00Z"
+  },
+  {
+    "_id": "b51ef415e79a6c58cf46b81b",
+    "alertId": "9fe38661-1b7c-44a7-8532-cd95a15928a1",
+    "severity": "low",
+    "type": "severe_anxiety",
+    "studentId": "jwZpUwvU",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 76,
+    "keywordsTrigger": [
+      "self-harm",
+      "suicide"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T10:38:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:38:00Z",
+    "updatedAt": "2025-08-29T10:38:00Z"
+  },
+  {
+    "_id": "9abf9aa2096127260ac5415a",
+    "alertId": "34ae712a-9fae-4bf4-a3d9-d45a5efa8dcd",
+    "severity": "high",
+    "type": "self_harm",
+    "studentId": "SHwbCjtP",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 87,
+    "keywordsTrigger": [
+      "suicide",
+      "anxiety"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T10:40:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:40:00Z",
+    "updatedAt": "2025-08-29T10:40:00Z"
+  },
+  {
+    "_id": "4bde9597a3ff0b6260a05e42",
+    "alertId": "5462d762-4d9a-4b3c-ad2c-4ce15fae9d2d",
+    "severity": "medium",
+    "type": "suicidal_thoughts",
+    "studentId": "eZoCJXTe",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 54,
+    "keywordsTrigger": [
+      "anxiety",
+      "end life"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T10:42:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:42:00Z",
+    "updatedAt": "2025-08-29T10:42:00Z"
+  },
+  {
+    "_id": "bc0457bd641d4b8936346bbb",
+    "alertId": "bc42548a-b98d-4119-bb14-e6dee83032d3",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "XTgIGAPv",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 72,
+    "keywordsTrigger": [
+      "stress",
+      "end life"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T10:44:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:44:00Z",
+    "updatedAt": "2025-08-29T10:44:00Z"
+  },
+  {
+    "_id": "e04e81ef08a530f99b21c3e8",
+    "alertId": "238a1fb8-255c-4b70-9a5c-fe58253a592b",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "QbKhMdbm",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 70,
+    "keywordsTrigger": [
+      "anxiety",
+      "suicide"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T10:46:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:46:00Z",
+    "updatedAt": "2025-08-29T10:46:00Z"
+  },
+  {
+    "_id": "b8e2d02e63d9661bff1b9761",
+    "alertId": "ef25ed25-34f2-4618-9dcb-7a720dd77a3b",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "vaFAtBzv",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 94,
+    "keywordsTrigger": [
+      "self-harm",
+      "end life"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T10:48:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:48:00Z",
+    "updatedAt": "2025-08-29T10:48:00Z"
+  },
+  {
+    "_id": "f282f048edb0414e56a5e287",
+    "alertId": "d340b396-b6da-4158-b51c-cd28dfde36e2",
+    "severity": "medium",
+    "type": "suicidal_thoughts",
+    "studentId": "DfJGmxxw",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 51,
+    "keywordsTrigger": [
+      "hopeless",
+      "end life"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T10:50:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:50:00Z",
+    "updatedAt": "2025-08-29T10:50:00Z"
+  },
+  {
+    "_id": "cd8ac762556c779afb66f0e5",
+    "alertId": "a8593aed-d411-4d55-a6e3-e57c84a21f28",
+    "severity": "medium",
+    "type": "suicidal_thoughts",
+    "studentId": "xtVuqKRP",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 98,
+    "keywordsTrigger": [
+      "stress",
+      "anxiety"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T10:52:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:52:00Z",
+    "updatedAt": "2025-08-29T10:52:00Z"
+  },
+  {
+    "_id": "fcee3327d302dd4ac50283f5",
+    "alertId": "ec21dd99-c427-4a90-b752-bade064292a3",
+    "severity": "low",
+    "type": "severe_anxiety",
+    "studentId": "LqwmvsUZ",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 50,
+    "keywordsTrigger": [
+      "stress",
+      "hopeless"
+    ],
+    "previousAlerts": 3,
+    "timestamp": "2025-08-29T10:54:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:54:00Z",
+    "updatedAt": "2025-08-29T10:54:00Z"
+  },
+  {
+    "_id": "e5cee898f7ffa0a9ad4ca620",
+    "alertId": "3043efec-d6e7-49e1-b6bc-7d1e87139f87",
+    "severity": "medium",
+    "type": "severe_anxiety",
+    "studentId": "ibHOAwly",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 51,
+    "keywordsTrigger": [
+      "suicide",
+      "end life"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T10:56:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:56:00Z",
+    "updatedAt": "2025-08-29T10:56:00Z"
+  },
+  {
+    "_id": "872fdc99045193fd0c6e663c",
+    "alertId": "b070076e-00a2-4f7b-a5db-a210d3e09db3",
+    "severity": "medium",
+    "type": "self_harm",
+    "studentId": "ftfuZIPS",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 61,
+    "keywordsTrigger": [
+      "stress",
+      "self-harm"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T10:58:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T10:58:00Z",
+    "updatedAt": "2025-08-29T10:58:00Z"
+  },
+  {
+    "_id": "1c099e6e897f2bb055b12bb8",
+    "alertId": "d3cab79f-bf13-48d9-83f3-6825fcbef26e",
+    "severity": "medium",
+    "type": "severe_anxiety",
+    "studentId": "qPhGIKtJ",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 77,
+    "keywordsTrigger": [
+      "end life",
+      "hopeless"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T11:00:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:00:00Z",
+    "updatedAt": "2025-08-29T11:00:00Z"
+  },
+  {
+    "_id": "8587fabcc08dafae9334bdad",
+    "alertId": "cb972f09-cd8e-4aaf-a318-ff18cb5ce901",
+    "severity": "medium",
+    "type": "severe_anxiety",
+    "studentId": "RbUpdzie",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 96,
+    "keywordsTrigger": [
+      "anxiety",
+      "end life"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T11:02:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:02:00Z",
+    "updatedAt": "2025-08-29T11:02:00Z"
+  },
+  {
+    "_id": "f00e21faa5a39f8b54d56512",
+    "alertId": "3c4de698-55ef-44a9-b6ef-a588bdedee63",
+    "severity": "high",
+    "type": "self_harm",
+    "studentId": "ZfRtYsLL",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 69,
+    "keywordsTrigger": [
+      "stress",
+      "anxiety"
+    ],
+    "previousAlerts": 3,
+    "timestamp": "2025-08-29T11:04:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:04:00Z",
+    "updatedAt": "2025-08-29T11:04:00Z"
+  },
+  {
+    "_id": "ca2b761bad1caa943ac3d34b",
+    "alertId": "5c97ed02-f96f-49db-af53-3db4a9ef88fe",
+    "severity": "medium",
+    "type": "suicidal_thoughts",
+    "studentId": "fVaVLPZc",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 87,
+    "keywordsTrigger": [
+      "suicide",
+      "end life"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T11:06:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:06:00Z",
+    "updatedAt": "2025-08-29T11:06:00Z"
+  },
+  {
+    "_id": "b2056f29c9df9d34c82ca1b1",
+    "alertId": "04a94fdb-7264-4f20-a1ab-741222b6c05c",
+    "severity": "high",
+    "type": "self_harm",
+    "studentId": "bZOkyJoH",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 92,
+    "keywordsTrigger": [
+      "hopeless",
+      "suicide"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T11:08:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:08:00Z",
+    "updatedAt": "2025-08-29T11:08:00Z"
+  },
+  {
+    "_id": "33812f6b112395944996405d",
+    "alertId": "e473e6c7-48a2-461f-a75d-97cd7c17d5f0",
+    "severity": "medium",
+    "type": "severe_anxiety",
+    "studentId": "StFxGZpB",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 51,
+    "keywordsTrigger": [
+      "suicide",
+      "anxiety"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T11:10:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:10:00Z",
+    "updatedAt": "2025-08-29T11:10:00Z"
+  },
+  {
+    "_id": "24b0c39edc86109ab91a0737",
+    "alertId": "e3e46eeb-5f65-4752-b0ca-2d3a84280d14",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "wvViTspy",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 77,
+    "keywordsTrigger": [
+      "anxiety",
+      "self-harm"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T11:12:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:12:00Z",
+    "updatedAt": "2025-08-29T11:12:00Z"
+  },
+  {
+    "_id": "a5829763d8e4aec48c269250",
+    "alertId": "d46f0425-a96e-474d-b692-e52c7ec54f0e",
+    "severity": "medium",
+    "type": "severe_anxiety",
+    "studentId": "uFosbMsG",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 96,
+    "keywordsTrigger": [
+      "hopeless",
+      "self-harm"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T11:14:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:14:00Z",
+    "updatedAt": "2025-08-29T11:14:00Z"
+  },
+  {
+    "_id": "e4da64cbfb832f5cac90ebf7",
+    "alertId": "5e92b470-a05c-4413-baef-36f7d02cd32a",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "MSEVwDUY",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 78,
+    "keywordsTrigger": [
+      "end life",
+      "suicide"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T11:16:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:16:00Z",
+    "updatedAt": "2025-08-29T11:16:00Z"
+  },
+  {
+    "_id": "8dc5caf1e28a7474fbc179fd",
+    "alertId": "6aaa25d5-4069-4b60-9e18-31360dc2921f",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "xFPlaGUR",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 83,
+    "keywordsTrigger": [
+      "end life",
+      "stress"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T11:18:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:18:00Z",
+    "updatedAt": "2025-08-29T11:18:00Z"
+  },
+  {
+    "_id": "ea71d4f07245276c5d54c6af",
+    "alertId": "1fc79e88-5b87-4277-8b21-3fbbaeb64404",
+    "severity": "low",
+    "type": "suicidal_thoughts",
+    "studentId": "VMlhEAdj",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 83,
+    "keywordsTrigger": [
+      "anxiety",
+      "stress"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T11:20:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:20:00Z",
+    "updatedAt": "2025-08-29T11:20:00Z"
+  },
+  {
+    "_id": "de64d8932526a5a92a1cb0ff",
+    "alertId": "fb49e47d-c096-400c-8afc-f5f4ae5d1964",
+    "severity": "low",
+    "type": "suicidal_thoughts",
+    "studentId": "xqEdcVPq",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 96,
+    "keywordsTrigger": [
+      "stress",
+      "end life"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T11:22:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:22:00Z",
+    "updatedAt": "2025-08-29T11:22:00Z"
+  },
+  {
+    "_id": "9e999f2ee9344a06c1a409db",
+    "alertId": "d348cf87-d2a8-41bc-a00e-ba2a1ae55eb9",
+    "severity": "medium",
+    "type": "severe_anxiety",
+    "studentId": "rwBTEpay",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 91,
+    "keywordsTrigger": [
+      "end life",
+      "self-harm"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T11:24:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:24:00Z",
+    "updatedAt": "2025-08-29T11:24:00Z"
+  },
+  {
+    "_id": "4e3b87af151d8c3027ac2b17",
+    "alertId": "12fd4a5b-e152-4ec7-8636-7a8c4df180e3",
+    "severity": "low",
+    "type": "severe_anxiety",
+    "studentId": "rbyhStXu",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 93,
+    "keywordsTrigger": [
+      "anxiety",
+      "suicide"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T11:26:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:26:00Z",
+    "updatedAt": "2025-08-29T11:26:00Z"
+  },
+  {
+    "_id": "8646c0c46bec91b95af6942d",
+    "alertId": "39b070de-740e-4edf-a14f-671653324b68",
+    "severity": "high",
+    "type": "self_harm",
+    "studentId": "bLqwngUo",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 51,
+    "keywordsTrigger": [
+      "suicide",
+      "hopeless"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T11:28:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:28:00Z",
+    "updatedAt": "2025-08-29T11:28:00Z"
+  },
+  {
+    "_id": "4087b44c9a7ee6d6c0236928",
+    "alertId": "fec4bce9-81f2-4445-b880-749e1fbc76a2",
+    "severity": "high",
+    "type": "suicidal_thoughts",
+    "studentId": "RKVDrEgz",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 52,
+    "keywordsTrigger": [
+      "end life",
+      "suicide"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T11:30:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:30:00Z",
+    "updatedAt": "2025-08-29T11:30:00Z"
+  },
+  {
+    "_id": "fb43e6ac801f8fe92e1488b5",
+    "alertId": "5ddb2eaf-4d1e-4566-a60c-f78462b18f87",
+    "severity": "high",
+    "type": "suicidal_thoughts",
+    "studentId": "ZlHfYpOI",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 51,
+    "keywordsTrigger": [
+      "stress",
+      "anxiety"
+    ],
+    "previousAlerts": 3,
+    "timestamp": "2025-08-29T11:32:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:32:00Z",
+    "updatedAt": "2025-08-29T11:32:00Z"
+  },
+  {
+    "_id": "d86318781ebb24098d9529a3",
+    "alertId": "a5ceaeae-faf8-4c5b-af53-17260d98265b",
+    "severity": "low",
+    "type": "suicidal_thoughts",
+    "studentId": "AmHfqTPo",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 76,
+    "keywordsTrigger": [
+      "hopeless",
+      "anxiety"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T11:34:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:34:00Z",
+    "updatedAt": "2025-08-29T11:34:00Z"
+  },
+  {
+    "_id": "5e725cd87069fe303203d4e9",
+    "alertId": "a2dac711-779d-4b6b-9968-afefd8b5ae17",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "yJBfZnKR",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 80,
+    "keywordsTrigger": [
+      "self-harm",
+      "hopeless"
+    ],
+    "previousAlerts": 3,
+    "timestamp": "2025-08-29T11:36:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:36:00Z",
+    "updatedAt": "2025-08-29T11:36:00Z"
+  },
+  {
+    "_id": "ca5e2ed3b86faaa3ec33bde3",
+    "alertId": "edb64074-5e5b-46eb-8cf0-9d7e8b10bbc3",
+    "severity": "high",
+    "type": "self_harm",
+    "studentId": "fVMOPbhU",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 88,
+    "keywordsTrigger": [
+      "suicide",
+      "self-harm"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T11:38:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:38:00Z",
+    "updatedAt": "2025-08-29T11:38:00Z"
+  },
+  {
+    "_id": "9c8c87d2e291d214dd6490f4",
+    "alertId": "2f5ed635-a67a-4532-aca9-ec0ea0f469d8",
+    "severity": "low",
+    "type": "suicidal_thoughts",
+    "studentId": "QAmpzGHW",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 85,
+    "keywordsTrigger": [
+      "self-harm",
+      "end life"
+    ],
+    "previousAlerts": 3,
+    "timestamp": "2025-08-29T11:40:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:40:00Z",
+    "updatedAt": "2025-08-29T11:40:00Z"
+  },
+  {
+    "_id": "87560ab16eb227f2835770aa",
+    "alertId": "b133271f-1b2d-45c3-92d1-5c2c0d1b5960",
+    "severity": "medium",
+    "type": "suicidal_thoughts",
+    "studentId": "RgGMFlwV",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 53,
+    "keywordsTrigger": [
+      "end life",
+      "self-harm"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T11:42:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:42:00Z",
+    "updatedAt": "2025-08-29T11:42:00Z"
+  },
+  {
+    "_id": "e6d10a02009fad39ec0c53e1",
+    "alertId": "986f2f2b-8d30-4064-958c-192400145e3f",
+    "severity": "high",
+    "type": "suicidal_thoughts",
+    "studentId": "blmhtKYm",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 82,
+    "keywordsTrigger": [
+      "suicide",
+      "self-harm"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T11:44:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:44:00Z",
+    "updatedAt": "2025-08-29T11:44:00Z"
+  },
+  {
+    "_id": "a8f7545d6a19056545d167bd",
+    "alertId": "5543fddc-8970-4ed9-97c9-777cf1c9cbd1",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "nKVGmTtO",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 98,
+    "keywordsTrigger": [
+      "stress",
+      "anxiety"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T11:46:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:46:00Z",
+    "updatedAt": "2025-08-29T11:46:00Z"
+  },
+  {
+    "_id": "ca3e215341b07f8d4320f1d6",
+    "alertId": "de2f5de7-9fe2-4680-b8db-b8e3c5dad31f",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "YjrQCOtG",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 62,
+    "keywordsTrigger": [
+      "stress",
+      "end life"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T11:48:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:48:00Z",
+    "updatedAt": "2025-08-29T11:48:00Z"
+  },
+  {
+    "_id": "6440e728181d036d46a63ed8",
+    "alertId": "cfaa44ae-ab04-45fd-b852-632b28009e2a",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "NvOOHASi",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 86,
+    "keywordsTrigger": [
+      "stress",
+      "anxiety"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T11:50:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:50:00Z",
+    "updatedAt": "2025-08-29T11:50:00Z"
+  },
+  {
+    "_id": "359970984bf933319a5c0034",
+    "alertId": "682c8191-7783-4dbc-b71f-b90efb67baa2",
+    "severity": "high",
+    "type": "suicidal_thoughts",
+    "studentId": "nZAKLhMt",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 90,
+    "keywordsTrigger": [
+      "suicide",
+      "end life"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T11:52:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:52:00Z",
+    "updatedAt": "2025-08-29T11:52:00Z"
+  },
+  {
+    "_id": "c87dddc0f3077ae501843059",
+    "alertId": "67450902-160d-4b30-a833-8f15430e7dc7",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "thYsivGF",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 95,
+    "keywordsTrigger": [
+      "end life",
+      "stress"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T11:54:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:54:00Z",
+    "updatedAt": "2025-08-29T11:54:00Z"
+  },
+  {
+    "_id": "3316832ccab62ead6ef2d133",
+    "alertId": "b947b9b6-a357-43c6-9a17-7cb85b93597b",
+    "severity": "medium",
+    "type": "self_harm",
+    "studentId": "zDddGSsT",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 72,
+    "keywordsTrigger": [
+      "end life",
+      "self-harm"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T11:56:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:56:00Z",
+    "updatedAt": "2025-08-29T11:56:00Z"
+  },
+  {
+    "_id": "6f6197590d6c7de7322b3a90",
+    "alertId": "d8458321-4f19-482f-b8d4-73c97d6d0bc9",
+    "severity": "medium",
+    "type": "self_harm",
+    "studentId": "aYRcmjiQ",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 75,
+    "keywordsTrigger": [
+      "hopeless",
+      "anxiety"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T11:58:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T11:58:00Z",
+    "updatedAt": "2025-08-29T11:58:00Z"
+  },
+  {
+    "_id": "ddd6d1e8f1a932357b4fbf72",
+    "alertId": "4edaf3e3-16d4-4a18-8e9a-e350baa7feb4",
+    "severity": "low",
+    "type": "severe_anxiety",
+    "studentId": "KVriLDmd",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 74,
+    "keywordsTrigger": [
+      "end life",
+      "anxiety"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T12:00:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:00:00Z",
+    "updatedAt": "2025-08-29T12:00:00Z"
+  },
+  {
+    "_id": "399718f9c6534cef2281c0fd",
+    "alertId": "25de53f2-d3fa-4a32-bf7a-78d168372153",
+    "severity": "high",
+    "type": "suicidal_thoughts",
+    "studentId": "DmszDsgt",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 86,
+    "keywordsTrigger": [
+      "stress",
+      "self-harm"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T12:02:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:02:00Z",
+    "updatedAt": "2025-08-29T12:02:00Z"
+  },
+  {
+    "_id": "a22c6a25401361988dcd089b",
+    "alertId": "6529edd4-8320-404a-8ec9-365fd3ad8fd7",
+    "severity": "high",
+    "type": "self_harm",
+    "studentId": "cZTxOZEV",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 61,
+    "keywordsTrigger": [
+      "self-harm",
+      "anxiety"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T12:04:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:04:00Z",
+    "updatedAt": "2025-08-29T12:04:00Z"
+  },
+  {
+    "_id": "30bdee63e17fb0909b043566",
+    "alertId": "c80506f2-118a-4563-8302-7f44524c12cf",
+    "severity": "low",
+    "type": "severe_anxiety",
+    "studentId": "NCRHtCuZ",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 83,
+    "keywordsTrigger": [
+      "stress",
+      "hopeless"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T12:06:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:06:00Z",
+    "updatedAt": "2025-08-29T12:06:00Z"
+  },
+  {
+    "_id": "e9933cc098a742f7f901f4a4",
+    "alertId": "34e5463e-e66f-42eb-8d48-932e0e305ae6",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "IbIYcWwj",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 92,
+    "keywordsTrigger": [
+      "stress",
+      "end life"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T12:08:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:08:00Z",
+    "updatedAt": "2025-08-29T12:08:00Z"
+  },
+  {
+    "_id": "4006f1cc7597827c243b7129",
+    "alertId": "b12e701b-79ee-44de-946a-0ea22206ffb8",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "dVBSJRFj",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 66,
+    "keywordsTrigger": [
+      "end life",
+      "hopeless"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T12:10:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:10:00Z",
+    "updatedAt": "2025-08-29T12:10:00Z"
+  },
+  {
+    "_id": "60b11f0dac6855bec77f95b5",
+    "alertId": "6d499c20-361b-4712-bca4-3a8bf6b6d9d3",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "oEXeMlvL",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 80,
+    "keywordsTrigger": [
+      "suicide",
+      "stress"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T12:12:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:12:00Z",
+    "updatedAt": "2025-08-29T12:12:00Z"
+  },
+  {
+    "_id": "7ea25e623645ab8ce4f515b5",
+    "alertId": "5ad6ceb5-5602-4292-87b6-d1810e9d0bc5",
+    "severity": "low",
+    "type": "severe_anxiety",
+    "studentId": "SlBKfhPc",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 63,
+    "keywordsTrigger": [
+      "end life",
+      "self-harm"
+    ],
+    "previousAlerts": 3,
+    "timestamp": "2025-08-29T12:14:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:14:00Z",
+    "updatedAt": "2025-08-29T12:14:00Z"
+  },
+  {
+    "_id": "cd2be60d9be90dae5368ac6a",
+    "alertId": "dcd1919c-b11f-4d6c-97a0-417f37146ad2",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "LfvRJChp",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 64,
+    "keywordsTrigger": [
+      "suicide",
+      "stress"
+    ],
+    "previousAlerts": 3,
+    "timestamp": "2025-08-29T12:16:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:16:00Z",
+    "updatedAt": "2025-08-29T12:16:00Z"
+  },
+  {
+    "_id": "4ac17c3783d1444b41f8cc88",
+    "alertId": "0846cc19-2ba9-4cb5-9ca4-99e6d3bbb470",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "HDxzZygv",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 56,
+    "keywordsTrigger": [
+      "end life",
+      "hopeless"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T12:18:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:18:00Z",
+    "updatedAt": "2025-08-29T12:18:00Z"
+  },
+  {
+    "_id": "56cc005f2d70a392b5a935ae",
+    "alertId": "25fbf599-758b-4170-885b-18521f6fbb12",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "FOWyRQYn",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 90,
+    "keywordsTrigger": [
+      "anxiety",
+      "self-harm"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T12:20:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:20:00Z",
+    "updatedAt": "2025-08-29T12:20:00Z"
+  },
+  {
+    "_id": "be3ff3a8c1f3bf5afb850248",
+    "alertId": "38bd8e98-050c-4c81-a15d-904bd182e263",
+    "severity": "medium",
+    "type": "severe_anxiety",
+    "studentId": "OhRZlDar",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 80,
+    "keywordsTrigger": [
+      "hopeless",
+      "suicide"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T12:22:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:22:00Z",
+    "updatedAt": "2025-08-29T12:22:00Z"
+  },
+  {
+    "_id": "d770e07a380be2fd2a747ec8",
+    "alertId": "6efc0c2c-4165-42d0-a442-6d6ebd2a9cb2",
+    "severity": "high",
+    "type": "suicidal_thoughts",
+    "studentId": "SnRxancv",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 57,
+    "keywordsTrigger": [
+      "suicide",
+      "anxiety"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T12:24:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:24:00Z",
+    "updatedAt": "2025-08-29T12:24:00Z"
+  },
+  {
+    "_id": "10a06ef07cf7d40c44708888",
+    "alertId": "a42cdadb-cd89-4fde-b088-19918126e431",
+    "severity": "high",
+    "type": "self_harm",
+    "studentId": "NKkpuVEZ",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 91,
+    "keywordsTrigger": [
+      "self-harm",
+      "stress"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T12:26:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:26:00Z",
+    "updatedAt": "2025-08-29T12:26:00Z"
+  },
+  {
+    "_id": "e29a8ed1d970977adf1a6e48",
+    "alertId": "58b61f74-4225-4c3b-ad55-43bdc0eb4ce6",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "krXdzdNN",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 59,
+    "keywordsTrigger": [
+      "self-harm",
+      "stress"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T12:28:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:28:00Z",
+    "updatedAt": "2025-08-29T12:28:00Z"
+  },
+  {
+    "_id": "14d42c2d0baf1b392a5fee67",
+    "alertId": "b25233e0-6bf5-4c13-9cf6-3f94d3c794f2",
+    "severity": "low",
+    "type": "suicidal_thoughts",
+    "studentId": "RwEbRDEd",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 77,
+    "keywordsTrigger": [
+      "stress",
+      "end life"
+    ],
+    "previousAlerts": 1,
+    "timestamp": "2025-08-29T12:30:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:30:00Z",
+    "updatedAt": "2025-08-29T12:30:00Z"
+  },
+  {
+    "_id": "3b886a2dcb2131d8bffa7d12",
+    "alertId": "0e282b37-ab10-4c42-82ad-0062f74c5524",
+    "severity": "medium",
+    "type": "suicidal_thoughts",
+    "studentId": "zIkdsruL",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 80,
+    "keywordsTrigger": [
+      "hopeless",
+      "suicide"
+    ],
+    "previousAlerts": 4,
+    "timestamp": "2025-08-29T12:32:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:32:00Z",
+    "updatedAt": "2025-08-29T12:32:00Z"
+  },
+  {
+    "_id": "51a6c74bf1b719c732e072a9",
+    "alertId": "dd7de081-d39d-4a2a-a9ea-048fd31daf73",
+    "severity": "low",
+    "type": "suicidal_thoughts",
+    "studentId": "dZVbLKmY",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 90,
+    "keywordsTrigger": [
+      "end life",
+      "self-harm"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T12:34:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:34:00Z",
+    "updatedAt": "2025-08-29T12:34:00Z"
+  },
+  {
+    "_id": "c7e3dd78a05b8e0b5c3eadad",
+    "alertId": "a03c766e-b27b-49cb-b912-e4f977a30735",
+    "severity": "high",
+    "type": "self_harm",
+    "studentId": "BIpDuwnz",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 70,
+    "keywordsTrigger": [
+      "hopeless",
+      "suicide"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T12:36:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:36:00Z",
+    "updatedAt": "2025-08-29T12:36:00Z"
+  },
+  {
+    "_id": "b555ed540cfea9758f2342b7",
+    "alertId": "197ebe74-537a-4fc5-949c-a3e83edbb1d9",
+    "severity": "low",
+    "type": "severe_anxiety",
+    "studentId": "FbyNojCL",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 74,
+    "keywordsTrigger": [
+      "suicide",
+      "end life"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T12:38:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:38:00Z",
+    "updatedAt": "2025-08-29T12:38:00Z"
+  },
+  {
+    "_id": "d6dd1c8e3b8b0a626e5c1b7d",
+    "alertId": "64feeb0c-5974-4904-a071-3b0a5e977108",
+    "severity": "medium",
+    "type": "suicidal_thoughts",
+    "studentId": "wdKHLGix",
+    "source": "ai_chat",
+    "status": "active",
+    "aiConfidence": 85,
+    "keywordsTrigger": [
+      "end life",
+      "stress"
+    ],
+    "previousAlerts": 5,
+    "timestamp": "2025-08-29T12:40:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:40:00Z",
+    "updatedAt": "2025-08-29T12:40:00Z"
+  },
+  {
+    "_id": "266397fe4b5558cafa59335b",
+    "alertId": "a586d6aa-f445-43de-a321-88e31a24eea9",
+    "severity": "low",
+    "type": "self_harm",
+    "studentId": "BCLZhuPy",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 83,
+    "keywordsTrigger": [
+      "hopeless",
+      "anxiety"
+    ],
+    "previousAlerts": 2,
+    "timestamp": "2025-08-29T12:42:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:42:00Z",
+    "updatedAt": "2025-08-29T12:42:00Z"
+  },
+  {
+    "_id": "f5279c9af7644d04e9d1095b",
+    "alertId": "5f0085b5-422a-424a-984e-5aadfd690f9e",
+    "severity": "medium",
+    "type": "severe_anxiety",
+    "studentId": "nvjoXJTY",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 78,
+    "keywordsTrigger": [
+      "end life",
+      "hopeless"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T12:44:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:44:00Z",
+    "updatedAt": "2025-08-29T12:44:00Z"
+  },
+  {
+    "_id": "0ccfe941b166ac6d2b110acb",
+    "alertId": "ebbb4050-d883-43d4-a485-f6a5506e85ca",
+    "severity": "high",
+    "type": "severe_anxiety",
+    "studentId": "sLtIWOjX",
+    "source": "forum_post",
+    "status": "active",
+    "aiConfidence": 53,
+    "keywordsTrigger": [
+      "end life",
+      "self-harm"
+    ],
+    "previousAlerts": 0,
+    "timestamp": "2025-08-29T12:46:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:46:00Z",
+    "updatedAt": "2025-08-29T12:46:00Z"
+  },
+  {
+    "_id": "c3184201b4263aa48d76f959",
+    "alertId": "d5522c38-a846-4545-b057-86fff315e2f8",
+    "severity": "high",
+    "type": "self_harm",
+    "studentId": "BaEMOnfZ",
+    "source": "mood_tracker",
+    "status": "active",
+    "aiConfidence": 84,
+    "keywordsTrigger": [
+      "end life",
+      "anxiety"
+    ],
+    "previousAlerts": 3,
+    "timestamp": "2025-08-29T12:48:00Z",
+    "__v": 0,
+    "createdAt": "2025-08-29T12:48:00Z",
+    "updatedAt": "2025-08-29T12:48:00Z"
+  }
+]

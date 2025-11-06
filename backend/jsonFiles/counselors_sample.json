@@ -1,0 +1,677 @@
+[
+  {
+    "name": "Dr. Sarah Johnson",
+    "email": "sarah.johnson@mindcare.edu",
+    "phone": "+91-98765-43210",
+    "specialization": ["Anxiety", "Depression", "Academic Stress"],
+    "languages": ["English", "Hindi"],
+    "appointmentType": "both",
+    "availability": {
+      "monday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true },
+          { "startTime": "16:00", "endTime": "17:00", "isAvailable": true }
+        ]
+      },
+      "tuesday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true },
+          { "startTime": "16:00", "endTime": "17:00", "isAvailable": true }
+        ]
+      },
+      "wednesday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true },
+          { "startTime": "16:00", "endTime": "17:00", "isAvailable": true }
+        ]
+      },
+      "thursday": {
+        "available": false,
+        "slots": []
+      },
+      "friday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true },
+          { "startTime": "16:00", "endTime": "17:00", "isAvailable": true }
+        ]
+      },
+      "saturday": {
+        "available": false,
+        "slots": []
+      },
+      "sunday": {
+        "available": false,
+        "slots": []
+      }
+    },
+    "rating": 4.8,
+    "totalRatings": 5,
+    "experience": 8,
+    "education": {
+      "degree": "Ph.D. in Clinical Psychology",
+      "institution": "University of Delhi",
+      "year": 2015
+    },
+    "license": {
+      "number": "PSY-12345",
+      "issuingAuthority": "Rehabilitation Council of India",
+      "expiryDate": "2025-12-31"
+    },
+    "bio": "Dr. Sarah Johnson is a licensed clinical psychologist with over 8 years of experience in treating anxiety, depression, and academic stress. She specializes in cognitive-behavioral therapy and has helped hundreds of students overcome their mental health challenges.",
+    "profileImage": "https://example.com/images/sarah-johnson.jpg",
+    "isActive": true,
+    "maxAppointmentsPerDay": 8,
+    "sessionDuration": 60,
+    "hourlyRate": 0,
+    "emergencyAvailable": true,
+    "crisisIntervention": true
+  },
+  {
+    "name": "Dr. Raj Patel",
+    "email": "raj.patel@mindcare.edu",
+    "phone": "+91-98765-43211",
+    "specialization": ["Relationship Issues", "Social Anxiety", "Career Counseling"],
+    "languages": ["English", "Hindi", "Gujarati"],
+    "appointmentType": "oncampus",
+    "availability": {
+      "monday": {
+        "available": false,
+        "slots": []
+      },
+      "tuesday": {
+        "available": true,
+        "slots": [
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true },
+          { "startTime": "16:00", "endTime": "17:00", "isAvailable": true }
+        ]
+      },
+      "wednesday": {
+        "available": false,
+        "slots": []
+      },
+      "thursday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "friday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "saturday": {
+        "available": true,
+        "slots": [
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true }
+        ]
+      },
+      "sunday": {
+        "available": false,
+        "slots": []
+      }
+    },
+    "rating": 4.9,
+    "totalRatings": 6,
+    "experience": 12,
+    "education": {
+      "degree": "M.Phil. in Clinical Psychology",
+      "institution": "Tata Institute of Social Sciences",
+      "year": 2012
+    },
+    "license": {
+      "number": "PSY-12346",
+      "issuingAuthority": "Rehabilitation Council of India",
+      "expiryDate": "2026-06-30"
+    },
+    "bio": "Dr. Raj Patel is a senior counselor with 12 years of experience in relationship counseling and career guidance. He has expertise in helping students navigate social anxiety and make informed career decisions.",
+    "profileImage": "https://example.com/images/raj-patel.jpg",
+    "isActive": true,
+    "maxAppointmentsPerDay": 6,
+    "sessionDuration": 60,
+    "hourlyRate": 0,
+    "emergencyAvailable": false,
+    "crisisIntervention": false
+  },
+  {
+    "name": "Dr. Priya Sharma",
+    "email": "priya.sharma@mindcare.edu",
+    "phone": "+91-98765-43212",
+    "specialization": ["Trauma", "PTSD", "Family Issues"],
+    "languages": ["English", "Hindi", "Punjabi"],
+    "appointmentType": "online",
+    "availability": {
+      "monday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "tuesday": {
+        "available": false,
+        "slots": []
+      },
+      "wednesday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "thursday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "friday": {
+        "available": false,
+        "slots": []
+      },
+      "saturday": {
+        "available": true,
+        "slots": [
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true }
+        ]
+      },
+      "sunday": {
+        "available": false,
+        "slots": []
+      }
+    },
+    "rating": 4.7,
+    "totalRatings": 5,
+    "experience": 6,
+    "education": {
+      "degree": "Ph.D. in Trauma Psychology",
+      "institution": "National Institute of Mental Health and Neurosciences",
+      "year": 2018
+    },
+    "license": {
+      "number": "PSY-12347",
+      "issuingAuthority": "Rehabilitation Council of India",
+      "expiryDate": "2025-09-15"
+    },
+    "bio": "Dr. Priya Sharma specializes in trauma-informed therapy and PTSD treatment. She has extensive experience working with survivors of trauma and helping families heal from difficult experiences.",
+    "profileImage": "https://example.com/images/priya-sharma.jpg",
+    "isActive": true,
+    "maxAppointmentsPerDay": 5,
+    "sessionDuration": 90,
+    "hourlyRate": 0,
+    "emergencyAvailable": true,
+    "crisisIntervention": true
+  },
+  {
+    "name": "Dr. Amit Kumar",
+    "email": "amit.kumar@mindcare.edu",
+    "phone": "+91-98765-43213",
+    "specialization": ["Stress Management", "Mindfulness", "Self-Esteem"],
+    "languages": ["English", "Hindi", "Bengali"],
+    "appointmentType": "both",
+    "availability": {
+      "monday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "tuesday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "wednesday": {
+        "available": false,
+        "slots": []
+      },
+      "thursday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "friday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "saturday": {
+        "available": false,
+        "slots": []
+      },
+      "sunday": {
+        "available": false,
+        "slots": []
+      }
+    },
+    "rating": 4.9,
+    "totalRatings": 4,
+    "experience": 4,
+    "education": {
+      "degree": "M.A. in Clinical Psychology",
+      "institution": "Banaras Hindu University",
+      "year": 2020
+    },
+    "license": {
+      "number": "PSY-12348",
+      "issuingAuthority": "Rehabilitation Council of India",
+      "expiryDate": "2027-03-20"
+    },
+    "bio": "Dr. Amit Kumar is a mindfulness-based therapist who helps students develop stress management techniques and build self-esteem. He combines traditional therapy with modern mindfulness practices.",
+    "profileImage": "https://example.com/images/amit-kumar.jpg",
+    "isActive": true,
+    "maxAppointmentsPerDay": 7,
+    "sessionDuration": 60,
+    "hourlyRate": 0,
+    "emergencyAvailable": false,
+    "crisisIntervention": false
+  },
+  {
+    "name": "Dr. Meera Iyer",
+    "email": "meera.iyer@mindcare.edu",
+    "phone": "+91-98765-43214",
+    "specialization": ["Eating Disorders", "Body Image Issues", "Self-Esteem"],
+    "languages": ["English", "Hindi", "Tamil", "Telugu"],
+    "appointmentType": "oncampus",
+    "availability": {
+      "monday": {
+        "available": false,
+        "slots": []
+      },
+      "tuesday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "wednesday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "thursday": {
+        "available": false,
+        "slots": []
+      },
+      "friday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "saturday": {
+        "available": true,
+        "slots": [
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true }
+        ]
+      },
+      "sunday": {
+        "available": false,
+        "slots": []
+      }
+    },
+    "rating": 4.6,
+    "totalRatings": 8,
+    "experience": 10,
+    "education": {
+      "degree": "Ph.D. in Clinical Psychology",
+      "institution": "All India Institute of Medical Sciences",
+      "year": 2014
+    },
+    "license": {
+      "number": "PSY-12349",
+      "issuingAuthority": "Rehabilitation Council of India",
+      "expiryDate": "2026-12-15"
+    },
+    "bio": "Dr. Meera Iyer is a specialist in eating disorders and body image issues. She has helped numerous students develop healthy relationships with food and their bodies through evidence-based therapeutic approaches.",
+    "profileImage": "https://example.com/images/meera-iyer.jpg",
+    "isActive": true,
+    "maxAppointmentsPerDay": 6,
+    "sessionDuration": 60,
+    "hourlyRate": 0,
+    "emergencyAvailable": false,
+    "crisisIntervention": false
+  },
+  {
+    "name": "Dr. Arjun Singh",
+    "email": "arjun.singh@mindcare.edu",
+    "phone": "+91-98765-43215",
+    "specialization": ["Substance Abuse", "Addiction", "Behavioral Therapy"],
+    "languages": ["English", "Hindi", "Punjabi", "Marathi"],
+    "appointmentType": "both",
+    "availability": {
+      "monday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "tuesday": {
+        "available": false,
+        "slots": []
+      },
+      "wednesday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "thursday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "friday": {
+        "available": false,
+        "slots": []
+      },
+      "saturday": {
+        "available": true,
+        "slots": [
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true }
+        ]
+      },
+      "sunday": {
+        "available": false,
+        "slots": []
+      }
+    },
+    "rating": 4.5,
+    "totalRatings": 12,
+    "experience": 15,
+    "education": {
+      "degree": "Ph.D. in Addiction Psychology",
+      "institution": "National Drug Abuse Treatment Center",
+      "year": 2009
+    },
+    "license": {
+      "number": "PSY-12350",
+      "issuingAuthority": "Rehabilitation Council of India",
+      "expiryDate": "2025-08-30"
+    },
+    "bio": "Dr. Arjun Singh is a senior addiction specialist with 15 years of experience in substance abuse treatment and behavioral therapy. He has successfully helped hundreds of students overcome addiction and develop healthy coping mechanisms.",
+    "profileImage": "https://example.com/images/arjun-singh.jpg",
+    "isActive": true,
+    "maxAppointmentsPerDay": 5,
+    "sessionDuration": 90,
+    "hourlyRate": 0,
+    "emergencyAvailable": true,
+    "crisisIntervention": true
+  },
+  {
+    "name": "Dr. Kavita Reddy",
+    "email": "kavita.reddy@mindcare.edu",
+    "phone": "+91-98765-43216",
+    "specialization": ["Grief and Loss", "Bereavement", "Life Transitions"],
+    "languages": ["English", "Hindi", "Telugu", "Kannada"],
+    "appointmentType": "online",
+    "availability": {
+      "monday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "tuesday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "wednesday": {
+        "available": false,
+        "slots": []
+      },
+      "thursday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "friday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true }
+        ]
+      },
+      "saturday": {
+        "available": false,
+        "slots": []
+      },
+      "sunday": {
+        "available": false,
+        "slots": []
+      }
+    },
+    "rating": 4.8,
+    "totalRatings": 7,
+    "experience": 9,
+    "education": {
+      "degree": "M.Phil. in Clinical Psychology",
+      "institution": "Osmania University",
+      "year": 2015
+    },
+    "license": {
+      "number": "PSY-12351",
+      "issuingAuthority": "Rehabilitation Council of India",
+      "expiryDate": "2026-11-20"
+    },
+    "bio": "Dr. Kavita Reddy specializes in grief counseling and helping students navigate life transitions. She provides compassionate support to those dealing with loss and helps them find meaning and purpose in difficult times.",
+    "profileImage": "https://example.com/images/kavita-reddy.jpg",
+    "isActive": true,
+    "maxAppointmentsPerDay": 8,
+    "sessionDuration": 60,
+    "hourlyRate": 0,
+    "emergencyAvailable": false,
+    "crisisIntervention": false
+  },
+  {
+    "name": "Dr. Sanjay Verma",
+    "email": "sanjay.verma@mindcare.edu",
+    "phone": "+91-98765-43217",
+    "specialization": ["General", "Academic Stress", "Career Counseling"],
+    "languages": ["English", "Hindi", "Marathi", "Gujarati"],
+    "appointmentType": "oncampus",
+    "availability": {
+      "monday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true },
+          { "startTime": "16:00", "endTime": "17:00", "isAvailable": true }
+        ]
+      },
+      "tuesday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true },
+          { "startTime": "16:00", "endTime": "17:00", "isAvailable": true }
+        ]
+      },
+      "wednesday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true },
+          { "startTime": "16:00", "endTime": "17:00", "isAvailable": true }
+        ]
+      },
+      "thursday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true },
+          { "startTime": "16:00", "endTime": "17:00", "isAvailable": true }
+        ]
+      },
+      "friday": {
+        "available": true,
+        "slots": [
+          { "startTime": "09:00", "endTime": "10:00", "isAvailable": true },
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true },
+          { "startTime": "15:00", "endTime": "16:00", "isAvailable": true },
+          { "startTime": "16:00", "endTime": "17:00", "isAvailable": true }
+        ]
+      },
+      "saturday": {
+        "available": true,
+        "slots": [
+          { "startTime": "10:00", "endTime": "11:00", "isAvailable": true },
+          { "startTime": "11:00", "endTime": "12:00", "isAvailable": true },
+          { "startTime": "14:00", "endTime": "15:00", "isAvailable": true }
+        ]
+      },
+      "sunday": {
+        "available": false,
+        "slots": []
+      }
+    },
+    "rating": 4.4,
+    "totalRatings": 15,
+    "experience": 7,
+    "education": {
+      "degree": "M.A. in Counseling Psychology",
+      "institution": "University of Mumbai",
+      "year": 2017
+    },
+    "license": {
+      "number": "PSY-12352",
+      "issuingAuthority": "Rehabilitation Council of India",
+      "expiryDate": "2027-05-10"
+    },
+    "bio": "Dr. Sanjay Verma is a general counselor who provides support for a wide range of mental health concerns. He specializes in academic stress management and career guidance, helping students balance their academic and personal lives.",
+    "profileImage": "https://example.com/images/sanjay-verma.jpg",
+    "isActive": true,
+    "maxAppointmentsPerDay": 10,
+    "sessionDuration": 45,
+    "hourlyRate": 0,
+    "emergencyAvailable": false,
+    "crisisIntervention": false
+  }
+]
