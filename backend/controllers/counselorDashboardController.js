@@ -2,7 +2,6 @@ import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 import Appointment from '../models/appointmentModel.js';
 import Message from '../models/messageModel.js';
-import SessionNote from '../models/sessionNoteModel.js';
 import CounselorStats from '../models/counselorStatsModel.js';
 import Payment from '../models/paymentModel.js';
 import User from '../models/usermodel.js';
@@ -279,98 +278,6 @@ export const markMessageAsRead = catchAsync(async (req, res) => {
   });
 });
 
-// Get session notes
-export const getSessionNotes = catchAsync(async (req, res) => {
-  const counselorId = req.user.id;
-  const { page = 1, limit = 10, studentId, appointmentId } = req.query;
-  const actualCounselorId = await getActualCounselorId(counselorId);
-
-  const filter = { counselor: actualCounselorId };
-  
-  if (studentId) {
-    filter.student = studentId;
-  }
-  
-  if (appointmentId) {
-    filter.appointment = appointmentId;
-  }
-
-  const sessionNotes = await SessionNote.find(filter)
-    .populate('student', 'firstName lastName email')
-    .populate('appointment', 'date timeSlot status')
-    .sort({ sessionDate: -1 })
-    .limit(parseInt(limit))
-    .skip((parseInt(page) - 1) * parseInt(limit));
-
-  const total = await SessionNote.countDocuments(filter);
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      sessionNotes,
-      pagination: {
-        page: parseInt(page),
-        limit: parseInt(limit),
-        total,
-        pages: Math.ceil(total / parseInt(limit))
-      }
-    }
-  });
-});
-
-// Create session note
-export const createSessionNote = catchAsync(async (req, res) => {
-  const counselorId = req.user.id;
-  const actualCounselorId = await getActualCounselorId(counselorId);
-  
-  const {
-    appointmentId,
-    studentId,
-    sessionDate,
-    sessionDuration,
-    sessionType,
-    presentingIssues,
-    sessionSummary,
-    interventions,
-    homework,
-    progressNotes,
-    riskAssessment,
-    moodRating,
-    nextSessionDate,
-    recommendations,
-    tags
-  } = req.body;
-
-  const sessionNote = await SessionNote.create({
-    appointment: appointmentId,
-    counselor: actualCounselorId,
-    student: studentId,
-    sessionDate,
-    sessionDuration,
-    sessionType,
-    presentingIssues,
-    sessionSummary,
-    interventions,
-    homework,
-    progressNotes,
-    riskAssessment,
-    moodRating,
-    nextSessionDate,
-    recommendations,
-    tags
-  });
-
-  const populatedNote = await SessionNote.findById(sessionNote._id)
-    .populate('student', 'firstName lastName email')
-    .populate('appointment', 'date timeSlot status');
-
-  res.status(201).json({
-    status: 'success',
-    data: {
-      sessionNote: populatedNote
-    }
-  });
-});
 
 // Get payment records
 export const getPaymentRecords = catchAsync(async (req, res) => {

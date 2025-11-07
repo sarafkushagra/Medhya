@@ -7,8 +7,6 @@ import {
   getRecentMessages,
   sendMessage,
   markMessageAsRead,
-  getSessionNotes,
-  createSessionNote,
   getPaymentRecords,
   getCounselorStats,
   getStudentList,
@@ -36,10 +34,6 @@ router.patch('/sessions/:appointmentId/status', updateAppointmentStatus);
 router.get('/messages', getRecentMessages);
 router.post('/messages', sendMessage);
 router.patch('/messages/:messageId/read', markMessageAsRead);
-
-// Session Notes
-router.get('/session-notes', getSessionNotes);
-router.post('/session-notes', createSessionNote);
 
 // Payments
 router.get('/payments', getPaymentRecords);

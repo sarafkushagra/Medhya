@@ -23,7 +23,10 @@ import journalRoutes from "./routes/journalRoutes.js";
 import counselorDashboardRoutes from "./routes/counselorDashboardRoutes.js";
 import moodTrackingRoutes from "./routes/moodTrackingRoutes.js";
 import messageRoutes from "./routes/messageRoutes.js";
-
+import medicineOrder from "./routes/medicineOrder.js";
+import prescriptionRoutes from "./routes/prescription.js";
+import supplierRoutes from "./routes/suppliers.js";
+import reportRoutes from "./routes/reports.js";
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -222,6 +225,10 @@ app.use("/api/counselor-dashboard", counselorDashboardRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/mood", moodTrackingRoutes);
 app.use("/api/messages", messageRoutes);
+app.use("/api/medicine-orders", medicineOrder(io));
+app.use("/api/prescriptions", prescriptionRoutes);
+app.use("/api/suppliers", supplierRoutes(io));
+app.use("/api/reports", reportRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {
