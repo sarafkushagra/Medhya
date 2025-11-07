@@ -24,6 +24,11 @@ import UserProfile from './Components/UserProfile.jsx';
 import Wellness from './Components/Wellness.jsx';
 import CounselorDashboard from './Components/CounselorDashboard.jsx';
 
+//
+
+import { MedicalReports } from './Components/MedicalReports.jsx';
+import { MedicineDelivery } from './Components/MedicineDelivery.jsx';
+
 import RoomPage from './Components/RoomPage.jsx';
 import UserCounselorChat from './Components/UserCounselorChat.jsx';
 import { useSocket } from './context/SocketProvider.jsx';
@@ -247,6 +252,8 @@ export default function App() {
           {/* <Route path="/resources" element={<ProtectedRoute userRole={userRole} requiredRole="student" isLoading={loading}><ResourceHub /></ProtectedRoute>} /> */}
           <Route path="/community" element={<ProfileProtectedRoute userRole={userRole} user={user} isLoading={loading}><PeerSupport /></ProfileProtectedRoute>} />
           <Route path="/wellness" element={<ProfileProtectedRoute userRole={userRole} user={user} isLoading={loading}><Wellness /></ProfileProtectedRoute>} />
+          <Route path="/reports" element={<ProfileProtectedRoute userRole={userRole} user={user} isLoading={loading}><MedicalReports /></ProfileProtectedRoute>} />
+          <Route path="/delivery" element={<ProfileProtectedRoute userRole={userRole} user={user} isLoading={loading}><MedicineDelivery /></ProfileProtectedRoute>} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<ProtectedRoute userRole={userRole} requiredRole="admin" isLoading={loading}><AdminDashboard /></ProtectedRoute>} />

@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/Card.jsx';
 import { Button } from '../ui/Button.jsx';
 import { Alert, AlertDescription } from '../ui/Alert.jsx';
 import { Progress } from '../ui/Progress.jsx';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth.js';
 import {
   MessageCircle, Calendar, Users, Shield, Heart, Brain, Phone,
   TrendingUp, Globe, Zap, CheckCircle, Target, Smartphone, AlertTriangle, Lock,
@@ -26,6 +24,7 @@ const StudentDashboard = () => {
   // Full Dashboard Content for Complete Profiles
   const FullDashboardContent = () => (
     <div className="space-y-6">
+
 
 
       {/* Resources Content */}

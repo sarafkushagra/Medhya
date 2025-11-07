@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
-  MessageCircle, Calendar, BookOpen, Users, BarChart3, Heart, AlertTriangle, Zap, Building2
+  MessageCircle, Calendar, BookOpen, Users, BarChart3, Heart, AlertTriangle, Zap, Building2,
+  Database,
+  Box
 } from 'lucide-react';
 import Navbar from './Navbar.jsx';
 import LP from '../assets/logo.png';
@@ -15,6 +17,8 @@ const studentNavItems = [
   // { path: '/resources', label: 'Resources', icon: BookOpen },
   { path: '/community', label: 'Community', icon: Users },
   { path: '/wellness', label: 'Wellness', icon: Heart },
+  { path: '/reports', label: 'Report', icon: Database },
+  { path: '/delivery', label: 'Delivery', icon: Box },
 ];
 
 const adminNavItems = [
