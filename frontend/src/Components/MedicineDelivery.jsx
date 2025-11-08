@@ -35,7 +35,7 @@ import { toast } from 'sooner';
 
   const fetchOrders = useCallback(async () => {
     try {
-      const token = localStorage.getItem('neuropath_token');
+      const token = localStorage.getItem('token');
       const res = await fetch(`${API_BASE}/api/medicine-orders/my`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       });
@@ -48,7 +48,7 @@ import { toast } from 'sooner';
 
   useEffect(() => {
     // Socket connection for real-time updates
-    const token = localStorage.getItem('neuropath_token');
+    const token = localStorage.getItem('token');
     let socket;
     try {
       socket = connectSocket(token);
@@ -158,7 +158,7 @@ import { toast } from 'sooner';
 
     setOrderUploading(true);
     try {
-      const token = localStorage.getItem('neuropath_token');
+      const token = localStorage.getItem('token');
       const form = new FormData();
       form.append('file', file);
       form.append('deliveryAddress', fullAddress.trim());
@@ -167,8 +167,18 @@ import { toast } from 'sooner';
         headers: { Authorization: `Bearer ${token}` },
         body: form
       });
-      const uploadData = await uploadRes.json().catch(() => ({}));
-      if (!uploadRes.ok) throw new Error(uploadData.message || 'Upload failed');
+      let uploadData;
+      try {
+        uploadData = await uploadRes.json();
+      } catch (parseError) {
+        console.error('Failed to parse response as JSON:', parseError);
+        uploadData = {};
+      }
+      console.log('Upload response:', { status: uploadRes.status, ok: uploadRes.ok, data: uploadData });
+      if (!uploadRes.ok) {
+        const errorMessage = uploadData?.message || uploadData?.error || `Upload failed (${uploadRes.status})`;
+        throw new Error(errorMessage);
+      }
       toast.success('Prescription uploaded');
       await fetchOrders();
     } catch (err) {

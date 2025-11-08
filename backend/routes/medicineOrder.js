@@ -26,7 +26,7 @@ const medicineOrder = (io) => {
   });
 
   // Patient: upload prescription image/pdf for order
-  router.post('/upload', authenticateToken, authorizeRoles('patient'), upload.single('file'), async (req, res) => {
+  router.post('/upload', authenticateToken, upload.single('file'), async (req, res) => {
     try {
       if (!req.file) return res.status(400).json({ message: 'File is required' });
 
@@ -75,7 +75,7 @@ const medicineOrder = (io) => {
   });
 
   // Patient: list my orders
-  router.get('/my', authenticateToken, authorizeRoles('patient'), async (req, res) => {
+  router.get('/my', authenticateToken, async (req, res) => {
     try {
       const orders = await MedicineOrder.find({ patientId: req.user.id })
         .populate('neurologistId', 'name')

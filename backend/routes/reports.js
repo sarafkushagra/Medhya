@@ -8,7 +8,8 @@ import Appointment from '../models/appointmentModel.js';
 import { authenticateToken, authorizeRoles } from '../middlewares/auth.js';
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });
-
+import dotenv from 'dotenv';
+dotenv.config();
 // Configure cloudinary from env
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -16,7 +17,28 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// Provide a signed payload for Cloudinary direct upload (kept for compatibility)
+console.log('Cloudinary config loaded:', {
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME ? 'SET' : 'NOT SET',
+  api_key: process.env.CLOUDINARY_API_KEY ? 'SET' : 'NOT SET',
+  api_secret: process.env.CLOUDINARY_API_SECRET ? 'SET' : 'NOT SET',
+});
+
+// Health check for Cloudinary
+router.get('/cloudinary-test', (req, res) => {
+  const config = {
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY ? 'SET' : 'NOT SET',
+    api_secret: process.env.CLOUDINARY_API_SECRET ? 'SET' : 'NOT SET',
+  };
+  
+  console.log('Cloudinary test endpoint called:', config);
+  
+  res.json({
+    status: 'Cloudinary config check',
+    config,
+    all_env_vars: Object.keys(process.env).filter(key => key.includes('CLOUDINARY'))
+  });
+});
 router.post('/sign', authenticateToken, (req, res) => {
   const apiKey = process.env.CLOUDINARY_API_KEY;
   const apiSecret = process.env.CLOUDINARY_API_SECRET;
@@ -74,7 +96,7 @@ router.post('/upload', authenticateToken, upload.single('file'), async (req, res
     const title = req.body.title || result.original_filename || 'Medical Report';
     const report = new Report({
       patientId: req.user.id,
-      neurologistId: req.user.id,
+      // neurologistId will be assigned later when a neurologist reviews the report
       title,
       description: 'Uploaded by patient',
       findings: '',

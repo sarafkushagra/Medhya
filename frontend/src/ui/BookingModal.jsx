@@ -39,7 +39,7 @@ export const BookingModal = ({ isOpen, onClose, neurologist, onBooked }) => {
     if (!date || !time) return;
     setLoading(true);
     try {
-      const token = localStorage.getItem('neuropath_token');
+      const token = localStorage.getItem('token');
       const res = await fetch(`${API_BASE}/api/appointments`, {
         method: 'POST',
         headers: {

@@ -30,8 +30,8 @@ const MedicalReports = () => {
 
   const fetchReports = useCallback(async () => {
     try {
-      const token = localStorage.getItem('neuropath_token');
-      const response = await fetch(`${API_BASE}/api/dashboard/patient`, {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE}/api/reports/patient`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -57,7 +57,7 @@ const MedicalReports = () => {
     // If report is PDF/raw, request a signed access URL from server
     if ((report.fileType && report.fileType.toLowerCase() === 'pdf') || (report.publicId && String(report.publicId).includes('pdf'))) {
       try {
-        const token = localStorage.getItem('neuropath_token');
+        const token = localStorage.getItem('token');
         // Ask server for a signed access URL
         const accessRes = await fetch(`${API_BASE}/api/reports/${report._id || report.id}/access`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -94,7 +94,7 @@ const MedicalReports = () => {
 
     setUploading(true);
     try {
-      const token = localStorage.getItem('neuropath_token');
+      const token = localStorage.getItem('token');
 
       // Upload to server which will forward to Cloudinary
       const form = new FormData();
@@ -109,9 +109,16 @@ const MedicalReports = () => {
         body: form,
       });
 
-      const uploadData = await uploadRes.json().catch(() => ({}));
+      let uploadData;
+      try {
+        uploadData = await uploadRes.json();
+      } catch (parseError) {
+        console.error('Failed to parse response as JSON:', parseError);
+        uploadData = {};
+      }
       if (!uploadRes.ok) {
-        throw new Error(uploadData.message || 'Upload failed');
+        const errorMessage = uploadData?.message || uploadData?.error || `Upload failed (${uploadRes.status})`;
+        throw new Error(errorMessage);
       }
 
       toast.success('Report uploaded successfully');
