@@ -16,6 +16,14 @@ export const SupplierDashboard = () => {
   const [customStatus, setCustomStatus] = useState({});
   const [customNote, setCustomNote] = useState({});
 
+  // safeToast guards against missing toast implementations at runtime (prevents reading .success/.error of undefined)
+  const safeToast = (typeof toast !== 'undefined' && toast)
+    ? toast
+    : {
+        success: (msg) => console.log('[toast.success]', msg),
+        error: (msg) => console.error('[toast.error]', msg),
+      };
+
   const API_BASE = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_URL) ? import.meta.env.VITE_API_URL : 'http://localhost:5000';
 
   const token = typeof window !== 'undefined' ? localStorage.getItem('supplier_token') : null;
@@ -40,7 +48,7 @@ export const SupplierDashboard = () => {
       setOrders(data.orders || []);
     } catch (err) {
       console.error('Fetch orders error:', err);
-      toast.error(err.message || 'Failed to fetch orders');
+      safeToast.error(err.message || 'Failed to fetch orders');
     }
   };
 
@@ -55,7 +63,7 @@ export const SupplierDashboard = () => {
 
   const updateStatus = async (orderId, status, isMainStatus = false) => {
     if (!token) {
-      toast.error('Not authenticated. Please login again.');
+      safeToast.error('Not authenticated. Please login again.');
       return;
     }
     
@@ -82,7 +90,7 @@ export const SupplierDashboard = () => {
       
       if (!res.ok) {
         if (res.status === 401 || res.status === 403) {
-          toast.error('Authentication failed. Please login again.');
+          safeToast.error('Authentication failed. Please login again.');
           localStorage.removeItem('supplier_token');
           localStorage.removeItem('supplier_user');
           window.location.reload();
@@ -91,7 +99,7 @@ export const SupplierDashboard = () => {
         throw new Error(data.message || `HTTP ${res.status}: ${data.error || 'Unknown error'}`);
       }
       
-      toast.success(data.message || 'Status updated');
+  safeToast.success(data.message || 'Status updated');
       // Clear the custom note and status after successful update
       setCustomNote(prev => ({ ...prev, [orderId]: '' }));
       setCustomStatus(prev => ({ ...prev, [orderId]: '' }));
@@ -100,7 +108,7 @@ export const SupplierDashboard = () => {
       setTimeout(() => fetchOrders(), 500);
     } catch (err) {
       console.error('Update status error:', err);
-      toast.error(`Failed to update status: ${err.message}`);
+      safeToast.error(`Failed to update status: ${err.message}`);
     } finally {
       setUpdating(prev => {
         const newSet = new Set(prev);
