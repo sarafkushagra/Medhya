@@ -6,6 +6,7 @@ import {
   Database,
   Box
 } from 'lucide-react';
+import ChatBot from '../ui/ChatBot.jsx';
 import Navbar from './Navbar.jsx';
 import LP from '../assets/logo.png';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar';
@@ -30,6 +31,8 @@ const adminNavItems = [
 
 const AppLayout = ({ userRole, user, onLogout, systemStats, onRefreshMoodData }) => {
   const location = useLocation();
+  const [isChatBotOpen, setIsChatBotOpen] = useState(false);
+  
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const navItems = userRole === 'student' ? studentNavItems : adminNavItems;
 
@@ -115,6 +118,11 @@ const AppLayout = ({ userRole, user, onLogout, systemStats, onRefreshMoodData })
         </main>
 
       </div>
+
+      <ChatBot 
+        isOpen={isChatBotOpen} 
+        onToggle={() => setIsChatBotOpen(!isChatBotOpen)} 
+      />
     </div>
   );
 };
