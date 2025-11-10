@@ -7,8 +7,8 @@ import AppError from "../utils/appError.js";
 import catchAsync from "../utils/catchAsync.js";
 
 // Generate JWT Token
-const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
+const generateToken = (id, role) => {
+  return jwt.sign({ id, role }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN || '7d'
   });
 };
@@ -22,7 +22,7 @@ const generateRefreshToken = (id) => {
 
 // Send token response
 const sendTokenResponse = (user, statusCode, res) => {
-  const token = generateToken(user._id);
+  const token = generateToken(user._id, user.role);
   const refreshToken = generateRefreshToken(user._id);
 
   // Save refresh token to user

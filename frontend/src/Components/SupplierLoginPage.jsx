@@ -6,7 +6,7 @@ import { Label } from '../ui/Label';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 import { ImageWithFallback } from '../ui/ImageWithFallback';
 
-import logo from '../../../public/logo.png';
+import logo from "../assets/logo.png";
 import { 
   ArrowLeft, 
   Shield, 
@@ -17,7 +17,7 @@ import {
   EyeOff,
   Mail
 } from 'lucide-react';
-import { toast } from 'sonner';
+import { toast } from 'sooner';
 
 export const SupplierLoginPage = () => {
   const navigate = useNavigate();
@@ -26,11 +26,20 @@ export const SupplierLoginPage = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  // safeToast guards against a missing/invalid toast implementation at runtime.
+  // If the imported `toast` is undefined for any reason, fall back to console logs.
+  const safeToast = (typeof toast !== 'undefined' && toast)
+    ? toast
+    : {
+        success: (msg) => console.log('[toast.success]', msg),
+        error: (msg) => console.error('[toast.error]', msg),
+      };
+
   const API_BASE = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_URL) ? import.meta.env.VITE_API_URL : 'http://localhost:5000';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!supplierId || !password) return toast.error('Enter Supplier ID and password');
+  if (!supplierId || !password) return safeToast.error('Enter Supplier ID and password');
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/api/suppliers/login`, {
@@ -38,15 +47,37 @@ export const SupplierLoginPage = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ supplierId, password })
       });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.message || 'Login failed');
-      localStorage.setItem('supplier_user', JSON.stringify(data.supplier));
-      localStorage.setItem('supplier_token', data.token);
-      toast.success('Logged in successfully');
+      
+      let data;
+      try {
+        data = await res.json();
+      } catch (parseError) {
+        console.error('Failed to parse response:', parseError);
+        data = null;
+      }
+      
+      if (!res.ok) {
+        const errorMessage = data?.message || `Login failed (${res.status})`;
+        throw new Error(errorMessage);
+      }
+      
+      // Ensure data is valid and has expected structure
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid response format from server');
+      }
+      
+      // Ensure we have the expected data structure
+      if (!data.supplier || !data.token) {
+        throw new Error('Invalid response format from server');
+      }
+      
+  localStorage.setItem('supplier_user', JSON.stringify(data.supplier));
+  localStorage.setItem('supplier_token', data.token);
+  safeToast.success('Logged in successfully');
       navigate('/supplier-dashboard');
     } catch (err) {
-      console.error('Supplier login error:', err);
-      toast.error(err.message || 'Login failed');
+  console.error('Supplier login error:', err);
+  safeToast.error(err.message || 'Login failed');
     } finally {
       setLoading(false);
     }
@@ -54,7 +85,7 @@ export const SupplierLoginPage = () => {
 
   const handleForgotPassword = async () => {
     if (!supplierId) {
-      toast.error('Please enter your Supplier ID first');
+      safeToast.error('Please enter your Supplier ID first');
       return;
     }
     
@@ -64,12 +95,29 @@ export const SupplierLoginPage = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ supplierId })
       });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.message || 'Failed to send recovery email');
-      toast.success('Recovery instructions sent to your registered email');
+      
+      let data;
+      try {
+        data = await res.json();
+      } catch (parseError) {
+        console.error('Failed to parse forgot password response:', parseError);
+        data = null;
+      }
+      
+      if (!res.ok) {
+        const errorMessage = data?.message || `Failed to send recovery email (${res.status})`;
+        throw new Error(errorMessage);
+      }
+      
+      // Ensure data is valid
+      if (!data || typeof data !== 'object') {
+        throw new Error('Invalid response format from server');
+      }
+      
+  safeToast.success(data?.message || 'Recovery instructions sent to your registered email');
     } catch (err) {
       console.error('Forgot password error:', err);
-      toast.error(err.message || 'Failed to send recovery email');
+      safeToast.error(err.message || 'Failed to send recovery email');
     }
   };
 

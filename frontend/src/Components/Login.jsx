@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -327,7 +326,7 @@ xlwZGl0YXRpb24lMjBuYXR1cmUlMjB3ZWxsbmVzc3xlbnwxfHx8fDE3NTc2NTczNzN8MA&ixlib=rb-4
                   Try Demo
                 </Button>
                 <Button
-                  onClick={fillDemoCredentials}
+                  onClick={() => navigate('/supplier-login')}
                   variant="outline"
                   className="w-full h-12 border-2 border-sky-300 text-sky-700 hover:bg-sky-50 hover:border-sky-400 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
                 >

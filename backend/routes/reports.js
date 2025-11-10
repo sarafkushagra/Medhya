@@ -152,8 +152,16 @@ router.get('/:id/access', authenticateToken, async (req, res) => {
     const report = await Report.findById(id);
     if (!report) return res.status(404).json({ message: 'Report not found' });
 
-    // Only owner or admin can access
-    if (report.patientId.toString() !== req.user.id && req.user.role !== 'admin') {
+    // Owner, admin, or counselor with appointment can access
+    const isOwner = report.patientId.toString() === req.user.id;
+    const isAdmin = req.user.role === 'admin';
+    let isCounselorWithAccess = false;
+    if (req.user.role === 'counselor' && req.user.counselorProfile) {
+      const appt = await Appointment.findOne({ counselor: req.user.counselorProfile, student: report.patientId });
+      if (appt) isCounselorWithAccess = true;
+    }
+
+    if (!isOwner && !isAdmin && !isCounselorWithAccess) {
       return res.status(403).json({ message: 'Insufficient permissions' });
     }
 
@@ -239,33 +247,38 @@ router.get('/patient', authenticateToken, async (req, res) => {
   }
 });
 
-// List reports for a specific patient (neurologist access)
-router.get('/patient/:patientId', authenticateToken, authorizeRoles('neurologist'), async (req, res) => {
+// List reports for a specific student (counselor access with appointment check)
+router.get('/student/:studentId', authenticateToken, authorizeRoles('counselor'), async (req, res) => {
   try {
-    const { patientId } = req.params;
+    const { studentId } = req.params;
 
-    // Verify the patient exists and is a patient
-    const patient = await User.findById(patientId);
-    if (!patient || patient.role !== 'patient') {
-      return res.status(404).json({ message: 'Patient not found' });
+    // Verify the student exists and is a student
+    const student = await User.findById(studentId);
+    if (!student || student.role !== 'student') {
+      return res.status(404).json({ message: 'Student not found' });
     }
 
-    // Check if this neurologist has any appointments with this patient
+    // Counselor must have at least one appointment with this student
+    // Counselor appointments reference Counselor model, which is linked from User.counselorProfile
+    const counselorProfileId = req.user.counselorProfile;
+    if (!counselorProfileId) {
+      return res.status(403).json({ message: 'Access denied: Counselor profile not found' });
+    }
+
     const hasAppointment = await Appointment.findOne({
-      neurologistId: req.user.id,
-      patientId: patientId
+      counselor: counselorProfileId,
+      student: studentId
     });
 
     if (!hasAppointment) {
-      return res.status(403).json({ message: 'Access denied: No appointment history with this patient' });
+      return res.status(403).json({ message: 'Access denied: No appointment history with this student' });
     }
 
-    const reports = await Report.find({ patientId }).sort({ createdAt: -1 });
+    const reports = await Report.find({ patientId: studentId }).sort({ createdAt: -1 });
 
     const enhanced = reports.map((r) => {
       const obj = r.toObject();
       try {
-        // If PDF/raw, generate an image preview (first page)
         if (obj.fileType && obj.fileType.toLowerCase() === 'pdf') {
           obj.previewUrl = cloudinary.url(obj.publicId, {
             resource_type: 'image',
@@ -284,7 +297,7 @@ router.get('/patient/:patientId', authenticateToken, authorizeRoles('neurologist
 
     res.json({ reports: enhanced });
   } catch (error) {
-    console.error('Get patient reports error:', error);
+    console.error('Get student reports error:', error);
     res.status(500).json({ message: 'Failed to fetch reports' });
   }
 });

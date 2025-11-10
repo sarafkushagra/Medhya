@@ -4,8 +4,10 @@ import { Button } from "../ui/Button";
 import { Input } from "../ui/Input";
 import { Avatar, AvatarImage, AvatarFallback } from "../ui/Avatar";
 import { Badge } from "../ui/Badge";
-import { Users, MessageSquare, Search, RefreshCw } from "lucide-react";
+import { Users, MessageSquare, Search, RefreshCw, FileText, Eye, Download, X } from "lucide-react";
 import { useCounselorDashboard } from "../hooks/useCounselorDashboard";
+import { ReportPreviewModal } from '../ui/ReportPreviewModal';
+import { API_BASE_URL } from '../config/environment';
 
 const StudentList = ({
   loading: externalLoading = false,
@@ -15,6 +17,14 @@ const StudentList = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
   const [internalLoading, setInternalLoading] = useState(true);
+  const [reportsModalOpen, setReportsModalOpen] = useState(false);
+  const [reportsLoading, setReportsLoading] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [studentReports, setStudentReports] = useState([]);
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState('');
+  const [previewTitle, setPreviewTitle] = useState('');
+  const [previewFileType, setPreviewFileType] = useState('');
 
   const { getStudentList } = useCounselorDashboard();
 
@@ -53,6 +63,47 @@ const StudentList = ({
     if (onSendMessage) {
       onSendMessage(student);
     }
+  };
+
+  const openReports = async (student) => {
+    setSelectedStudent(student);
+    setReportsLoading(true);
+    setReportsModalOpen(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/reports/student/${student._id}`, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.message || 'Failed to load reports');
+      setStudentReports(data.reports || []);
+    } catch (err) {
+      console.error('Fetch student reports error:', err);
+      setStudentReports([]);
+    } finally {
+      setReportsLoading(false);
+    }
+  };
+
+  const openPreview = async (report) => {
+    setPreviewTitle(report.title || report.name || 'Medical Report');
+    setPreviewFileType(report.fileType || report.format || '');
+
+    try {
+      const token = localStorage.getItem('token');
+      const accessRes = await fetch(`${API_BASE_URL}/reports/${report._id}/access`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const accessData = await accessRes.json().catch(() => ({}));
+      if (accessRes.ok && accessData.url) {
+        setPreviewUrl(accessData.url);
+      } else {
+        setPreviewUrl(report.previewUrl || report.url);
+      }
+    } catch (err) {
+      setPreviewUrl(report.previewUrl || report.url);
+    }
+
+    setPreviewOpen(true);
   };
 
   return (
@@ -144,14 +195,25 @@ const StudentList = ({
                     )}
                   </div>
                 </div>
-                <Button
-                  size="sm"
-                  className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-lg transition-all duration-300 transform hover:scale-105 ml-4"
-                  onClick={() => handleSendMessage(student)}
-                >
-                  <MessageSquare className="w-4 h-4 mr-2" />
-                  Message
-                </Button>
+                <div className="flex items-center gap-2 ml-4">
+                  <Button
+                    size="sm"
+                    className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white shadow-lg transition-all duration-300 transform hover:scale-105"
+                    onClick={() => handleSendMessage(student)}
+                  >
+                    <MessageSquare className="w-4 h-4 mr-2" />
+                    Message
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    className="border-blue-300 text-blue-700 hover:bg-blue-50"
+                    onClick={() => openReports(student)}
+                  >
+                    <FileText className="w-4 h-4 mr-2" />
+                    Reports
+                  </Button>
+                </div>
               </div>
             ))}
           </div>
@@ -164,6 +226,49 @@ const StudentList = ({
           </div>
         )}
       </CardContent>
+      {/* Reports Modal */}
+      {reportsModalOpen && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-2xl w-full max-w-3xl mx-4 shadow-2xl">
+            <div className="flex items-center justify-between p-4 border-b">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">{selectedStudent ? `${selectedStudent.firstName} ${selectedStudent.lastName}` : 'Student'} Reports</h3>
+                <p className="text-sm text-gray-500">Medical reports uploaded by the student</p>
+              </div>
+              <button className="text-gray-500 hover:text-gray-700" onClick={() => { setReportsModalOpen(false); setStudentReports([]); }}>
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <div className="p-4 max-h-[70vh] overflow-y-auto">
+              {reportsLoading ? (
+                <div className="text-center py-8 text-gray-500">Loading reports...</div>
+              ) : studentReports.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">No reports found</div>
+              ) : (
+                <div className="space-y-3">
+                  {studentReports.map((report) => (
+                    <div key={report._id} className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <div className="bg-blue-100 p-2 rounded-lg"><FileText className="h-5 w-5 text-blue-600" /></div>
+                        <div>
+                          <div className="font-medium">{report.title || 'Medical Report'}</div>
+                          <div className="text-xs text-gray-500">{report.fileType} • {report.createdAt ? new Date(report.createdAt).toLocaleDateString() : ''}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" onClick={() => openPreview(report)}><Eye className="w-4 h-4 mr-1" />View</Button>
+                        <Button variant="outline" size="sm" onClick={() => window.open(report.url, '_blank')}><Download className="w-4 h-4 mr-1" />Download</Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      <ReportPreviewModal isOpen={previewOpen} onClose={() => setPreviewOpen(false)} url={previewUrl} title={previewTitle} fileType={previewFileType} />
     </Card>
   );
 };

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/Card';
 import { Button } from '../ui/Button';
@@ -7,11 +6,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/Tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/Select';
 import { Alert, AlertDescription } from '../ui/Alert';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts';
-import { BarChart3, Users, MessageCircle, Calendar, AlertTriangle, TrendingUp, Download, Filter, Eye, Shield, UserCheck, X, Lock, CheckCircle, GraduationCap, Phone, MapPin, Heart, Building, IdCard, Globe, Clock } from 'lucide-react';
+import { BarChart3, Users, MessageCircle, Calendar, AlertTriangle, TrendingUp, Download, Filter, Eye, Shield, UserCheck, X, Lock, CheckCircle, GraduationCap, Phone, MapPin, Heart, Building, IdCard, Globe, Clock, Truck } from 'lucide-react';
 import ScoresChart from './ScoresChart';
 import CrisisChart from './CrisisChart';
 import useAdminAnalytics from '../hooks/useAdminAnalytics';
 import { adminAPI, apiCall } from '../services/api';
+import { useAuth } from '../hooks/useAuth';
 
 const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
@@ -40,8 +40,15 @@ const AdminDashboard = () => {
   });
   const [creatingCounselor, setCreatingCounselor] = useState(false);
   const [counselorFormError, setCounselorFormError] = useState('');
-  const analytics = useAdminAnalytics();
 
+  // Create Supplier Modal State
+  const [showCreateSupplierModal, setShowCreateSupplierModal] = useState(false);
+  const [supplierForm, setSupplierForm] = useState({ supplierId: '', name: '', email: '', phone: '', company: '', password: '' });
+  const [creatingSupplier, setCreatingSupplier] = useState(false);
+  const [supplierFormError, setSupplierFormError] = useState('');
+
+  const analytics = useAdminAnalytics();
+  const { user } = useAuth();
 
   const trendData = [
     { month: 'Jan', anxiety: 45, depression: 32, stress: 58, sleep: 28 },
@@ -206,6 +213,14 @@ const AdminDashboard = () => {
             >
               <UserCheck className="w-4 h-4" />
               Create Counselor
+            </Button>
+            <Button
+              variant="outline"
+              className="flex items-center gap-2 text-blue-600 border-blue-600 hover:bg-blue-50 transition-colors duration-300 transform hover:scale-105"
+              onClick={() => setShowCreateSupplierModal(true)}
+            >
+              <Truck className="w-4 h-4" />
+              Create Supplier
             </Button>
 
           </div>
@@ -1305,6 +1320,96 @@ const AdminDashboard = () => {
                   className="bg-green-600 text-white hover:bg-green-700 disabled:opacity-50"
                 >
                   {creatingCounselor ? 'Creating...' : 'Create Counselor'}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+    {/* Create Supplier Modal */}
+      {showCreateSupplierModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                <Truck className="w-6 h-6 text-blue-600" />
+                Create New Supplier
+              </h3>
+              <button onClick={() => setShowCreateSupplierModal(false)} className="text-gray-400 hover:text-gray-600">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+
+              // Basic client-side auth checks
+              const token = localStorage.getItem('token');
+              if (!token) {
+                setSupplierFormError('Not authenticated. Please login as admin to create suppliers.');
+                return;
+              }
+              if (!user || user.role !== 'admin') {
+                setSupplierFormError('Insufficient permissions. You must be logged in as an admin to create suppliers.');
+                return;
+              }
+
+              if (!supplierForm.supplierId || !supplierForm.name || !supplierForm.email || !supplierForm.password) {
+                setSupplierFormError('Please fill in required fields');
+                return;
+              }
+
+              setCreatingSupplier(true);
+              setSupplierFormError('');
+              try {
+                await adminAPI.createSupplier(supplierForm);
+                setShowCreateSupplierModal(false);
+                setSupplierForm({ supplierId: '', name: '', email: '', phone: '', company: '', password: '' });
+                alert('Supplier created successfully');
+              } catch (err) {
+                setSupplierFormError(err.message || 'Failed to create supplier');
+              } finally {
+                setCreatingSupplier(false);
+              }
+            }} className="space-y-4">
+              {supplierFormError && (
+                <Alert className="border-red-200 bg-red-50">
+                  <AlertTriangle className="h-4 w-4 text-red-600" />
+                  <AlertDescription className="text-sm text-red-800">{supplierFormError}</AlertDescription>
+                </Alert>
+              )}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Supplier ID *</label>
+                  <input type="text" value={supplierForm.supplierId} onChange={(e) => setSupplierForm({ ...supplierForm, supplierId: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g., SUP-1001" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                  <input type="text" value={supplierForm.name} onChange={(e) => setSupplierForm({ ...supplierForm, name: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Acme Medicals" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                  <input type="email" value={supplierForm.email} onChange={(e) => setSupplierForm({ ...supplierForm, email: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="supplier@example.com" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                  <input type="tel" value={supplierForm.phone} onChange={(e) => setSupplierForm({ ...supplierForm, phone: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="+91 98765 43210" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Company</label>
+                  <input type="text" value={supplierForm.company} onChange={(e) => setSupplierForm({ ...supplierForm, company: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Company name" />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Temporary Password *</label>
+                  <input type="text" value={supplierForm.password} onChange={(e) => setSupplierForm({ ...supplierForm, password: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Set a password" />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-2">
+                <Button type="button" variant="outline" onClick={() => setShowCreateSupplierModal(false)} disabled={creatingSupplier}>Cancel</Button>
+                <Button type="submit" className="bg-blue-600 text-white hover:bg-blue-700" disabled={creatingSupplier}>
+                  {creatingSupplier ? 'Creating...' : 'Create Supplier'}
                 </Button>
               </div>
             </form>

@@ -23,6 +23,8 @@ import UserProfile from './Components/UserProfile.jsx';
 // Import Wellness component
 import Wellness from './Components/Wellness.jsx';
 import CounselorDashboard from './Components/CounselorDashboard.jsx';
+import { SupplierLoginPage } from './Components/SupplierLoginPage.jsx';
+import { SupplierDashboard } from './Components/SupplierDashboard.jsx';
 
 //
 
@@ -195,6 +197,8 @@ export default function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage onLogin={() => navigate('/login')} systemStats={systemStats} />} />
+        <Route path="/supplier-login" element={<SupplierLoginPage />} />
+        <Route path="/supplier-dashboard" element={<SupplierDashboard />} />
         <Route path="/login" element={
           userRole !== 'guest' ?
             <Navigate to={userRole === 'admin' ? '/admin' : userRole === 'counselor' ? '/counsellordash' : '/dashboard'} replace /> :

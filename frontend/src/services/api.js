@@ -182,12 +182,19 @@ export const assessmentAPI = {
 
 export const adminAPI = {
   getDashboardStats: () => apiCall('/admin/dashboard-stats'),
-  
+
   getTest: () => apiCall('/admin/test'),
-  
+
   getUsers: () => apiCall('/admin/users'),
-  
+
   getCounselors: () => apiCall('/admin/counselors'),
+
+  createSupplier: (payload) => apiCall('/suppliers', {
+    method: 'POST',
+    body: JSON.stringify(payload),
+  }),
+
+  listSuppliers: () => apiCall('/suppliers'),
 };
 // Appointment API
 export const appointmentAPI = {

@@ -88,8 +88,8 @@ const medicineOrder = (io) => {
     }
   });
 
-  // Neurologist: list pending orders awaiting approval
-  router.get('/pending', authenticateToken, authorizeRoles('neurologist'), async (req, res) => {
+  // Counselor: list pending orders awaiting approval
+  router.get('/pending', authenticateToken, authorizeRoles('counselor'), async (req, res) => {
     try {
       const orders = await MedicineOrder.find({ status: 'uploaded' })
         .populate('patientId', 'name email')
@@ -101,8 +101,8 @@ const medicineOrder = (io) => {
     }
   });
 
-  // Neurologist: list approved/forwarded orders
-  router.get('/approved', authenticateToken, authorizeRoles('neurologist'), async (req, res) => {
+  // Counselor: list approved/forwarded orders
+  router.get('/approved', authenticateToken, authorizeRoles('counselor'), async (req, res) => {
     try {
       const orders = await MedicineOrder.find({
         status: { $in: ['doctor_approved', 'forwarded_to_supplier', 'processing', 'shipped', 'delivered'] }
@@ -117,12 +117,12 @@ const medicineOrder = (io) => {
     }
   });
 
-  // Neurologist: approve and optionally forward to supplier
-  router.post('/:id/approve', authenticateToken, authorizeRoles('neurologist'), async (req, res) => {
+  // Counselor: approve and optionally forward to supplier
+  router.post('/:id/approve', authenticateToken, authorizeRoles('counselor'), async (req, res) => {
     try {
       const { id } = req.params;
       const { approve, supplierId, note } = req.body;
-      const order = await MedicineOrder.findById(id);
+      const order = await MedicineOrder.findById(id).populate('patientId', 'firstName lastName email');
       if (!order) return res.status(404).json({ message: 'Order not found' });
 
       order.neurologistId = req.user.id;
@@ -135,13 +135,14 @@ const medicineOrder = (io) => {
         
         // Send rejection email to patient
         try {
+          const patientName = `${order.patientId.firstName || ''} ${order.patientId.lastName || ''}`.trim() || 'Patient';
           const mailOptions = {
             from: process.env.EMAIL_USER || 'neuropath@gmail.com',
             to: order.patientId.email,
             subject: 'NeuroPath - Prescription Order Update',
             html: `
               <h2>Prescription Order Update</h2>
-              <p>Dear ${order.patientId.name},</p>
+              <p>Dear ${patientName},</p>
               <p>We regret to inform you that your prescription order has been <strong>rejected</strong> by our neurologist.</p>
               <h3>Order Details:</h3>
               <ul>
@@ -181,16 +182,17 @@ const medicineOrder = (io) => {
 
       // Send approval email to patient
       try {
+        const patientName = `${order.patientId.firstName || ''} ${order.patientId.lastName || ''}`.trim() || 'Patient';
         const statusMessage = supplierId ? 'approved and forwarded to supplier' : 'approved';
         const supplierInfo = supplierId ? `<li><strong>Assigned Supplier:</strong> ${supplier.name}</li>` : '';
-        
+
         const mailOptions = {
           from: process.env.EMAIL_USER || 'neuropath@gmail.com',
           to: order.patientId.email,
           subject: 'NeuroPath - Prescription Order Update',
           html: `
             <h2>Prescription Order Update</h2>
-            <p>Dear ${order.patientId.name},</p>
+            <p>Dear ${patientName},</p>
             <p>Great news! Your prescription order has been <strong>${statusMessage}</strong>.</p>
             <h3>Order Details:</h3>
             <ul>

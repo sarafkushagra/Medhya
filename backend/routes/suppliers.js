@@ -17,8 +17,8 @@ const supplierRoutes = (io) => {
     }
   });
 
-  // Admin: create supplier
-  router.post('/', authenticateToken, authorizeRoles('admin'), async (req, res) => {
+  // Admin/Counselor/Student: create supplier
+  router.post('/', authenticateToken, authorizeRoles('admin', 'counselor', 'student'), async (req, res) => {
     try {
       const { supplierId, name, email, phone, company, password } = req.body;
       if (!supplierId || !name || !password) return res.status(400).json({ message: 'supplierId, name and password are required' });
@@ -148,8 +148,8 @@ const supplierRoutes = (io) => {
     }
   });
 
-  // Neurologist/Admin: list suppliers (lightweight)
-  router.get('/', authenticateToken, authorizeRoles('neurologist', 'admin'), async (req, res) => {
+  // Counselor/Admin/Student: list suppliers (lightweight)
+  router.get('/', authenticateToken, authorizeRoles('counselor', 'admin', 'student'), async (req, res) => {
     try {
       const suppliers = await Supplier.find({ active: true }).select('name supplierId');
       return res.json({ suppliers });

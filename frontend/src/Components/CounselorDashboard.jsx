@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 import { Button } from '../ui/Button';
@@ -23,6 +22,7 @@ import StudentList from './StudentList';
 import PaymentsList from './PaymentsList';
 import DashboardGraphs from './DashboardGraphs';
 import Messages from './Messages';
+import MedicineApprovals from './MedicineApprovals.jsx';
 
 // Main Dashboard Component
 const CounselorDashboard = () => {
@@ -394,6 +394,13 @@ const CounselorDashboard = () => {
                     <LayoutDashboard className="h-4 w-4" />
                     All Students
                   </button>
+                  <button
+                    onClick={() => { setActiveView('medicine'); setDropdownOpen(false); }}
+                    className="flex items-center gap-3 w-full px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    <LayoutDashboard className="h-4 w-4" />
+                    Medicine Approvals
+                  </button>
                   <div className="my-1 h-px bg-gray-200" />
                   <button
                     onClick={handleLogout}
@@ -703,6 +710,9 @@ const CounselorDashboard = () => {
               payments={payments}
               loading={loading}
             />
+          )}
+          {activeView === 'medicine' && (
+            <MedicineApprovals />
           )}
           {activeView === 'profile' && (
             <Card className="bg-white shadow-lg rounded-xl border border-gray-200">

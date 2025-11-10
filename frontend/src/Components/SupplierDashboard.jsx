@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/Card';
 import { Badge } from '../ui/Badge';
 import { Input } from '../ui/Input';
 import { Textarea } from '../ui/TextArea';
-import { toast } from 'sonner';
+import { toast } from 'sooner';
 import { ChevronDown, ChevronUp, Plus } from 'lucide-react';
 
 export const SupplierDashboard = () => {
