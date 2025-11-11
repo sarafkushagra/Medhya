@@ -7,6 +7,7 @@ import torch.nn as nn
 from sklearn.preprocessing import StandardScaler
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 
 #Setup
@@ -100,6 +101,14 @@ app = FastAPI(
     version="1.0.0"
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allow all origins for development
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
@@ -144,5 +153,13 @@ async def predict(file: UploadFile = File(...)):
 def root():
     return {
         "message": "EEG Prediction API is running ",
+        "usage": "POST /predict with a CSV EEG file to get predictions."
+    }
+
+@app.get("/api/health")
+def health():
+    return {
+        "status": "OK",
+        "message": "EEG Prediction API is running",
         "usage": "POST /predict with a CSV EEG file to get predictions."
     }

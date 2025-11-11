@@ -130,7 +130,7 @@ const ChatBot = ({ isOpen, onToggle }) => {
   // Use port 5100 for the AI assistant (FastAPI) to avoid colliding with backend on 5000
   localStorage.removeItem('neuropath_ai_api_url');
   localStorage.setItem('neuropath_ai_api_url', 'http://localhost:5100');
-    localStorage.setItem('neuropath_backend_url', 'http://localhost:5000');
+    localStorage.setItem('neuropath_backend_url', 'http://localhost:8002');
     localStorage.setItem('neuropath_alzheimer_api_url', 'http://localhost:8000');
     
     // Check if API URL is available in localStorage
@@ -140,7 +140,7 @@ const ChatBot = ({ isOpen, onToggle }) => {
     }
 
     // Initialize EEG service
-    const backendUrl = localStorage.getItem('neuropath_backend_url') || 'http://localhost:5000';
+    const backendUrl = localStorage.getItem('neuropath_backend_url') || 'http://localhost:8002';
     initializeEEG(backendUrl);
 
     // Initialize Alzheimer service
@@ -186,7 +186,7 @@ const ChatBot = ({ isOpen, onToggle }) => {
     }
   };
 
-  const initializeEEG = async (baseUrl = 'http://localhost:5000') => {
+  const initializeEEG = async (baseUrl = 'http://localhost:8002') => {
     try {
       console.log('Initializing EEG service with URL:', baseUrl);
       eegService.initialize(baseUrl);

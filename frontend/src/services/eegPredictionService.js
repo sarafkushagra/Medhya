@@ -9,7 +9,7 @@ class EEGPredictionService {
   }
 
   // Initialize the service with backend URL
-  initialize(baseUrl = 'http://localhost:5000') {
+  initialize(baseUrl = 'http://localhost:8002') {
     this.baseUrl = baseUrl;
     this.isConnected = true;
     console.log('EEG Prediction Service initialized');
@@ -27,9 +27,9 @@ class EEGPredictionService {
 
     try {
       const formData = new FormData();
-      formData.append('csvFile', file);
+      formData.append('file', file);  // Server expects 'file' parameter
 
-      const response = await fetch(`${this.baseUrl}/api/eeg/predict`, {
+      const response = await fetch(`${this.baseUrl}/predict`, {
         method: 'POST',
         headers: {
           'x-api-key': this.apiKey,

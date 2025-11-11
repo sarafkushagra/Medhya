@@ -67,7 +67,7 @@ model = load_model()
 # 🧠 Flask App Setup
 # =====================================
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 
 # =====================================
 # 🔐 Helper: Verify API Key
