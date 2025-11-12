@@ -126,13 +126,13 @@ const ChatBot = ({ isOpen, onToggle }) => {
 
   // Initialize FastAPI service when component mounts
   useEffect(() => {
-  // Clear any old cached URLs and force correct ports
-  // Use port 5100 for the AI assistant (FastAPI) to avoid colliding with backend on 5000
-  localStorage.removeItem('neuropath_ai_api_url');
-  localStorage.setItem('neuropath_ai_api_url', 'http://localhost:5100');
+    // Clear any old cached URLs and force correct ports
+    // Use port 5100 for the AI assistant (FastAPI) to avoid colliding with backend on 5000
+    localStorage.removeItem('neuropath_ai_api_url');
+    localStorage.setItem('neuropath_ai_api_url', 'http://localhost:5100');
     localStorage.setItem('neuropath_backend_url', 'http://localhost:8002');
     localStorage.setItem('neuropath_alzheimer_api_url', 'http://localhost:8000');
-    
+
     // Check if API URL is available in localStorage
     const apiUrl = localStorage.getItem('neuropath_ai_api_url') || 'http://localhost:5000';
     if (apiUrl) {
@@ -145,7 +145,7 @@ const ChatBot = ({ isOpen, onToggle }) => {
 
     // Initialize Alzheimer service
     const alzheimerUrl = localStorage.getItem('neuropath_alzheimer_api_url') || 'http://localhost:8000';
-    const alzheimerApiKey = localStorage.getItem('neuropath_alzheimer_api_key') || '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';
+    const alzheimerApiKey = localStorage.getItem('neuropath_alzheimer_api_key') || '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';
     initializeAlzheimer(alzheimerApiKey, alzheimerUrl);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -153,11 +153,11 @@ const ChatBot = ({ isOpen, onToggle }) => {
     try {
       console.log('Initializing AI with URL:', baseUrl);
       fastAPIService.initialize(null, baseUrl); // No API key needed for your friend's API
-      
+
       console.log('Testing AI health...');
       const isHealthy = await fastAPIService.healthCheck();
       console.log('Health check result:', isHealthy);
-      
+
       if (isHealthy) {
         setAiConnected(true);
         setUseAI(true);
@@ -250,7 +250,9 @@ const ChatBot = ({ isOpen, onToggle }) => {
     const alzheimerUrl = prompt('Enter your Alzheimer API URL:', currentUrl);
     if (alzheimerUrl) {
       localStorage.setItem('neuropath_alzheimer_api_url', alzheimerUrl);
-      const apiKey = localStorage.getItem('neuropath_alzheimer_api_key') || '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';
+      // const apiKey = localStorage.getItem('neuropath_alzheimer_api_key') || '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';
+      
+      const apiKey = import.meta.env.VITE_API_KEY;
       initializeAlzheimer(apiKey, alzheimerUrl);
     }
   };
@@ -378,18 +380,18 @@ const ChatBot = ({ isOpen, onToggle }) => {
 
   const getBotResponse = (userMessage) => {
     const message = userMessage.toLowerCase();
-    
+
     // Find matching keyword
     for (const [keywords, responseType] of Object.entries(keywordMapping)) {
       if (keywords === 'default') continue;
-      
+
       const keywordRegex = new RegExp(keywords, 'i');
       if (keywordRegex.test(message)) {
         const responses = predefinedResponses[responseType];
         return responses[Math.floor(Math.random() * responses.length)];
       }
     }
-    
+
     // Default response
     const defaultResponses = predefinedResponses.general;
     return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
@@ -491,11 +493,10 @@ const ChatBot = ({ isOpen, onToggle }) => {
     return (
       <Button
         onClick={onToggle}
-        className={`fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 z-50 ${
-          isDarkMode 
-            ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700' 
+        className={`fixed bottom-6 right-6 h-14 w-14 rounded-full shadow-2xl hover:scale-110 transition-all duration-300 z-50 ${isDarkMode
+            ? 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700'
             : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700'
-        }`}
+          }`}
       >
         <MessageCircle className="h-6 w-6 text-white" />
       </Button>
@@ -503,36 +504,29 @@ const ChatBot = ({ isOpen, onToggle }) => {
   }
 
   return (
-    <div className={`fixed bottom-6 right-6 w-96 h-[600px] z-50 transition-all duration-300 ${
-      isMinimized ? 'h-16' : 'h-[600px]'
-    }`}>
-      <Card className={`h-full flex flex-col shadow-2xl border-2 ${
-        isDarkMode 
-          ? 'bg-gray-900/95 border-white/10 backdrop-blur-xl' 
-          : 'bg-white/95 border-gray-200 backdrop-blur-xl'
+    <div className={`fixed bottom-6 right-6 w-96 h-[600px] z-50 transition-all duration-300 ${isMinimized ? 'h-16' : 'h-[600px]'
       }`}>
-        {/* Header */}
-        <div className={`p-4 border-b ${
-          isDarkMode ? 'border-white/10' : 'border-gray-200'
+      <Card className={`h-full flex flex-col shadow-2xl border-2 ${isDarkMode
+          ? 'bg-gray-900/95 border-white/10 backdrop-blur-xl'
+          : 'bg-white/95 border-gray-200 backdrop-blur-xl'
         }`}>
+        {/* Header */}
+        <div className={`p-4 border-b ${isDarkMode ? 'border-white/10' : 'border-gray-200'
+          }`}>
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className={`p-2 rounded-full ${
-                isDarkMode ? 'bg-blue-500/20' : 'bg-blue-100'
-              }`}>
-                <Bot className={`h-5 w-5 ${
-                  isDarkMode ? 'text-blue-400' : 'text-blue-600'
-                }`} />
+              <div className={`p-2 rounded-full ${isDarkMode ? 'bg-blue-500/20' : 'bg-blue-100'
+                }`}>
+                <Bot className={`h-5 w-5 ${isDarkMode ? 'text-blue-400' : 'text-blue-600'
+                  }`} />
               </div>
               <div>
-                <h3 className={`font-semibold ${
-                  isDarkMode ? 'text-white' : 'text-gray-900'
-                }`}>
+                <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'
+                  }`}>
                   NeuroPath Assistant
                 </h3>
-                <p className={`text-xs flex items-center space-x-1 ${
-                  isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                }`}>
+                <p className={`text-xs flex items-center space-x-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                  }`}>
                   <span>AI-powered support</span>
                   {aiConnected ? (
                     <Zap className="h-3 w-3 text-green-500" title="AI Connected" />
@@ -557,11 +551,10 @@ const ChatBot = ({ isOpen, onToggle }) => {
                 variant="ghost"
                 size="sm"
                 onClick={setAPIUrl}
-                className={`p-1 h-8 w-8 rounded-full ${
-                  isDarkMode 
-                    ? 'hover:bg-white/10 text-gray-400' 
+                className={`p-1 h-8 w-8 rounded-full ${isDarkMode
+                    ? 'hover:bg-white/10 text-gray-400'
                     : 'hover:bg-gray-100 text-gray-500'
-                }`}
+                  }`}
                 title="Configure AI URL"
               >
                 <Settings className="h-4 w-4" />
@@ -570,11 +563,10 @@ const ChatBot = ({ isOpen, onToggle }) => {
                 variant="ghost"
                 size="sm"
                 onClick={setBackendUrl}
-                className={`p-1 h-8 w-8 rounded-full ${
-                  isDarkMode 
-                    ? 'hover:bg-white/10 text-gray-400' 
+                className={`p-1 h-8 w-8 rounded-full ${isDarkMode
+                    ? 'hover:bg-white/10 text-gray-400'
                     : 'hover:bg-gray-100 text-gray-500'
-                }`}
+                  }`}
                 title="Configure Backend URL"
               >
                 <Brain className="h-4 w-4" />
@@ -583,11 +575,10 @@ const ChatBot = ({ isOpen, onToggle }) => {
                 variant="ghost"
                 size="sm"
                 onClick={setAlzheimerUrl}
-                className={`p-1 h-8 w-8 rounded-full ${
-                  isDarkMode 
-                    ? 'hover:bg-white/10 text-gray-400' 
+                className={`p-1 h-8 w-8 rounded-full ${isDarkMode
+                    ? 'hover:bg-white/10 text-gray-400'
                     : 'hover:bg-gray-100 text-gray-500'
-                }`}
+                  }`}
                 title="Configure Alzheimer API URL"
               >
                 <Image className="h-4 w-4" />
@@ -608,11 +599,10 @@ const ChatBot = ({ isOpen, onToggle }) => {
                 variant="ghost"
                 size="sm"
                 onClick={onToggle}
-                className={`p-1 h-8 w-8 rounded-full ${
-                  isDarkMode 
-                    ? 'hover:bg-white/10 text-gray-400' 
+                className={`p-1 h-8 w-8 rounded-full ${isDarkMode
+                    ? 'hover:bg-white/10 text-gray-400'
                     : 'hover:bg-gray-100 text-gray-500'
-                }`}
+                  }`}
               >
                 ×
               </Button>
@@ -629,73 +619,60 @@ const ChatBot = ({ isOpen, onToggle }) => {
                   key={message.id}
                   className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <div className={`flex items-start space-x-2 max-w-[80%] ${
-                    message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
-                  }`}>
-                    <div className={`p-2 rounded-full ${
-                      message.sender === 'user' 
+                  <div className={`flex items-start space-x-2 max-w-[80%] ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''
+                    }`}>
+                    <div className={`p-2 rounded-full ${message.sender === 'user'
                         ? (isDarkMode ? 'bg-blue-500/20' : 'bg-blue-100')
                         : (isDarkMode ? 'bg-gray-700/50' : 'bg-gray-100')
-                    }`}>
+                      }`}>
                       {message.sender === 'user' ? (
-                        <User className={`h-4 w-4 ${
-                          isDarkMode ? 'text-blue-400' : 'text-blue-600'
-                        }`} />
+                        <User className={`h-4 w-4 ${isDarkMode ? 'text-blue-400' : 'text-blue-600'
+                          }`} />
                       ) : (
-                        <Bot className={`h-4 w-4 ${
-                          isDarkMode ? 'text-gray-300' : 'text-gray-600'
-                        }`} />
+                        <Bot className={`h-4 w-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                          }`} />
                       )}
                     </div>
-                    <div className={`p-3 rounded-2xl ${
-                      message.sender === 'user'
-                        ? (isDarkMode 
-                            ? 'bg-blue-500/20 border border-blue-400/30' 
-                            : 'bg-blue-100 border border-blue-200')
-                        : (isDarkMode 
-                            ? 'bg-gray-800/50 border border-gray-700/50' 
-                            : 'bg-gray-50 border border-gray-200')
-                    }`}>
-                      <p className={`text-sm ${
-                        isDarkMode ? 'text-gray-200' : 'text-gray-800'
+                    <div className={`p-3 rounded-2xl ${message.sender === 'user'
+                        ? (isDarkMode
+                          ? 'bg-blue-500/20 border border-blue-400/30'
+                          : 'bg-blue-100 border border-blue-200')
+                        : (isDarkMode
+                          ? 'bg-gray-800/50 border border-gray-700/50'
+                          : 'bg-gray-50 border border-gray-200')
                       }`}>
+                      <p className={`text-sm ${isDarkMode ? 'text-gray-200' : 'text-gray-800'
+                        }`}>
                         {message.text}
                       </p>
-                      <p className={`text-xs mt-1 ${
-                        isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                      }`}>
+                      <p className={`text-xs mt-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                        }`}>
                         {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                       </p>
                     </div>
                   </div>
                 </div>
               ))}
-              
+
               {isTyping && (
                 <div className="flex justify-start">
                   <div className="flex items-start space-x-2">
-                    <div className={`p-2 rounded-full ${
-                      isDarkMode ? 'bg-gray-700/50' : 'bg-gray-100'
-                    }`}>
-                      <Bot className={`h-4 w-4 ${
-                        isDarkMode ? 'text-gray-300' : 'text-gray-600'
-                      }`} />
+                    <div className={`p-2 rounded-full ${isDarkMode ? 'bg-gray-700/50' : 'bg-gray-100'
+                      }`}>
+                      <Bot className={`h-4 w-4 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                        }`} />
                     </div>
-                    <div className={`p-3 rounded-2xl ${
-                      isDarkMode 
-                        ? 'bg-gray-800/50 border border-gray-700/50' 
+                    <div className={`p-3 rounded-2xl ${isDarkMode
+                        ? 'bg-gray-800/50 border border-gray-700/50'
                         : 'bg-gray-50 border border-gray-200'
-                    }`}>
+                      }`}>
                       <div className="flex space-x-1">
-                        <div className={`w-2 h-2 rounded-full animate-bounce ${
-                          isDarkMode ? 'bg-gray-400' : 'bg-gray-500'
-                        }`} style={{ animationDelay: '0ms' }}></div>
-                        <div className={`w-2 h-2 rounded-full animate-bounce ${
-                          isDarkMode ? 'bg-gray-400' : 'bg-gray-500'
-                        }`} style={{ animationDelay: '150ms' }}></div>
-                        <div className={`w-2 h-2 rounded-full animate-bounce ${
-                          isDarkMode ? 'bg-gray-400' : 'bg-gray-500'
-                        }`} style={{ animationDelay: '300ms' }}></div>
+                        <div className={`w-2 h-2 rounded-full animate-bounce ${isDarkMode ? 'bg-gray-400' : 'bg-gray-500'
+                          }`} style={{ animationDelay: '0ms' }}></div>
+                        <div className={`w-2 h-2 rounded-full animate-bounce ${isDarkMode ? 'bg-gray-400' : 'bg-gray-500'
+                          }`} style={{ animationDelay: '150ms' }}></div>
+                        <div className={`w-2 h-2 rounded-full animate-bounce ${isDarkMode ? 'bg-gray-400' : 'bg-gray-500'
+                          }`} style={{ animationDelay: '300ms' }}></div>
                       </div>
                     </div>
                   </div>
@@ -705,9 +682,8 @@ const ChatBot = ({ isOpen, onToggle }) => {
             </div>
 
             {/* Input */}
-            <div className={`p-4 border-t ${
-              isDarkMode ? 'border-white/10' : 'border-gray-200'
-            }`}>
+            <div className={`p-4 border-t ${isDarkMode ? 'border-white/10' : 'border-gray-200'
+              }`}>
               {/* File Upload for EEG */}
               {eegConnected && (
                 <div className="mb-3 p-3 rounded-lg border-2 border-dashed border-gray-300 dark:border-gray-600">
@@ -729,11 +705,10 @@ const ChatBot = ({ isOpen, onToggle }) => {
                       />
                       <label
                         htmlFor="eeg-file-input"
-                        className={`cursor-pointer px-3 py-1 text-xs rounded-md ${
-                          isDarkMode
+                        className={`cursor-pointer px-3 py-1 text-xs rounded-md ${isDarkMode
                             ? 'bg-blue-600 hover:bg-blue-700 text-white'
                             : 'bg-blue-500 hover:bg-blue-600 text-white'
-                        }`}
+                          }`}
                       >
                         <Upload className="h-3 w-3 inline mr-1" />
                         Browse
@@ -775,11 +750,10 @@ const ChatBot = ({ isOpen, onToggle }) => {
                       />
                       <label
                         htmlFor="alzheimer-image-input"
-                        className={`cursor-pointer px-3 py-1 text-xs rounded-md ${
-                          isDarkMode
+                        className={`cursor-pointer px-3 py-1 text-xs rounded-md ${isDarkMode
                             ? 'bg-purple-600 hover:bg-purple-700 text-white'
                             : 'bg-purple-500 hover:bg-purple-600 text-white'
-                        }`}
+                          }`}
                       >
                         <Camera className="h-3 w-3 inline mr-1" />
                         Browse
@@ -807,21 +781,19 @@ const ChatBot = ({ isOpen, onToggle }) => {
                   onChange={(e) => setInputMessage(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Type your message..."
-                  className={`flex-1 rounded-xl ${
-                    isDarkMode 
-                      ? 'border-white/20 bg-white/5 focus:border-white/40' 
+                  className={`flex-1 rounded-xl ${isDarkMode
+                      ? 'border-white/20 bg-white/5 focus:border-white/40'
                       : 'border-gray-300 bg-white focus:border-blue-500'
-                  }`}
+                    }`}
                   disabled={isTyping}
                 />
                 <Button
                   onClick={handleSendMessage}
                   disabled={!inputMessage.trim() || isTyping}
-                  className={`h-10 w-10 rounded-xl ${
-                    !inputMessage.trim() || isTyping
+                  className={`h-10 w-10 rounded-xl ${!inputMessage.trim() || isTyping
                       ? 'bg-gray-400 cursor-not-allowed'
                       : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700'
-                  }`}
+                    }`}
                 >
                   {isTyping ? (
                     <Loader2 className="h-4 w-4 animate-spin text-white" />
@@ -830,7 +802,7 @@ const ChatBot = ({ isOpen, onToggle }) => {
                   )}
                 </Button>
               </div>
-              
+
               {/* Quick Actions */}
               <div className="mt-3 flex flex-wrap gap-2">
                 {['EEG Analysis'].map((action) => (
@@ -846,11 +818,10 @@ const ChatBot = ({ isOpen, onToggle }) => {
                       }
                       inputRef.current?.focus();
                     }}
-                    className={`text-xs px-3 py-1 h-7 rounded-lg ${
-                      isDarkMode
+                    className={`text-xs px-3 py-1 h-7 rounded-lg ${isDarkMode
                         ? 'border-white/20 bg-white/5 hover:bg-white/10 text-white'
                         : 'border-gray-300 bg-white hover:bg-gray-50 text-gray-700'
-                    }`}
+                      }`}
                   >
                     {action === 'EEG Analysis' && <Brain className="h-3 w-3 mr-1" />}
                     {action}
@@ -860,11 +831,10 @@ const ChatBot = ({ isOpen, onToggle }) => {
                   variant="outline"
                   size="sm"
                   onClick={clearChat}
-                  className={`text-xs px-3 py-1 h-7 rounded-lg ${
-                    isDarkMode
+                  className={`text-xs px-3 py-1 h-7 rounded-lg ${isDarkMode
                       ? 'border-white/20 bg-white/5 hover:bg-white/10 text-white'
                       : 'border-gray-300 bg-white hover:bg-gray-50 text-gray-700'
-                  }`}
+                    }`}
                 >
                   Clear Chat
                 </Button>
