@@ -23,6 +23,8 @@ import UserProfile from './Components/UserProfile.jsx';
 // Import Wellness component
 import Wellness from './Components/Wellness.jsx';
 import CounselorDashboard from './Components/CounselorDashboard.jsx';
+import Games from './Components/Games.jsx';
+import Report from './Components/Report.jsx';
 import { SupplierLoginPage } from './Components/SupplierLoginPage.jsx';
 import { SupplierDashboard } from './Components/SupplierDashboard.jsx';
 
@@ -56,14 +58,15 @@ const ProtectedRoute = ({ children, userRole, requiredRole = null, isLoading = f
 };
 
 // Profile Protected Route Component for restricted features
-const ProfileProtectedRoute = ({ children, userRole, isLoading = false }) => {
+const ProfileProtectedRoute = ({ children, user, isLoading = false }) => {
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center">
       <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
     </div>;
   }
 
-  if (userRole === 'guest') {
+  // Check if user exists (better than checking userRole which might have timing issues)
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 
@@ -250,14 +253,16 @@ export default function App() {
           {/* Student Routes */}
           <Route path="/dashboard" element={<ProtectedRoute userRole={userRole} requiredRole="student" isLoading={loading}><StudentDashboard /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute userRole={userRole} requiredRole="student" isLoading={loading}><UserProfile /></ProtectedRoute>} />
-          <Route path="/chat" element={<ProfileProtectedRoute userRole={userRole} user={user} isLoading={loading}><AIChat /></ProfileProtectedRoute>} />
-          <Route path="/ai" element={<ProfileProtectedRoute userRole={userRole} user={user} isLoading={loading}><AIChat /></ProfileProtectedRoute>} />
-          <Route path="/appointments" element={<ProfileProtectedRoute userRole={userRole} user={user} isLoading={loading}><AppointmentBooking /></ProfileProtectedRoute>} />
+          <Route path="/chat" element={<ProfileProtectedRoute user={user} isLoading={loading}><AIChat /></ProfileProtectedRoute>} />
+          <Route path="/ai" element={<ProfileProtectedRoute user={user} isLoading={loading}><AIChat /></ProfileProtectedRoute>} />
+          <Route path="/appointments" element={<ProfileProtectedRoute user={user} isLoading={loading}><AppointmentBooking /></ProfileProtectedRoute>} />
           {/* <Route path="/resources" element={<ProtectedRoute userRole={userRole} requiredRole="student" isLoading={loading}><ResourceHub /></ProtectedRoute>} /> */}
-          <Route path="/community" element={<ProfileProtectedRoute userRole={userRole} user={user} isLoading={loading}><PeerSupport /></ProfileProtectedRoute>} />
-          <Route path="/wellness" element={<ProfileProtectedRoute userRole={userRole} user={user} isLoading={loading}><Wellness /></ProfileProtectedRoute>} />
-          <Route path="/reports" element={<ProfileProtectedRoute userRole={userRole} user={user} isLoading={loading}><MedicalReports /></ProfileProtectedRoute>} />
-          <Route path="/delivery" element={<ProfileProtectedRoute userRole={userRole} user={user} isLoading={loading}><MedicineDelivery /></ProfileProtectedRoute>} />
+          <Route path="/community" element={<ProfileProtectedRoute user={user} isLoading={loading}><PeerSupport /></ProfileProtectedRoute>} />
+          <Route path="/wellness" element={<ProfileProtectedRoute user={user} isLoading={loading}><Wellness /></ProfileProtectedRoute>} />
+          <Route path="/games" element={<ProfileProtectedRoute user={user} isLoading={loading}><Games /></ProfileProtectedRoute>} />
+          <Route path="/cognitive-report" element={<ProfileProtectedRoute user={user} isLoading={loading}><Report /></ProfileProtectedRoute>} />
+          <Route path="/reports" element={<ProfileProtectedRoute user={user} isLoading={loading}><MedicalReports /></ProfileProtectedRoute>} />
+          <Route path="/delivery" element={<ProfileProtectedRoute user={user} isLoading={loading}><MedicineDelivery /></ProfileProtectedRoute>} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<ProtectedRoute userRole={userRole} requiredRole="admin" isLoading={loading}><AdminDashboard /></ProtectedRoute>} />

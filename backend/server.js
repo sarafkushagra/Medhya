@@ -27,6 +27,7 @@ import medicineOrder from "./routes/medicineOrder.js";
 import prescriptionRoutes from "./routes/prescription.js";
 import supplierRoutes from "./routes/suppliers.js";
 import reportRoutes from "./routes/reports.js";
+import gamesRoutes from "./routes/gamesRoutes.js";
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -229,6 +230,7 @@ app.use("/api/medicine-orders", medicineOrder(io));
 app.use("/api/prescriptions", prescriptionRoutes);
 app.use("/api/suppliers", supplierRoutes(io));
 app.use("/api/reports", reportRoutes);
+app.use("/api/games", gamesRoutes);
 
 // Health check
 app.get("/api/health", (req, res) => {
