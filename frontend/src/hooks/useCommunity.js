@@ -306,6 +306,48 @@ export const useCommunity = () => {
     }
   };
 
+  // Add a reply to a comment
+  const addReply = async (postId, commentId, replyData) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const token = localStorage.getItem('token');
+      const response = await fetch(`${API_BASE_URL}/community/${postId}/comments/${commentId}/reply`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(replyData)
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to add reply');
+      }
+
+      // Update the post with the new reply
+      setPosts(prev => prev.map(post => {
+        if (post._id === postId) {
+          return {
+            ...post,
+            comments: [...post.comments, data.data.reply]
+          };
+        }
+        return post;
+      }));
+
+      return data.data.reply;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Toggle post like
   const togglePostLike = async (postId) => {
     try {
@@ -458,6 +500,7 @@ export const useCommunity = () => {
     updateCommunityPost,
     deleteCommunityPost,
     addComment,
+    addReply,
     updateComment,
     deleteComment,
     togglePostLike,

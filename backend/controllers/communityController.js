@@ -44,6 +44,7 @@ export const getCommunityPosts = catchAsync(async (req, res, next) => {
   // Get posts with populated author details
   const posts = await CommunityPost.find(query)
     .populate('author', 'firstName lastName email role')
+    .populate('comments.author', 'firstName lastName email role')
     .sort(sort)
     .skip(skip)
     .limit(parseInt(limit));
@@ -305,6 +306,52 @@ export const deleteComment = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     message: 'Comment deleted successfully'
+  });
+});
+
+// Add a reply to a comment
+export const addReply = catchAsync(async (req, res, next) => {
+  const { postId, commentId } = req.params;
+  const { content, isAnonymous } = req.body;
+
+  if (!content) {
+    return next(new AppError('Reply content is required', 400));
+  }
+
+  const post = await CommunityPost.findById(postId);
+
+  if (!post) {
+    return next(new AppError('Post not found', 404));
+  }
+
+  const parentComment = post.comments.id(commentId);
+
+  if (!parentComment) {
+    return next(new AppError('Parent comment not found', 404));
+  }
+
+  const reply = {
+    author: req.user.id,
+    content,
+    isAnonymous: isAnonymous || false,
+    parentComment: commentId
+  };
+
+  post.comments.push(reply);
+  await post.save();
+
+  // Populate the new reply's author
+  await post.populate('comments.author', 'firstName lastName email role');
+
+  const newReply = post.comments[post.comments.length - 1];
+
+  // Add the reply to the parent comment's replies array
+  parentComment.replies.push(newReply._id);
+  await post.save();
+
+  res.status(201).json({
+    status: 'success',
+    data: { reply: newReply }
   });
 });
 

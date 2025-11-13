@@ -15,6 +15,15 @@ const commentSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  parentComment: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Comment",
+    default: null
+  },
+  replies: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Comment"
+  }],
   likes: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"

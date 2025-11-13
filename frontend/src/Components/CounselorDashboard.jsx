@@ -7,22 +7,20 @@ import {
   LayoutDashboard, Calendar, MessageSquare, Users, DollarSign, User, TrendingUp,
   RefreshCw, LogOut, Bell, ChevronDown, Eye, Send, Phone, Video,
   CheckCircle, Shield, Globe, Smartphone, AlertCircle, Lock, Key, X,
-  MessageCircleIcon,
+  MessageCircleIcon, Camera,
 
 } from 'lucide-react';
 import { useCounselorDashboard } from '../hooks/useCounselorDashboard';
 import { useAuth } from '../hooks/useAuth';
-import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { useSocket } from "../context/SocketProvider";
-import apiClient from '../utils/apiClient.js';
 import { Link } from 'react-router-dom';
 import StudentList from './StudentList';
 import PaymentsList from './PaymentsList';
 import DashboardGraphs from './DashboardGraphs';
 import Messages from './Messages';
 import MedicineApprovals from './MedicineApprovals.jsx';
+import { toast } from 'sonner';
 
 // Main Dashboard Component
 const CounselorDashboard = () => {
@@ -36,7 +34,6 @@ const CounselorDashboard = () => {
     getPendingAppointments,
     getRecentMessages,
     sendMessage,
-    markMessageAsRead,
     getPaymentRecords,
     updateAppointmentStatus,
     getCounselorProfile,
@@ -51,8 +48,7 @@ const CounselorDashboard = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
-   const [messageContent, setMessageContent] = useState('');
-  const [selectedChatStudent, setSelectedChatStudent] = useState(null);
+  const [messageContent, setMessageContent] = useState('');
  
   
   // Password change modal state
@@ -63,6 +59,7 @@ const CounselorDashboard = () => {
     confirmPassword: ''
   });
   const [passwordErrors, setPasswordErrors] = useState({});
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
 
   // Data states
@@ -71,7 +68,6 @@ const CounselorDashboard = () => {
   const [messages, setMessages] = useState([]);
   const [payments, setPayments] = useState([]);
 
-  const navigate = useNavigate();
   const socket = useSocket();
   // After login
   console.log(user?.counselorProfile);
@@ -242,17 +238,6 @@ const CounselorDashboard = () => {
     }
   };
 
-  const handleMarkMessageAsRead = async (messageId) => {
-    try {
-      await markMessageAsRead(messageId);
-      // Reload messages after update
-      loadMessages();
-      loadDashboardData();
-    } catch (err) {
-      console.error('Failed to mark message as read:', err);
-    }
-  };
-
   // Group sessions by student and get the most recent appointment per student
   const getUniqueSessionsByStudent = () => {
     const studentSessionMap = new Map();
@@ -301,6 +286,62 @@ const CounselorDashboard = () => {
     }
   };
 
+  const handleProfileImageUpload = async (event) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    // Validate file size (5MB max)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error('Image size must be less than 5MB');
+      return;
+    }
+
+    setUploadingImage(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET);
+
+      const response = await fetch(
+        `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUDINARY_CLOUD_NAME}/image/upload`,
+        {
+          method: 'POST',
+          body: formData,
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error?.message || 'Upload failed');
+      }
+
+      // Update counselor profile with new image URL
+      await updateCounselorProfile({
+        profileImage: data.secure_url
+      });
+
+      // Reload profile to show updated image
+      await loadProfile();
+
+      toast.success('Profile image updated successfully!');
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast.error(error.message || 'Failed to upload image');
+    } finally {
+      setUploadingImage(false);
+      // Clear the file input
+      event.target.value = '';
+    }
+  };
+
 
 
   const formatDate = (date) => new Date(date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
@@ -312,6 +353,21 @@ const CounselorDashboard = () => {
       case 'confirmed': return 'bg-blue-100 text-blue-800 border-blue-300';
       default: return 'bg-gray-100 text-gray-800 border-gray-300';
     }
+  };
+
+  const getAllStudents = () => {
+    // Get unique students from all sessions
+    const studentMap = new Map();
+    sessions.forEach(session => {
+      if (session.student && !studentMap.has(session.student._id)) {
+        studentMap.set(session.student._id, session.student);
+      }
+    });
+    return Array.from(studentMap.values());
+  };
+
+  const handleStartChat = () => {
+    setActiveView('messages');
   };
 
 
@@ -624,7 +680,7 @@ const CounselorDashboard = () => {
                         key={session._id}
                         className="flex items-center justify-between p-4 border border-gray-200 rounded-xl bg-gradient-to-r from-gray-50 to-white hover:from-blue-50 hover:to-blue-100 transition-all duration-300 cursor-pointer"
                         onClick={() => {
-                          handleStartChat(session._id, session.student);
+                          handleStartChat();
                           setActiveView("messages");
                         }}
                       >
@@ -730,12 +786,35 @@ const CounselorDashboard = () => {
                 ) : profile ? (
                   <div className="space-y-8">
                     <div className="flex items-center gap-6">
-                      <Avatar className="w-20 h-20 border">
-                        <AvatarImage src={profile.profileImage} />
-                        <AvatarFallback className="text-xl bg-blue-100 text-blue-600">
-                          {profile.name?.charAt(0)}
-                        </AvatarFallback>
-                      </Avatar>
+                      <div className="relative">
+                        <Avatar className="w-20 h-20 border">
+                          <AvatarImage src={profile.profileImage} />
+                          <AvatarFallback className="text-xl bg-blue-100 text-blue-600">
+                            {profile.name?.charAt(0)}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="absolute -bottom-2 -right-2">
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleProfileImageUpload}
+                            className="hidden"
+                            id="profile-image-upload"
+                            disabled={uploadingImage}
+                          />
+                          <label
+                            htmlFor="profile-image-upload"
+                            className="flex items-center justify-center w-8 h-8 rounded-full bg-white border-2 border-white shadow-md hover:bg-gray-50 cursor-pointer"
+                            title="Change profile image"
+                          >
+                            {uploadingImage ? (
+                              <RefreshCw className="w-4 h-4 text-gray-600 animate-spin" />
+                            ) : (
+                              <Camera className="w-4 h-4 text-gray-600" />
+                            )}
+                          </label>
+                        </div>
+                      </div>
                       <div>
                         <h3 className="text-2xl font-semibold">{profile.name}</h3>
                         <p className="text-gray-600">{profile.email}</p>
@@ -935,7 +1014,6 @@ const CounselorDashboard = () => {
                   handleSendMessage();
                   // After sending, start chat with the student
                   if (selectedStudent) {
-                    setSelectedChatStudent(selectedStudent);
                     setShowMessageModal(false);
                   }
                 }}
