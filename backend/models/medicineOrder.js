@@ -36,6 +36,8 @@ const medicineOrderSchema = new mongoose.Schema({
 
   deliveryAddress: { type: String },
 
+  durationInDays: { type: Number, required: true },
+
   status: { type: String, default: 'uploaded' }, // Removed enum to allow custom statuses
   timeline: { type: [updateSchema], default: [] },
 
