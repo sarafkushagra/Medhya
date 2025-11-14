@@ -114,6 +114,7 @@ const MedicineApprovals = () => {
                     <div>
                       <div className="font-semibold text-gray-800">{order.patientId?.name || order.patientId?.firstName || 'Student'}</div>
                       <div className="text-sm text-gray-600">Uploaded • {order.createdAt ? new Date(order.createdAt).toLocaleString() : ''}</div>
+                      <div className="text-sm text-gray-600">Duration: {order.durationInDays ? `${order.durationInDays} days` : 'Not specified'}</div>
                       <a href={order.url} target="_blank" rel="noreferrer" className="text-blue-600 text-sm">View file</a>
                     </div>
                   </div>

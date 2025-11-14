@@ -30,6 +30,11 @@ const medicineOrder = (io) => {
     try {
       if (!req.file) return res.status(400).json({ message: 'File is required' });
 
+      const durationInDays = parseInt(req.body.durationInDays);
+      if (!durationInDays || durationInDays <= 0) {
+        return res.status(400).json({ message: 'Duration in days is required and must be a positive number' });
+      }
+
       const missing = [];
       if (!process.env.CLOUDINARY_CLOUD_NAME) missing.push('CLOUDINARY_CLOUD_NAME');
       if (!process.env.CLOUDINARY_API_KEY) missing.push('CLOUDINARY_API_KEY');
@@ -62,6 +67,7 @@ const medicineOrder = (io) => {
         resourceType: result.resource_type,
         bytes: result.bytes,
         deliveryAddress: req.body.deliveryAddress || '',
+        durationInDays: durationInDays,
         status: 'uploaded',
         timeline: [{ status: 'uploaded', note: 'Prescription uploaded by patient' }]
       });
@@ -148,6 +154,7 @@ const medicineOrder = (io) => {
               <ul>
                 <li><strong>Order ID:</strong> ${order._id}</li>
                 <li><strong>Status:</strong> Rejected</li>
+                <li><strong>Duration:</strong> ${order.durationInDays} days</li>
                 <li><strong>Reason:</strong> ${note || 'Rejected by neurologist'}</li>
                 <li><strong>Updated:</strong> ${new Date().toLocaleString()}</li>
               </ul>
@@ -198,6 +205,7 @@ const medicineOrder = (io) => {
             <ul>
               <li><strong>Order ID:</strong> ${order._id}</li>
               <li><strong>Status:</strong> ${order.status.replace(/_/g, ' ')}</li>
+              <li><strong>Duration:</strong> ${order.durationInDays} days</li>
               ${supplierInfo}
               <li><strong>Updated:</strong> ${new Date().toLocaleString()}</li>
             </ul>

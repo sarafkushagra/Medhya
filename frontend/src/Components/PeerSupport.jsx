@@ -9,9 +9,179 @@ import { Alert, AlertDescription } from '../ui/Alert';
 import { Avatar, AvatarFallback } from '../ui/Avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/Tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/Select';
-import { Users, MessageCircle, Heart, Reply, Flag, Shield, Plus, Search, TrendingUp, Clock, Loader2, Send } from 'lucide-react';
+import { Label } from '../ui/Label';
+import { Users, MessageCircle, Heart, Reply, Flag, Shield, Plus, Search, TrendingUp, Clock, Loader2, Send, X } from 'lucide-react';
 import { useCommunity } from '../hooks/useCommunity.js';
 import { useAuth } from '../hooks/useAuth.js';
+
+const Comment = ({ 
+  comment, 
+  postId, 
+  allComments, 
+  onLike, 
+  onReply, 
+  replyingToComment, 
+  setReplyingToComment, 
+  commentReplyContent, 
+  setCommentReplyContent, 
+  submittingCommentReply,
+  depth = 0 
+}) => {
+  const { user } = useAuth();
+  const maxDepth = 3; // Limit nesting depth
+  
+  // Get replies for this comment
+  const replies = allComments.filter(c => c.parentComment && c.parentComment.toString() === comment._id.toString());
+  
+  const getTimeAgo = (timestamp) => {
+    const now = new Date();
+    const diffInHours = Math.floor((now.getTime() - timestamp.getTime()) / (1000 * 60 * 60));
+    
+    if (diffInHours < 1) return 'Less than an hour ago';
+    if (diffInHours === 1) return '1 hour ago';
+    if (diffInHours < 24) return `${diffInHours} hours ago`;
+    
+    const diffInDays = Math.floor(diffInHours / 24);
+    if (diffInDays === 1) return '1 day ago';
+    return `${diffInDays} days ago`;
+  };
+
+  const isCommentLiked = (comment) => {
+    return comment.likes?.some(like => like === user?._id);
+  };
+
+  return (
+    <div className={`${depth > 0 ? 'ml-6 border-l-2 border-gray-200 pl-4' : ''}`}>
+      <div className={`p-3 bg-gray-50 rounded-lg ${depth > 0 ? 'mt-2' : ''}`}>
+        <div className="flex items-start justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <Avatar className="w-6 h-6">
+              <AvatarFallback>
+                {comment.isAnonymous
+                  ? "🧑"
+                  : (comment.author?.firstName?.charAt(0) || 'U').toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <span className="text-sm font-medium">
+              {comment.isAnonymous ? 'Anonymous Student' : `${comment.author?.firstName || 'User'} ${comment.author?.lastName || ''}`}
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {getTimeAgo(new Date(comment.createdAt))}
+            </span>
+          </div>
+        </div>
+        <p className="text-sm text-gray-700 mb-2">{comment.content}</p>
+        <div className="flex items-center gap-2">
+          <Button 
+            variant="ghost" 
+            size="sm"
+            onClick={() => onLike(postId, comment._id)}
+            className={isCommentLiked(comment) ? "text-red-500" : ""}
+          >
+            <Heart className={`w-3 h-3 mr-1 ${isCommentLiked(comment) ? "fill-current" : ""}`} />
+            {comment.likes?.length || 0}
+          </Button>
+          {depth < maxDepth && (
+            <Button 
+              variant="ghost" 
+              size="sm"
+              onClick={() => setReplyingToComment(replyingToComment === comment._id ? null : comment._id)}
+            >
+              <Reply className="w-3 h-3 mr-1" />
+              Reply
+            </Button>
+          )}
+          <Button variant="ghost" size="sm">
+            <Flag className="w-3 h-3" />
+          </Button>
+        </div>
+      </div>
+
+      {/* Reply Form */}
+      {replyingToComment === comment._id && (
+        <div className="mt-2 ml-6 p-3 bg-blue-50 rounded-lg border-l-2 border-blue-200">
+          <div className="flex items-start gap-3">
+            <Avatar className="w-6 h-6">
+              <AvatarFallback>
+                {user?.firstName?.charAt(0) || 'U'}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <Textarea
+                placeholder={`Reply to ${comment.isAnonymous ? 'Anonymous Student' : comment.author?.firstName || 'User'}...`}
+                value={commentReplyContent}
+                onChange={(e) => setCommentReplyContent(e.target.value)}
+                className="mb-2 text-sm"
+                rows={2}
+              />
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 text-xs">
+                  <input
+                    type="checkbox"
+                    defaultChecked={true}
+                    disabled
+                  />
+                  Reply anonymously
+                </label>
+                <div className="flex gap-2">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => {
+                      setReplyingToComment(null);
+                      setCommentReplyContent('');
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    size="sm"
+                    onClick={() => onReply(postId, comment._id)}
+                    disabled={!commentReplyContent.trim() || submittingCommentReply}
+                  >
+                    {submittingCommentReply ? (
+                      <>
+                        <Loader2 className="w-3 h-3 mr-1 animate-spin" />
+                        Posting...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-3 h-3 mr-1" />
+                        Reply
+                      </>
+                    )}
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Nested Replies */}
+      {replies.length > 0 && (
+        <div className="mt-2">
+          {replies.map((reply) => (
+            <Comment
+              key={reply._id}
+              comment={reply}
+              postId={postId}
+              allComments={allComments}
+              onLike={onLike}
+              onReply={onReply}
+              replyingToComment={replyingToComment}
+              setReplyingToComment={setReplyingToComment}
+              commentReplyContent={commentReplyContent}
+              setCommentReplyContent={setCommentReplyContent}
+              submittingCommentReply={submittingCommentReply}
+              depth={depth + 1}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 const PeerSupport = () => {
   const { user } = useAuth();
@@ -24,6 +194,7 @@ const PeerSupport = () => {
     getCommunityPosts, 
     createCommunityPost,
     addComment,
+    addReply,
     togglePostLike,
     toggleCommentLike
   } = useCommunity();
@@ -44,6 +215,11 @@ const PeerSupport = () => {
   const [replyingTo, setReplyingTo] = useState(null);
   const [replyContent, setReplyContent] = useState('');
   const [submittingReply, setSubmittingReply] = useState(false);
+  
+  // State for comment replies
+  const [replyingToComment, setReplyingToComment] = useState(null);
+  const [commentReplyContent, setCommentReplyContent] = useState('');
+  const [submittingCommentReply, setSubmittingCommentReply] = useState(false);
 
   const categories = [
     { value: 'all', label: 'All Topics' },
@@ -161,6 +337,37 @@ const PeerSupport = () => {
     }
   };
 
+  const handleCommentReply = async (postId, commentId) => {
+    if (!commentReplyContent.trim()) return;
+    
+    setSubmittingCommentReply(true);
+    try {
+      const replyData = {
+        content: commentReplyContent,
+        isAnonymous: true // Default to anonymous for replies
+      };
+      
+      await addReply(postId, commentId, replyData);
+      
+      // Clear reply form
+      setCommentReplyContent('');
+      setReplyingToComment(null);
+      
+      // Refresh posts to show new reply
+      getCommunityPosts({
+        page: currentPage,
+        limit: 10,
+        category: selectedCategory === 'all' ? null : selectedCategory,
+        search: searchTerm || null,
+        institutionId: user?.institutionId || null
+      });
+    } catch (err) {
+      console.error('Failed to add reply:', err);
+    } finally {
+      setSubmittingCommentReply(false);
+    }
+  };
+
   const getCategoryColor = (category) => {
     const colors = {
       anxiety: 'bg-red-100 text-red-800',
@@ -209,14 +416,7 @@ const PeerSupport = () => {
         </CardHeader>
       </Card>
 
-      <Alert>
-        <Shield className="h-4 w-4" />
-        <AlertDescription>
-          This community is moderated by trained student volunteers and mental health professionals. 
-          All posts are reviewed for safety and appropriateness. Remember to be kind and respectful.
-        </AlertDescription>
-      </Alert>
-
+     
       <Tabs defaultValue="forum" className="space-y-6">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="forum">Forum</TabsTrigger>
@@ -251,68 +451,121 @@ const PeerSupport = () => {
 
 
           {showNewPostForm && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Create New Post</CardTitle>
-                <CardDescription>Share your experience or ask for support from the community</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Input
-                    placeholder="Post title..."
-                    value={newPost.title}
-                    onChange={(e) => setNewPost({...newPost, title: e.target.value})}
-                  />
-                </div>
-                <div>
-                  <Select value={newPost.category} onValueChange={(value) => setNewPost({...newPost, category: value})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select category" />
-                    </SelectTrigger>
-                    <SelectContent className="bg-white border border-gray-200 shadow-lg rounded-md">
-                      {categories.slice(1).map((category) => (
-                        <SelectItem key={category.value} value={category.value}>
-                          {category.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div>
-                  <Textarea
-                    placeholder="Share your thoughts, experiences, or questions..."
-                    value={newPost.content}
-                    onChange={(e) => setNewPost({...newPost, content: e.target.value})}
-                    rows={6}
-                  />
-                </div>
-                <div>
-                  <Input
-                    placeholder="Add tags (comma-separated): exam-stress, coping-strategies"
-                    value={newPost.tags}
-                    onChange={(e) => setNewPost({...newPost, tags: e.target.value})}
-                  />
-                </div>
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center gap-2 text-sm">
-                    <input
-                      type="checkbox"
-                      checked={newPost.isAnonymous}
-                      onChange={(e) => setNewPost({...newPost, isAnonymous: e.target.checked})}
-                    />
-                    Post anonymously (recommended)
-                  </label>
-                  <div className="flex gap-2">
-                    <Button variant="outline" onClick={() => setShowNewPostForm(false)}>
-                      Cancel
-                    </Button>
-                    <Button onClick={handleCreatePost}>
-                      Post to Community
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+              {/* Backdrop with blur */}
+              <div
+                className="fixed inset-0 bg-black/30 backdrop-blur-sm transition-opacity"
+                onClick={() => setShowNewPostForm(false)}
+              ></div>
+
+              {/* Modal */}
+              <div className="relative w-full max-w-2xl mx-auto bg-white rounded-2xl shadow-2xl max-h-[90vh] overflow-y-auto">
+                {/* Header */}
+                <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 to-teal-50 rounded-t-2xl">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2 className="text-2xl font-bold text-gray-900">Create New Post</h2>
+                      <p className="text-gray-600 mt-1">Share your experience or ask for support from the community</p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => setShowNewPostForm(false)}
+                      className="h-8 w-8 p-0 rounded-full hover:bg-red-100 text-gray-500 hover:text-red-600"
+                    >
+                      <X className="h-5 w-5" />
                     </Button>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+
+                {/* Content */}
+                <div className="p-6 space-y-6">
+                  <div>
+                    <Label className="text-base font-semibold text-gray-700 mb-2 block">
+                      Post Title
+                    </Label>
+                    <Input
+                      placeholder="What's on your mind?"
+                      value={newPost.title}
+                      onChange={(e) => setNewPost({...newPost, title: e.target.value})}
+                      className="h-12 rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div>
+                    <Label className="text-base font-semibold text-gray-700 mb-2 block">
+                      Category
+                    </Label>
+                    <Select value={newPost.category} onValueChange={(value) => setNewPost({...newPost, category: value})}>
+                      <SelectTrigger className="h-12 rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                        <SelectValue placeholder="Select a category" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-white border border-gray-200 shadow-lg rounded-md">
+                        {categories.slice(1).map((category) => (
+                          <SelectItem key={category.value} value={category.value}>
+                            {category.label}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div>
+                    <Label className="text-base font-semibold text-gray-700 mb-2 block">
+                      Your Message
+                    </Label>
+                    <Textarea
+                      placeholder="Share your thoughts, experiences, or questions..."
+                      value={newPost.content}
+                      onChange={(e) => setNewPost({...newPost, content: e.target.value})}
+                      rows={6}
+                      className="rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500 resize-none"
+                    />
+                  </div>
+
+                  <div>
+                    <Label className="text-base font-semibold text-gray-700 mb-2 block">
+                      Tags (Optional)
+                    </Label>
+                    <Input
+                      placeholder="Add tags (comma-separated): exam-stress, coping-strategies"
+                      value={newPost.tags}
+                      onChange={(e) => setNewPost({...newPost, tags: e.target.value})}
+                      className="h-12 rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                    <label className="flex items-center gap-3 text-sm cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={newPost.isAnonymous}
+                        onChange={(e) => setNewPost({...newPost, isAnonymous: e.target.checked})}
+                        className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      />
+                      <span className="text-gray-700 font-medium">Post anonymously (recommended)</span>
+                    </label>
+
+                    <div className="flex gap-3">
+                      <Button
+                        variant="outline"
+                        onClick={() => setShowNewPostForm(false)}
+                        className="px-6 py-2 h-11 rounded-xl border-gray-300 text-gray-700 hover:bg-gray-50"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        onClick={handleCreatePost}
+                        disabled={!newPost.title.trim() || !newPost.content.trim() || !newPost.category}
+                        className="px-6 py-2 h-11 rounded-xl bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 text-white font-semibold"
+                      >
+                        Post to Community
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           )}
 
           <div className="grid gap-6 lg:grid-cols-4">
@@ -476,44 +729,25 @@ const PeerSupport = () => {
 
                       {/* Comments Section */}
                       {post.comments && post.comments.length > 0 && (
-                        <div className="mt-4 space-y-3">
-                          <h4 className="text-sm font-medium text-gray-700">Replies</h4>
-                          {post.comments.map((comment) => (
-                            <div key={comment._id} className="ml-4 p-3 bg-gray-50 rounded-lg">
-                              <div className="flex items-start justify-between mb-2">
-                                <div className="flex items-center gap-2">
-                                  <Avatar className="w-6 h-6">
-                                    <AvatarFallback>
-                                      {comment.isAnonymous
-                                        ? "🧑"
-                                        : (comment.author?.firstName?.charAt(0) || 'U').toUpperCase()}
-                                    </AvatarFallback>
-                                  </Avatar>
-                                  <span className="text-sm font-medium">
-                                    {comment.isAnonymous ? 'Anonymous Student' : `${comment.author?.firstName || 'User'} ${comment.author?.lastName || ''}`}
-                                  </span>
-                                  <span className="text-xs text-muted-foreground">
-                                    {getTimeAgo(new Date(comment.createdAt))}
-                                  </span>
-                                </div>
-                              </div>
-                              <p className="text-sm text-gray-700 mb-2">{comment.content}</p>
-                              <div className="flex items-center gap-2">
-                                <Button 
-                                  variant="ghost" 
-                                  size="sm"
-                                  onClick={() => handleLikeComment(post._id, comment._id)}
-                                  className={isCommentLiked(comment) ? "text-red-500" : ""}
-                                >
-                                  <Heart className={`w-3 h-3 mr-1 ${isCommentLiked(comment) ? "fill-current" : ""}`} />
-                                  {comment.likes?.length || 0}
-                                </Button>
-                                <Button variant="ghost" size="sm">
-                                  <Flag className="w-3 h-3" />
-                                </Button>
-                              </div>
-                            </div>
-                          ))}
+                        <div className="mt-4 space-y-2">
+                          <h4 className="text-sm font-medium text-gray-700">Replies ({post.comments.length})</h4>
+                          {post.comments
+                            .filter(comment => !comment.parentComment) // Only show top-level comments
+                            .map((comment) => (
+                              <Comment
+                                key={comment._id}
+                                comment={comment}
+                                postId={post._id}
+                                allComments={post.comments}
+                                onLike={handleLikeComment}
+                                onReply={handleCommentReply}
+                                replyingToComment={replyingToComment}
+                                setReplyingToComment={setReplyingToComment}
+                                commentReplyContent={commentReplyContent}
+                                setCommentReplyContent={setCommentReplyContent}
+                                submittingCommentReply={submittingCommentReply}
+                              />
+                            ))}
                         </div>
                       )}
                     </CardContent>

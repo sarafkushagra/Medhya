@@ -6,6 +6,7 @@ import {
   updateCommunityPost,
   deleteCommunityPost,
   addComment,
+  addReply,
   updateComment,
   deleteComment,
   togglePostLike,
@@ -38,6 +39,7 @@ router.post('/:postId/comments/:commentId/like', toggleCommentLike);
 
 // Comment routes
 router.post('/:postId/comments', restrictTo('student', 'admin'), addComment);
+router.post('/:postId/comments/:commentId/reply', restrictTo('student', 'admin'), addReply);
 router.patch('/:postId/comments/:commentId', restrictTo('student', 'admin'), updateComment);
 router.delete('/:postId/comments/:commentId', restrictTo('student', 'admin'), deleteComment);
 

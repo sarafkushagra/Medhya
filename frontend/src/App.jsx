@@ -36,6 +36,8 @@ import { MedicineDelivery } from './Components/MedicineDelivery.jsx';
 import RoomPage from './Components/RoomPage.jsx';
 import UserCounselorChat from './Components/UserCounselorChat.jsx';
 import { useSocket } from './context/SocketProvider.jsx';
+import { ProfileGeneral } from './Components/ProfilePage.jsx';
+import { Box } from './Components/CheckPoint.jsx';
 
 // Dummy Institutions component for routing
 const Institutions = () => <div className="p-6 bg-white rounded-lg shadow">Institutions Management Content</div>;
@@ -200,6 +202,8 @@ export default function App() {
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={<LandingPage onLogin={() => navigate('/login')} systemStats={systemStats} />} />
+          <Route path="/check" element={<ProfileGeneral />} />
+          <Route path="/box" element={<Box />} />
         <Route path="/supplier-login" element={<SupplierLoginPage />} />
         <Route path="/supplier-dashboard" element={<SupplierDashboard />} />
         <Route path="/login" element={
