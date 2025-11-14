@@ -53,8 +53,11 @@ export const logMood = async (req, res) => {
     }
 
     // Create new mood entry
+    const todayString = new Date().toISOString().split('T')[0];
     const newMood = new MoodTracking({
       user: userId,
+      date: new Date(),
+      dateString: todayString,
       mood,
       moodEmoji,
       note: note || '',
@@ -93,18 +96,12 @@ export const updateTodaysMood = async (req, res) => {
     }
 
     // Find and update today's mood
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
+    const todayString = new Date().toISOString().split('T')[0];
 
     const updatedMood = await MoodTracking.findOneAndUpdate(
       {
         user: userId,
-        date: {
-          $gte: today,
-          $lt: tomorrow
-        }
+        dateString: todayString
       },
       {
         mood,

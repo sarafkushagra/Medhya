@@ -4,7 +4,8 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import {
   MessageCircle, Calendar, BookOpen, Users, BarChart3, Heart, AlertTriangle, Zap, Building2,
   Database,
-  Box, Brain
+  Box, Brain,
+  BriefcaseMedical
 } from 'lucide-react';
 import ChatBot from '../ui/ChatBot.jsx';
 import Navbar from './Navbar.jsx';
@@ -14,6 +15,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar';
 const studentNavItems = [
   { path: '/dashboard', label: 'Dashboard', icon: BarChart3 },
   { path: '/chat', label: 'Medhya Support', icon: MessageCircle },
+  { path: '/doctor', label: 'Doctor', icon: BriefcaseMedical },
   { path: '/appointments', label: 'Appointments', icon: Calendar },
   // { path: '/resources', label: 'Resources', icon: BookOpen },
   { path: '/games', label: 'Cognitive Games', icon: Brain },

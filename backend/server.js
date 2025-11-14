@@ -28,6 +28,7 @@ import prescriptionRoutes from "./routes/prescription.js";
 import supplierRoutes from "./routes/suppliers.js";
 import reportRoutes from "./routes/reports.js";
 import gamesRoutes from "./routes/gamesRoutes.js";
+import openRouterChatController from "./controllers/openRouterChatController.js";
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -216,6 +217,7 @@ app.use("/api/user-details", userDetailsRoutes);
 app.use("/api/assessments", assessmentRoutes);
 app.use("/api/appointments", appointmentRoutes);
 app.use("/api/chat", chatRoutes);
+// app.use("/api/openRouterChat", openRouterChatRoutes);
 app.use("/api/crisis", crisisRoutes);
 app.use("/api/resources", resourceRoutes);
 app.use("/api/counselors", counselorRoutes);
@@ -231,6 +233,9 @@ app.use("/api/prescriptions", prescriptionRoutes);
 app.use("/api/suppliers", supplierRoutes(io));
 app.use("/api/reports", reportRoutes);
 app.use("/api/games", gamesRoutes);
+
+// Separate AI chat route (directly accessible at /chat)
+app.post('/chat', openRouterChatController);
 
 // Health check
 app.get("/api/health", (req, res) => {
@@ -262,6 +267,7 @@ app.get("/", (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
 
 // 404
 app.use("*", (req, res) => {
