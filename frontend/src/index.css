@@ -14,3 +14,47 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+.glass {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+}
+
+.bg-dark-bg {
+  /* background: #0b0b0d; */
+}
+
+.bg-dark-border {
+  border-color: rgba(255,255,255,0.08);
+}
+
+/* neon colors */
+.from-neon-blue {
+  background-image: linear-gradient(to right, #00d4ff, #006eff);
+}
+
+.to-neon-purple {
+  background-image: linear-gradient(to right, #7a00ff, #b700ff);
+}
+
+.bg-neon-blue {
+  background-color: #00d4ff;
+}
+
+.bg-neon-green {
+  background-color: #3fff75;
+}
+
+/* animations */
+@keyframes shake {
+  0% { transform: translate(0px, 0px); }
+  20% { transform: translate(-3px, 0px); }
+  40% { transform: translate(3px, 0px); }
+  60% { transform: translate(-3px, 0px); }
+  80% { transform: translate(3px, 0px); }
+  100% { transform: translate(0px, 0px); }
+}
+.animate-shake {
+  animation: shake 0.3s ease-in-out;
+}

@@ -1,312 +1,247 @@
-import React, { useState, useEffect } from 'react';
-import { Play, RotateCcw, CheckCircle, Brain, Clock } from 'lucide-react';
+import React, { useState, useEffect, useRef } from "react";
+import { Play, CheckCircle, X, Clock, RotateCcw, Star } from "lucide-react";
 
-const WordRecallTest = ({ onComplete }) => {
-  const [gameState, setGameState] = useState('instructions');
-  const [currentWord, setCurrentWord] = useState(0);
-  const [recalledWords, setRecalledWords] = useState([]);
-  const [userInput, setUserInput] = useState('');
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
-  const [timeRemaining, setTimeRemaining] = useState(10);
-  const [phase, setPhase] = useState('memorization'); // memorization, recall
+export default function WordFlipMemoryQuest({ onComplete }) {
+  const [phase, setPhase] = useState("menu"); // menu, memorize, recall, result
+  const [level, setLevel] = useState(1);
+  const [words, setWords] = useState([]);
+  const [shownIndex, setShownIndex] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [recallInput, setRecallInput] = useState("");
+  const [recalled, setRecalled] = useState([]);
+  const [score, setScore] = useState(0);
+  const [combo, setCombo] = useState(0);
 
-  const words = [
-    'Apple', 'Ocean', 'Mountain', 'Book', 'Sunshine',
-    'Garden', 'Music', 'Adventure', 'Dream', 'Friendship',
-    'Rainbow', 'Butterfly', 'Treasure', 'Journey', 'Harmony'
+  const flipRef = useRef(null);
+
+  // LEVEL CONFIG
+  const LEVELS = {
+    1: { count: 6, showTime: 5, recallTime: 40, name: "Warmup Deck" },
+    2: { count: 8, showTime: 4, recallTime: 40, name: "Quick Flip" },
+    3: { count: 10, showTime: 3.5, recallTime: 35, name: "Speed Deck" },
+    4: { count: 12, showTime: 3, recallTime: 30, name: "Memory Rush" },
+    5: { count: 14, showTime: 2.7, recallTime: 25, name: "Master Mode" },
+    6: { count: 15, showTime: 2.5, recallTime: 20, name: "Ultra Instinct" }
+  };
+
+  const WORD_POOL = [
+    "Echo","River","Shadow","Dream","Laser","Storm","Temple","Crystal","Galaxy","Flame",
+    "Memory","Pulse","Sphere","Nova","Signal","Forest","Whisper","Code","Energy","Wave",
+    "Neon","Phantom","Bridge","Mirror","Orbit","Quantum"
   ];
 
+  // START
   const startGame = () => {
-    setGameState('playing');
-    setPhase('memorization');
-    setCurrentWord(0);
-    setRecalledWords([]);
-    setUserInput('');
-    setStartTime(Date.now());
-    setTimeRemaining(10);
-  };
+    const config = LEVELS[level];
 
-  const resetGame = () => {
-    setGameState('instructions');
-    setCurrentWord(0);
-    setRecalledWords([]);
-    setUserInput('');
-    setStartTime(null);
-    setEndTime(null);
-    setTimeRemaining(10);
-    setPhase('memorization');
-  };
-
-  const nextWord = () => {
-    if (currentWord < words.length - 1) {
-      setCurrentWord(currentWord + 1);
-      setTimeRemaining(10);
-    } else {
-      // Move to recall phase
-      setPhase('recall');
-      setTimeRemaining(60); // 1 minute for recall
+    const selected = [];
+    for (let i = 0; i < config.count; i++) {
+      selected.push(WORD_POOL[Math.floor(Math.random() * WORD_POOL.length)]);
     }
+
+    setWords(selected);
+    setShownIndex(0);
+    setRecalled([]);
+    setRecallInput("");
+    setCombo(0);
+
+    setTimeLeft(config.showTime);
+    setPhase("memorize");
+
+    // flip animation
+    setTimeout(() => flipCard(), 150);
   };
 
-  const addRecalledWord = () => {
-    if (userInput.trim()) {
-      setRecalledWords(prev => [...prev, userInput.trim()]);
-      setUserInput('');
-    }
+  // FLIP CARD ANIMATION
+  const flipCard = () => {
+    if (!flipRef.current) return;
+    flipRef.current.classList.remove("flip");
+    void flipRef.current.offsetWidth;
+    flipRef.current.classList.add("flip");
   };
 
-  const finishRecall = () => {
-    setEndTime(Date.now());
-    setGameState('completed');
-  };
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && phase === 'recall') {
-      addRecalledWord();
-    }
-  };
-
-  // Timer for memorization phase
+  // TIMER HANDLING (MEMORIZATION PHASE)
   useEffect(() => {
-    if (gameState === 'playing' && phase === 'memorization' && timeRemaining > 0) {
-      const timer = setTimeout(() => {
-        setTimeRemaining(prev => prev - 1);
-      }, 1000);
-      return () => clearTimeout(timer);
-    } else if (timeRemaining === 0 && phase === 'memorization') {
-      nextWord();
+    if (phase !== "memorize") return;
+    if (timeLeft <= 0) {
+      if (shownIndex < words.length - 1) {
+        setShownIndex(shownIndex + 1);
+        flipCard();
+        setTimeLeft(LEVELS[level].showTime);
+      } else {
+        setTimeLeft(LEVELS[level].recallTime);
+        setPhase("recall");
+      }
+      return;
     }
-  }, [timeRemaining, phase, gameState]);
+    const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [phase, timeLeft, shownIndex]);
 
-  // Timer for recall phase
+  // TIMER HANDLING (RECALL PHASE)
   useEffect(() => {
-    if (gameState === 'playing' && phase === 'recall' && timeRemaining > 0) {
-      const timer = setTimeout(() => {
-        setTimeRemaining(prev => prev - 1);
-      }, 1000);
-      return () => clearTimeout(timer);
-    } else if (timeRemaining === 0 && phase === 'recall') {
-      finishRecall();
-    }
-  }, [timeRemaining, phase, gameState]);
+    if (phase !== "recall") return;
+    if (timeLeft <= 0) return finish();
 
-  const calculateScore = () => {
-    if (!startTime || !endTime) return 0;
-    
-    const timeTaken = (endTime - startTime) / 1000;
-    const correctWords = recalledWords.filter(word => 
-      words.some(originalWord => 
-        originalWord.toLowerCase() === word.toLowerCase()
-      )
-    ).length;
-    
-    const accuracy = correctWords / words.length;
-    const timeBonus = timeTaken < 30 ? 2 : timeTaken < 45 ? 1 : 0;
-    
-    // Score based on accuracy and speed (10-15 range)
-    let score = Math.round(10 + (accuracy * 5) + timeBonus);
-    
-    return Math.max(10, Math.min(15, score));
+    const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [phase, timeLeft]);
+
+  // ADD WORD
+  const addWord = () => {
+    if (!recallInput.trim()) return;
+    setRecalled([...recalled, recallInput.trim()]);
+    setRecallInput("");
   };
 
-  if (gameState === 'instructions') {
-    return (
-      <div className="glass rounded-xl p-8 text-center">
-        <Brain className="h-16 w-16 text-neon-purple mx-auto mb-4" />
-        <h2 className="text-3xl font-bold text-black mb-6">Word Recall Test</h2>
-        <div className="space-y-4 text-gray-300 mb-8">
-          <p>You will see 15 words, one at a time, for 10 seconds each.</p>
-          <p>Memorize as many words as you can.</p>
-          <p>After all words are shown, you'll have 1 minute to recall them.</p>
-        </div>
-        <button
-          onClick={startGame}
-          className="flex items-center space-x-2 mx-auto px-6 py-3 bg-gradient-to-r from-neon-purple to-neon-blue rounded-lg text-black font-semibold hover:from-neon-blue hover:to-neon-purple transition-all"
-        >
-          <Play className="h-5 w-5" />
-          <span>Start Test</span>
-        </button>
-      </div>
-    );
-  }
+  // FINISH
+  const finish = () => {
+    const wordsLower = words.map(w => w.toLowerCase());
+    let correct = 0;
 
-  if (gameState === 'completed') {
-    const timeTaken = endTime ? (endTime - startTime) / 1000 : 0;
-    const score = calculateScore();
-    const correctWords = recalledWords.filter(word => 
-      words.some(originalWord => 
-        originalWord.toLowerCase() === word.toLowerCase()
-      )
-    );
-    const accuracy = correctWords.length / words.length;
+    recalled.forEach(r => {
+      if (wordsLower.includes(r.toLowerCase())) correct++;
+    });
 
-    return (
-      <div className="glass rounded-xl p-8 text-center">
-        <CheckCircle className="h-16 w-16 text-neon-green mx-auto mb-4" />
-        <h2 className="text-3xl font-bold text-black mb-6">Test Completed!</h2>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-          <div className="bg-dark-bg rounded-lg p-4">
-            <div className="text-black font-semibold mb-2">Words Recalled</div>
-            <p className="text-2xl font-bold text-neon-blue">{correctWords.length}/15</p>
-          </div>
-          
-          <div className="bg-dark-bg rounded-lg p-4">
-            <div className="text-black font-semibold mb-2">Accuracy</div>
-            <p className="text-2xl font-bold text-neon-green">{Math.round(accuracy * 100)}%</p>
-          </div>
-          
-          <div className="bg-dark-bg rounded-lg p-4">
-            <div className="text-black font-semibold mb-2">Score</div>
-            <p className="text-2xl font-bold text-neon-purple">{score}/15</p>
-          </div>
-        </div>
+    let s = correct * 10;
+    if (correct >= words.length * 0.7) s += 15;
+    if (correct === words.length) s += 25; // PERFECT BONUS
+    s = Math.min(100, s);
 
-        <div className="bg-dark-bg rounded-lg p-4 mb-6">
-          <h3 className="text-lg font-semibold text-black mb-2">Words You Recalled:</h3>
-          <div className="flex flex-wrap gap-2">
-            {recalledWords.map((word, index) => {
-              const isCorrect = words.some(originalWord => 
-                originalWord.toLowerCase() === word.toLowerCase()
-              );
-              return (
-                <span
-                  key={index}
-                  className={`px-3 py-1 rounded-full text-sm ${
-                    isCorrect 
-                      ? 'bg-green-900/30 text-green-400' 
-                      : 'bg-red-900/30 text-red-400'
-                  }`}
-                >
-                  {word}
-                </span>
-              );
-            })}
-          </div>
-        </div>
+    setScore(s);
+    saveProgress(level, s, correct);
+    setPhase("result");
 
-        <div className="flex space-x-4 justify-center">
-          <button
-            onClick={resetGame}
-            className="flex items-center space-x-2 px-6 py-3 bg-dark-bg border border-dark-border rounded-lg text-black hover:border-neon-blue transition-all"
-          >
-            <RotateCcw className="h-5 w-5" />
-            <span>Retake</span>
-          </button>
-          <button
-            onClick={() => onComplete({
-              score,
-              timeTaken,
-              accuracy,
-              wordsRecalled: correctWords.length
-            })}
-            className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-neon-green to-neon-blue rounded-lg text-black font-semibold hover:from-neon-blue hover:to-neon-green transition-all"
-          >
-            <CheckCircle className="h-5 w-5" />
-            <span>Continue</span>
-          </button>
-        </div>
-      </div>
-    );
-  }
+    if (onComplete) onComplete({ level, score: s });
+  };
 
-  if (phase === 'memorization') {
-    return (
-      <div className="glass rounded-xl p-8 text-center">
-        <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold text-black">Memorize the Word</h2>
-          <div className="flex items-center space-x-2 text-neon-blue">
-            <Clock className="h-5 w-5" />
-            <span className="text-2xl font-bold">{timeRemaining}</span>
-          </div>
-        </div>
+  // SAVE PROGRESS
+  const saveProgress = (lvl, score) => {
+    const data = JSON.parse(localStorage.getItem("wordFlipProgress") || "{}");
+    data[`level_${lvl}`] = score;
+    localStorage.setItem("wordFlipProgress", JSON.stringify(data));
+  };
 
-        <div className="bg-dark-bg rounded-lg p-8 mb-6">
-          <div className="text-4xl font-bold text-neon-purple mb-4">
-            {words[currentWord]}
-          </div>
-          <div className="text-gray-400">
-            Word {currentWord + 1} of {words.length}
-          </div>
-        </div>
+  // STAR DISPLAY
+  const stars = score >= 85 ? 3 : score >= 60 ? 2 : score >= 30 ? 1 : 0;
 
-        <div className="w-full bg-dark-bg rounded-full h-3 mb-6">
-          <div 
-            className="bg-gradient-to-r from-neon-purple to-neon-blue h-3 rounded-full transition-all duration-1000"
-            style={{ width: `${((currentWord + 1) / words.length) * 100}%` }}
-          ></div>
-        </div>
-
-        <div className="text-gray-400">
-          Memorize this word. The next word will appear automatically.
-        </div>
-      </div>
-    );
-  }
-
+  // UI RENDERING
   return (
-    <div className="glass rounded-xl p-8">
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-black">Recall the Words</h2>
-        <div className="flex items-center space-x-2 text-neon-blue">
-          <Clock className="h-5 w-5" />
-          <span className="text-2xl font-bold">{timeRemaining}</span>
-        </div>
-      </div>
+    <div className="p-6 glass rounded-xl">
+      {/* MENU */}
+      {phase === "menu" && (
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-black mb-3">Word Flip Memory Quest</h1>
+          <p className="text-gray-400 mb-4">Level {level}: {LEVELS[level].name}</p>
 
-      <div className="mb-6">
-        <div className="flex items-center space-x-2 mb-4">
-          <input
-            type="text"
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Type a word you remember..."
-            className="flex-1 px-4 py-3 bg-dark-bg border border-dark-border rounded-lg text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon-blue focus:border-transparent"
-          />
           <button
-            onClick={addRecalledWord}
-            className="px-6 py-3 bg-gradient-to-r from-neon-blue to-neon-purple rounded-lg text-black font-semibold hover:from-neon-purple hover:to-neon-blue transition-all"
+            onClick={startGame}
+            className="px-6 py-3 bg-neon-blue text-black rounded-lg font-semibold"
           >
-            Add
+            <Play className="inline-block w-5 h-5 mr-2" />
+            Start
+          </button>
+
+          <div className="flex justify-center gap-2 mt-4">
+            <button
+              className="px-3 py-2 bg-dark-bg rounded-md"
+              onClick={() => setLevel(l => Math.max(1, l - 1))}
+            >
+              Prev
+            </button>
+            <button
+              className="px-3 py-2 bg-dark-bg rounded-md"
+              onClick={() => setLevel(l => Math.min(6, l + 1))}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* MEMORIZATION PHASE */}
+      {phase === "memorize" && (
+        <div className="text-center">
+          <h2 className="text-2xl font-bold text-black mb-3">Memorize</h2>
+          <div className="text-gray-400 mb-2">Word {shownIndex + 1} of {words.length}</div>
+
+          <div
+            ref={flipRef}
+            className="w-48 h-32 mx-auto bg-dark-bg border border-neon-blue rounded-xl 
+                       flex items-center justify-center text-3xl font-bold text-neon-purple
+                       transition-all duration-700 transform-style-preserve-3d flip"
+          >
+            {words[shownIndex]}
+          </div>
+
+          <div className="mt-4 text-neon-blue text-xl">
+            <Clock className="inline w-5 h-5 mr-1" /> {timeLeft}s
+          </div>
+        </div>
+      )}
+
+      {/* RECALL PHASE */}
+      {phase === "recall" && (
+        <div>
+          <h2 className="text-2xl font-bold text-black mb-4 text-center">Recall Words</h2>
+
+          <div className="text-center text-neon-blue text-xl mb-4">
+            <Clock className="inline w-5 h-5 mr-1" /> {timeLeft}s
+          </div>
+
+          <div className="flex gap-2 mb-4">
+            <input
+              value={recallInput}
+              onChange={e => setRecallInput(e.target.value)}
+              placeholder="Type a word"
+              className="flex-1 px-3 py-2 bg-dark-bg border border-dark-border rounded-lg text-black"
+            />
+            <button
+              onClick={addWord}
+              className="px-4 py-2 bg-neon-blue text-black rounded-lg font-semibold"
+            >
+              Add
+            </button>
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {recalled.map((r, i) => (
+              <span key={i} className="px-3 py-1 bg-neon-blue text-black rounded-full text-sm">
+                {r}
+              </span>
+            ))}
+          </div>
+
+          <div className="text-center mt-4">
+            <button
+              onClick={finish}
+              className="px-6 py-3 bg-gradient-to-r from-neon-green to-neon-blue rounded-lg text-black font-bold"
+            >
+              Finish
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* RESULT */}
+      {phase === "result" && (
+        <div className="text-center">
+          <CheckCircle className="text-neon-green w-16 h-16 mx-auto mb-3" />
+          <h2 className="text-2xl font-bold text-black mb-3">Level Complete!</h2>
+          <p className="text-xl mb-3 text-neon-blue">{score} / 100</p>
+
+          <div className="flex justify-center gap-2 text-yellow-400 mb-4">
+            {[...Array(stars)].map((_, i) => <Star key={i} className="w-6 h-6" />)}
+          </div>
+
+          <button
+            onClick={() => setPhase("menu")}
+            className="px-6 py-3 bg-dark-bg rounded-lg text-black border border-dark-border"
+          >
+            Menu
           </button>
         </div>
-
-        <div className="flex flex-wrap gap-2 mb-4">
-          {recalledWords.map((word, index) => (
-            <span
-              key={index}
-              className="px-3 py-1 bg-neon-blue text-black rounded-full text-sm"
-            >
-              {word}
-            </span>
-          ))}
-        </div>
-
-        <div className="text-center text-gray-400 mb-6">
-          You have recalled {recalledWords.length} words so far.
-        </div>
-      </div>
-
-      <div className="flex space-x-4 justify-center">
-        <button
-          onClick={resetGame}
-          className="flex items-center space-x-2 px-4 py-2 bg-dark-bg border border-dark-border rounded-lg text-gray-300 hover:border-neon-blue hover:text-neon-blue transition-all"
-        >
-          <RotateCcw className="h-4 w-4" />
-          <span>Reset</span>
-        </button>
-        <button
-          onClick={finishRecall}
-          className="flex items-center space-x-2 px-6 py-3 bg-gradient-to-r from-neon-green to-neon-blue rounded-lg text-black font-semibold hover:from-neon-blue hover:to-neon-green transition-all"
-        >
-          <CheckCircle className="h-5 w-5" />
-          <span>Finish</span>
-        </button>
-      </div>
+      )}
     </div>
   );
-};
-
-export default WordRecallTest;
+}
