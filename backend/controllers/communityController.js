@@ -207,38 +207,68 @@ export const deleteCommunityPost = catchAsync(async (req, res, next) => {
 });
 
 // Add a comment to a post
+// export const addComment = catchAsync(async (req, res, next) => {
+//   const { postId } = req.params;
+//   const { content, isAnonymous } = req.body;
+
+//   if (!content) {
+//     return next(new AppError('Comment content is required', 400));
+//   }
+
+//   const post = await CommunityPost.findById(postId);
+
+//   if (!post) {
+//     return next(new AppError('Post not found', 404));
+//   }
+
+//   const comment = {
+//     author: req.user.id,
+//     content,
+//     isAnonymous: isAnonymous || false
+//   };
+
+//   post.comments.push(comment);
+//   await post.save();
+
+//   // Populate the new comment's author
+//   await post.populate('comments.author', 'firstName lastName email role');
+
+//   const newComment = post.comments[post.comments.length - 1];
+
+//   res.status(201).json({
+//     status: 'success',
+//     data: { comment: newComment }
+//   });
+// });
+
+// controllers/communityController.js
 export const addComment = catchAsync(async (req, res, next) => {
   const { postId } = req.params;
-  const { content, isAnonymous } = req.body;
+  const { content, isAnonymous, parentId } = req.body; // accept parentId
 
-  if (!content) {
-    return next(new AppError('Comment content is required', 400));
-  }
+  if (!content) return next(new AppError('Content required', 400));
 
   const post = await CommunityPost.findById(postId);
+  if (!post) return next(new AppError('Post not found', 404));
 
-  if (!post) {
-    return next(new AppError('Post not found', 404));
+  if (parentId) {
+    const parentExists = post.comments.id(parentId);
+    if (!parentExists) return next(new AppError('Parent comment not found', 404));
   }
 
-  const comment = {
+  post.comments.push({
     author: req.user.id,
     content,
-    isAnonymous: isAnonymous || false
-  };
+    isAnonymous: isAnonymous ?? false,
+    parentId: parentId || null,
+  });
 
-  post.comments.push(comment);
   await post.save();
-
-  // Populate the new comment's author
   await post.populate('comments.author', 'firstName lastName email role');
 
   const newComment = post.comments[post.comments.length - 1];
 
-  res.status(201).json({
-    status: 'success',
-    data: { comment: newComment }
-  });
+  res.status(201).json({ status: 'success', data: { comment: newComment } });
 });
 
 // Update a comment
