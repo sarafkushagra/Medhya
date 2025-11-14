@@ -9,8 +9,12 @@ const moodTrackingSchema = new mongoose.Schema({
 
   date: {
     type: Date,
-    required: true,
-    default: Date.now
+    required: true
+  },
+
+  dateString: {
+    type: String,
+    required: true
   },
 
   mood: {
@@ -40,27 +44,46 @@ const moodTrackingSchema = new mongoose.Schema({
 });
 
 // Compound index to ensure one mood entry per user per day
-moodTrackingSchema.index({ user: 1, date: 1 }, { unique: true });
+moodTrackingSchema.index({ user: 1, dateString: 1 }, { unique: true });
 
 // Virtual to get date string for easier querying
-moodTrackingSchema.virtual('dateString').get(function() {
-  return this.date.toISOString().split('T')[0];
-});
+// moodTrackingSchema.virtual('dateString').get(function() {
+//   return this.date.toISOString().split('T')[0];
+// });
 
 // Method to get mood for today
 moodTrackingSchema.statics.getTodaysMood = async function(userId) {
+  const todayString = new Date().toISOString().split('T')[0];
+
+  let mood = await this.findOne({
+    user: userId,
+    dateString: todayString
+  });
+
+  if (mood) return mood;
+
+  // Fallback for old entries without dateString
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-  return await this.findOne({
+  mood = await this.findOne({
     user: userId,
     date: {
       $gte: today,
       $lt: tomorrow
     }
   });
+
+  if (mood) {
+    // Update the entry to have dateString
+    mood.dateString = todayString;
+    await mood.save();
+    return mood;
+  }
+
+  return null;
 };
 
 // Method to check if user has logged mood today

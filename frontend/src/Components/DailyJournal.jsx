@@ -375,14 +375,8 @@ const DailyJournal = ({
             <CheckCircle className="w-12 h-12 mx-auto text-green-600 mb-3" />
             <h3 className="text-lg font-medium mb-2">Journal Complete!</h3>
             <p className="text-gray-600 text-sm mb-4">
-              You've already written your journal entry for today. Great job maintaining your wellness routine!
+              You've already written your journal entry for today.
             </p>
-            <div className="flex items-center justify-center gap-2 text-sm text-gray-500">
-              <span>{todayEntry.mood && getMoodEmoji(todayEntry.mood)}</span>
-              <span>Mood: {todayEntry.moodScore}/10</span>
-              <span>•</span>
-              <span>Wellness: {todayEntry.wellnessScore}%</span>
-            </div>
           </div>
         ) : (
           <div className="text-center py-6">
@@ -411,7 +405,7 @@ const DailyJournal = ({
 
         {/* Journal Form Modal */}
         {showJournalForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
               <div className="flex items-center justify-between p-6 border-b">
                 <h2 className="text-xl font-semibold flex items-center gap-2">
@@ -578,7 +572,7 @@ const DailyJournal = ({
 
       {/* Journal Form Modal */}
       {showJournalForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-xl font-semibold flex items-center gap-2">

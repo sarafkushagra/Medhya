@@ -13,23 +13,13 @@ import StressAssessment from './StressAssessment.jsx'
 import DailyJournal from './DailyJournal.jsx'
 
 export default function Wellness() {
-  const { user } = useAuth();
   const {
-    entries,
     todayEntry,
     weeklyProgress,
-    stats,
-    loading,
-    error,
-    pagination,
     getJournalEntries,
     getTodayEntry,
     getWeeklyProgress,
     getJournalStats,
-    createJournalEntry,
-    updateJournalEntry,
-    deleteJournalEntry,
-    clearError
   } = useJournal();
 
   const {
@@ -37,7 +27,6 @@ export default function Wellness() {
     getTodayAssessments
   } = useAssessment();
 
-  const [currentMood, setCurrentMood] = useState(null)
   // Calculate wellness score from assessments
   const calculateCurrentWellnessScore = () => {
     const gad7Score = todayAssessments['GAD-7']?.score || 0;
@@ -55,21 +44,7 @@ export default function Wellness() {
   const [showStressAssessment, setShowStressAssessment] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
 
-  const moodOptions = [
-    { emoji: '😊', label: 'Happy', value: 'happy', color: 'bg-green-100 text-green-800' },
-    { emoji: '😐', label: 'Neutral', value: 'neutral', color: 'bg-yellow-100 text-yellow-800' },
-    { emoji: '😔', label: 'Sad', value: 'sad', color: 'bg-blue-100 text-blue-800' },
-    { emoji: '😰', label: 'Anxious', value: 'anxious', color: 'bg-orange-100 text-orange-800' },
-    { emoji: '😡', label: 'Stressed', value: 'stressed', color: 'bg-red-100 text-red-800' }
-  ]
 
-  const wellnessTips = [
-    "Take a 5-minute breathing break every hour",
-    "Practice gratitude by writing 3 things you're thankful for",
-    "Get 7-9 hours of quality sleep tonight",
-    "Take a 10-minute walk outside",
-    "Connect with a friend or family member"
-  ]
 
   // Load data on component mount
   useEffect(() => {
@@ -317,25 +292,7 @@ export default function Wellness() {
       </Card>
 
       {/* Wellness Tips */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Brain className="w-5 h-5 text-indigo-600" />
-            Today's Wellness Tips
-          </CardTitle>
-          <CardDescription>Personalized recommendations for better mental health</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-3">
-            {wellnessTips.map((tip, index) => (
-              <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                <CheckCircle className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
-                <span className="text-sm">{tip}</span>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+      
 
       {/* Stress Assessment Popup */}
       {showStressAssessment && (

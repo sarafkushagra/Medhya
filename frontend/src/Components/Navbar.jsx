@@ -8,22 +8,16 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar';
 import {
   Heart, Menu, X, Bell, Settings, LogOut, User,
   Building2, GraduationCap, ChevronDown, RefreshCw,
-  Smile, Flame, CheckCircle, AlertCircle,
+  Flame, CheckCircle, AlertCircle,
 } from 'lucide-react';
-import { authAPI, moodAPI, API_BASE_URL } from '../services/api.js';
-import medha from '../assets/logo.png';
+import { authAPI, API_BASE_URL } from '../services/api.js';
 import ChangePasswordModal from './ChangePasswordModal';
-import MoodTrackerModal from './MoodTrackerModal';
 
-const Navbar = ({ userRole, user, onLogout, onRefreshMoodData }) => {
+const Navbar = ({ userRole, user, onLogout }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] = useState(false);
   const [isCheckingStatus, setIsCheckingStatus] = useState(false);
-  const [isMoodTrackerModalOpen, setIsMoodTrackerModalOpen] = useState(false);
-  const [todaysMood, setTodaysMood] = useState(null);
-  const [isLoadingMood, setIsLoadingMood] = useState(false);
   const [profileStatus, setProfileStatus] = useState(() => {
     // Initialize with current user profile status if available
     if (user?.isProfileComplete !== undefined) {
@@ -50,65 +44,12 @@ const Navbar = ({ userRole, user, onLogout, onRefreshMoodData }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close dropdowns when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
-        setIsUserMenuOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   // Close menus on route change
   useEffect(() => {
     setIsMenuOpen(false);
-    setIsUserMenuOpen(false);
     setIsChangePasswordModalOpen(false);
     // Don't clear profile status on route change, only on logout
   }, [location.pathname]);
-
-  // Debug: Monitor todaysMood changes
-  useEffect(() => {
-    console.log('🎭 todaysMood changed:', todaysMood);
-  }, [todaysMood]);
-
-  // Refresh mood data when requested
-  useEffect(() => {
-    if (onRefreshMoodData && userRole === 'student' && user) {
-      console.log('🔄 Refreshing mood data...', onRefreshMoodData);
-      loadTodaysMood();
-    }
-  }, [onRefreshMoodData]);
-
-  // Load today's mood
-  const loadTodaysMood = async () => {
-    if (!user) {
-      console.log('🚫 loadTodaysMood: No user available');
-      return;
-    }
-
-    console.log('📥 loadTodaysMood: Starting to load mood for user:', user.id);
-    setIsLoadingMood(true);
-    try {
-      const response = await moodAPI.getTodaysMood();
-      console.log('📥 loadTodaysMood: API response:', response);
-
-      if (response.success && response.data) {
-        console.log('📥 loadTodaysMood: Setting mood data:', response.data);
-        setTodaysMood(response.data);
-      } else {
-        console.log('📥 loadTodaysMood: No mood data found');
-        setTodaysMood(null);
-      }
-    } catch (error) {
-      console.error('❌ loadTodaysMood: Error loading today\'s mood:', error);
-      setTodaysMood(null);
-    } finally {
-      setIsLoadingMood(false);
-    }
-  };
 
   // Handle password change
   const handlePasswordChange = async (passwordData) => {
@@ -173,30 +114,6 @@ const Navbar = ({ userRole, user, onLogout, onRefreshMoodData }) => {
     }
   };
 
-  // Handle mood submission
-  const handleMoodSubmit = async (moodData) => {
-    try {
-      if (todaysMood) {
-        // Update existing mood
-        await moodAPI.updateTodaysMood(moodData);
-      } else {
-        // Log new mood
-        await moodAPI.logMood(moodData);
-      }
-
-      // Reload today's mood
-      await loadTodaysMood();
-    } catch (error) {
-      console.error('Error submitting mood:', error);
-      throw error;
-    }
-  };
-
-  // Handle mood tracker button click
-  const handleMoodTrackerClick = () => {
-    setIsMoodTrackerModalOpen(true);
-  };
-
   // --- Reusable UI Components ---
 
   const UserMenu = () => (
@@ -228,30 +145,6 @@ const Navbar = ({ userRole, user, onLogout, onRefreshMoodData }) => {
 
             {/* Right Section: Actions */}
             <div className="flex items-center gap-4">
-              {/* Mood Tracker Button - Only for students */}
-              {userRole === 'student' && (
-                <button
-                  onClick={handleMoodTrackerClick}
-                  disabled={isLoadingMood}
-                  className="relative p-2 rounded-full hover:bg-slate-100 transition-colors disabled:opacity-50"
-                  title={isLoadingMood ? "Loading..." : todaysMood ? `Today's mood: ${todaysMood.moodEmoji}` : "Track your mood"}
-                >
-                  {isLoadingMood ? (
-                    <RefreshCw className="h-5 w-5 text-slate-500 animate-spin" />
-                  ) : todaysMood ? (
-                    <span className="text-lg">{todaysMood.moodEmoji}</span>
-                  ) : (
-                    <Smile className="h-5 w-5 text-slate-500" />
-                  )}
-                  {!todaysMood && !isLoadingMood && (
-                    <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
-                    </span>
-                  )}
-                </button>
-              )}
-
               <button
                 onClick={onLogout}
                 className="flex items-center gap-3 w-full px-3 py-2 text-sm text-red-600 rounded-md hover:bg-red-50"
@@ -304,27 +197,6 @@ const Navbar = ({ userRole, user, onLogout, onRefreshMoodData }) => {
                     )
                   ) : (
                     <RefreshCw className="h-4 w-4 text-slate-500" />
-                  )}
-                </button>
-              )}
-
-              {/* Mobile Mood Tracker Button */}
-              {userRole === 'student' && (
-                <button
-                  onClick={() => {
-                    handleMoodTrackerClick();
-                    setIsMenuOpen(false);
-                  }}
-                  disabled={isLoadingMood}
-                  className="p-2 rounded-full hover:bg-slate-100 transition-colors disabled:opacity-50"
-                  title={isLoadingMood ? "Loading..." : todaysMood ? `Today's mood: ${todaysMood.moodEmoji}` : "Track your mood"}
-                >
-                  {isLoadingMood ? (
-                    <RefreshCw className="h-4 w-4 text-slate-500 animate-spin" />
-                  ) : todaysMood ? (
-                    <span className="text-base">{todaysMood.moodEmoji}</span>
-                  ) : (
-                    <Smile className="h-4 w-4 text-slate-500" />
                   )}
                 </button>
               )}
@@ -403,14 +275,6 @@ const Navbar = ({ userRole, user, onLogout, onRefreshMoodData }) => {
         isOpen={isChangePasswordModalOpen}
         onClose={() => setIsChangePasswordModalOpen(false)}
         onSubmit={handlePasswordChange}
-      />
-
-      {/* Mood Tracker Modal */}
-      <MoodTrackerModal
-        isOpen={isMoodTrackerModalOpen}
-        onClose={() => setIsMoodTrackerModalOpen(false)}
-        onSubmit={handleMoodSubmit}
-        todaysMood={todaysMood}
       />
     </>
   );
