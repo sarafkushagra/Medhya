@@ -39,6 +39,7 @@ import UserCounselorChat from './Components/UserCounselorChat.jsx';
 import { useSocket } from './context/SocketProvider.jsx';
 import { ProfileGeneral } from './Components/ProfilePage.jsx';
 import { Box } from './Components/CheckPoint.jsx';
+import Doctors from './Components/Doctors.jsx';
 
 // Dummy Institutions component for routing
 const Institutions = () => <div className="p-6 bg-white rounded-lg shadow">Institutions Management Content</div>;
@@ -268,6 +269,7 @@ export default function App() {
           <Route path="/cognitive-report" element={<ProfileProtectedRoute user={user} isLoading={loading}><Report /></ProfileProtectedRoute>} />
           <Route path="/reports" element={<ProfileProtectedRoute user={user} isLoading={loading}><MedicalReports /></ProfileProtectedRoute>} />
           <Route path="/delivery" element={<ProfileProtectedRoute user={user} isLoading={loading}><MedicineDelivery /></ProfileProtectedRoute>} />
+          <Route path="/doctor" element={<ProfileProtectedRoute user={user} isLoading={loading}><Doctors /></ProfileProtectedRoute>} />
 
           {/* Admin Routes */}
           <Route path="/admin" element={<ProtectedRoute userRole={userRole} requiredRole="admin" isLoading={loading}><AdminDashboard /></ProtectedRoute>} />

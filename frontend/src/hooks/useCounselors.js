@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import { API_BASE_URL } from '../config/environment.js';
 
@@ -8,7 +8,7 @@ export const useCounselors = () => {
   const [error, setError] = useState(null);
 
   // Get all counselors
-  const getCounselors = async (filters = {}) => {
+  const getCounselors = useCallback(async (filters = {}) => {
     setLoading(true);
     setError(null);
 
@@ -29,10 +29,10 @@ export const useCounselors = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // Get counselor by ID
-  const getCounselor = async (id) => {
+  const getCounselor = useCallback(async (id) => {
     setLoading(true);
     setError(null);
 
@@ -53,10 +53,10 @@ export const useCounselors = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // Get available time slots for a counselor on a specific date
-  const getAvailableSlots = async (counselorId, date) => {
+  const getAvailableSlots = useCallback(async (counselorId, date) => {
     setLoading(true);
     setError(null);
 
@@ -77,22 +77,22 @@ export const useCounselors = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // Get counselors by specialization
-  const getCounselorsBySpecialization = async (specialization) => {
+  const getCounselorsBySpecialization = useCallback(async (specialization) => {
     return getCounselors({ specialization });
-  };
+  }, [getCounselors]);
 
   // Get counselors by appointment type
-  const getCounselorsByType = async (type) => {
+  const getCounselorsByType = useCallback(async (type) => {
     return getCounselors({ type });
-  };
+  }, [getCounselors]);
 
   // Get counselors by language
-  const getCounselorsByLanguage = async (language) => {
+  const getCounselorsByLanguage = useCallback(async (language) => {
     return getCounselors({ language });
-  };
+  }, [getCounselors]);
 
   return {
     counselors,
