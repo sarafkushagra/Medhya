@@ -3,6 +3,9 @@ import React, { useState, createContext, useEffect } from 'react';
 import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth.js';
 
+// Import Intro Screen
+import IntroScreen from './Components/IntroScreen.jsx';
+
 // Import Layouts & Pages
 import LandingPage from './Components/LandingPage.jsx';
 import Login from './Components/Login.jsx';
@@ -87,6 +90,7 @@ export default function App() {
   const [userRole, setUserRole] = useState('guest');
   const [userData, setUserData] = useState(null);
   const [refreshMoodData, setRefreshMoodData] = useState(0);
+  const [showIntro, setShowIntro] = useState(true);
   const navigate = useNavigate();
 
   const systemStats = {
@@ -121,6 +125,9 @@ export default function App() {
       setUserRole('guest');
     }
   }, [user]);
+
+  // Always show intro on every page load/refresh
+  // Remove localStorage check to show video every time
 
   const handleLogin = (role, userData = null) => {
     setUserRole(role);
@@ -185,6 +192,13 @@ export default function App() {
     setUserData(null);
     navigate('/');
   };
+
+  // Show intro screen first (every time on refresh)
+  if (showIntro) {
+    return <IntroScreen onFinish={() => {
+      setShowIntro(false);
+    }} />;
+  }
 
   // Show loading screen while checking authentication
   if (loading) {
