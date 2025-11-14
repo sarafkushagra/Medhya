@@ -7,7 +7,7 @@ import {
   LayoutDashboard, Calendar, MessageSquare, Users, DollarSign, User, TrendingUp,
   RefreshCw, LogOut, Bell, ChevronDown, Eye, Send, Phone, Video,
   CheckCircle, Shield, Globe, Smartphone, AlertCircle, Lock, Key, X,
-  MessageCircleIcon, Camera,
+  MessageCircleIcon, Camera, Edit,
 
 } from 'lucide-react';
 import { useCounselorDashboard } from '../hooks/useCounselorDashboard';
@@ -61,6 +61,13 @@ const CounselorDashboard = () => {
   const [passwordErrors, setPasswordErrors] = useState({});
   const [uploadingImage, setUploadingImage] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [editedProfile, setEditedProfile] = useState({
+    bio: '',
+    expertise: '',
+    specialization: []
+  });
+  const [savingProfile, setSavingProfile] = useState(false);
 
   // Data states
   const [profile, setProfile] = useState(null);
@@ -284,6 +291,70 @@ const CounselorDashboard = () => {
     } catch (err) {
       console.error('Failed to send message:', err);
     }
+  };
+
+  const handleStartEditingProfile = () => {
+    setEditedProfile({
+      bio: profile.bio || '',
+      expertise: profile.expertise || '',
+      specialization: [...(profile.specialization || [])]
+    });
+    setIsEditingProfile(true);
+  };
+
+  const handleCancelEditingProfile = () => {
+    setIsEditingProfile(false);
+    setEditedProfile({
+      bio: '',
+      expertise: '',
+      specialization: []
+    });
+  };
+
+  const handleSaveProfile = async () => {
+    // Validate required fields
+    if (!editedProfile.expertise || editedProfile.expertise.trim() === '') {
+      toast.error('Please select your expertise area');
+      return;
+    }
+
+    setSavingProfile(true);
+    try {
+      await updateCounselorProfile({
+        bio: editedProfile.bio,
+        expertise: editedProfile.expertise,
+        specialization: editedProfile.specialization.filter(spec => spec.trim() !== '')
+      });
+      await loadProfile(); // Reload profile to show updated data
+      setIsEditingProfile(false);
+      toast.success('Profile updated successfully!');
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+      toast.error(error.message || 'Failed to update profile');
+    } finally {
+      setSavingProfile(false);
+    }
+  };
+
+  const handleAddSpecialization = () => {
+    setEditedProfile(prev => ({
+      ...prev,
+      specialization: [...prev.specialization, '']
+    }));
+  };
+
+  const handleRemoveSpecialization = (index) => {
+    setEditedProfile(prev => ({
+      ...prev,
+      specialization: prev.specialization.filter((_, i) => i !== index)
+    }));
+  };
+
+  const handleSpecializationChange = (index, value) => {
+    setEditedProfile(prev => ({
+      ...prev,
+      specialization: prev.specialization.map((spec, i) => i === index ? value : spec)
+    }));
   };
 
   const handleProfileImageUpload = async (event) => {
@@ -773,9 +844,21 @@ const CounselorDashboard = () => {
           {activeView === 'profile' && (
             <Card className="bg-white shadow-lg rounded-xl border border-gray-200">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-gray-800 text-xl font-bold">
-                  <User className="w-6 h-6 text-indigo-600" />Profile Information
-                </CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="flex items-center gap-2 text-gray-800 text-xl font-bold">
+                    <User className="w-6 h-6 text-indigo-600" />Profile Information
+                  </CardTitle>
+                  {!isEditingProfile && (
+                    <Button
+                      onClick={handleStartEditingProfile}
+                      variant="outline"
+                      className="bg-indigo-50 border-indigo-300 hover:bg-indigo-100 hover:border-indigo-400"
+                    >
+                      <Edit className="w-4 h-4 mr-2" />
+                      Edit Profile
+                    </Button>
+                  )}
+                </div>
               </CardHeader>
               <CardContent>
                 {loading ? (
@@ -834,11 +917,45 @@ const CounselorDashboard = () => {
 
                       <div className="space-y-3">
                         <h4 className="font-semibold">Specializations</h4>
-                        <div className="flex flex-wrap gap-2">
-                          {profile.specialization?.map((spec, i) => (
-                            <Badge key={i} variant="secondary">{spec}</Badge>
-                          ))}
-                        </div>
+                        {isEditingProfile ? (
+                          <div className="space-y-2">
+                            {editedProfile.specialization.map((spec, index) => (
+                              <div key={index} className="flex items-center gap-2">
+                                <input
+                                  type="text"
+                                  value={spec}
+                                  onChange={(e) => handleSpecializationChange(index, e.target.value)}
+                                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                  placeholder="Enter specialization"
+                                />
+                                <Button
+                                  type="button"
+                                  variant="outline"
+                                  size="sm"
+                                  onClick={() => handleRemoveSpecialization(index)}
+                                  className="text-red-600 border-red-300 hover:bg-red-50"
+                                >
+                                  <X className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            ))}
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={handleAddSpecialization}
+                              className="w-full border-dashed border-gray-300 text-gray-600 hover:border-gray-400"
+                            >
+                              + Add Specialization
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="flex flex-wrap gap-2">
+                            {profile.specialization?.map((spec, i) => (
+                              <Badge key={i} variant="secondary">{spec}</Badge>
+                            ))}
+                          </div>
+                        )}
                       </div>
 
                       <div className="space-y-3">
@@ -850,6 +967,26 @@ const CounselorDashboard = () => {
                             </Badge>
                           ))}
                         </div>
+                      </div>
+
+                      <div className="space-y-3">
+                        <h4 className="font-semibold">Expertise</h4>
+                        {isEditingProfile ? (
+                          <select
+                            value={editedProfile.expertise}
+                            onChange={(e) => setEditedProfile(prev => ({ ...prev, expertise: e.target.value }))}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                          >
+                            <option value="">Select expertise</option>
+                            <option value="mental">Mental Health</option>
+                            <option value="neuro">Neurological</option>
+                            <option value="gynoman">Women's Health</option>
+                          </select>
+                        ) : (
+                          <Badge variant="secondary" className="bg-purple-100 text-purple-800 capitalize">
+                            {profile.expertise}
+                          </Badge>
+                        )}
                       </div>
 
                       <div className="space-y-3">
@@ -865,8 +1002,47 @@ const CounselorDashboard = () => {
 
                     <div className="space-y-3">
                       <h4 className="font-semibold">Bio</h4>
-                      <p className="text-sm text-gray-700 leading-relaxed">{profile.bio}</p>
+                      {isEditingProfile ? (
+                        <textarea
+                          value={editedProfile.bio}
+                          onChange={(e) => setEditedProfile(prev => ({ ...prev, bio: e.target.value }))}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+                          rows="4"
+                          placeholder="Tell us about yourself..."
+                        />
+                      ) : (
+                        <p className="text-sm text-gray-700 leading-relaxed">{profile.bio}</p>
+                      )}
                     </div>
+
+                    {isEditingProfile && (
+                      <div className="flex gap-3 pt-4 border-t border-gray-200">
+                        <Button
+                          onClick={handleCancelEditingProfile}
+                          variant="outline"
+                          className="flex-1"
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          onClick={handleSaveProfile}
+                          disabled={savingProfile}
+                          className="flex-1 bg-indigo-600 hover:bg-indigo-700"
+                        >
+                          {savingProfile ? (
+                            <>
+                              <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                              Saving...
+                            </>
+                          ) : (
+                            <>
+                              <CheckCircle className="w-4 h-4 mr-2" />
+                              Save Changes
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="text-center py-10">

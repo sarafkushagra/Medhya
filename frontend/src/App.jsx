@@ -12,6 +12,7 @@ import AppLayout from './Components/AppLayout.jsx';
 import StudentDashboard from './Components/StudentDashboard.jsx';
 import AdminDashboard from './Components/AdminDashboard.jsx';
 import AIChat from './Components/AIChat.jsx';
+import Voice from './Components/Voice.jsx';
 import AppointmentBooking from './Components/AppointmentBooking.jsx';
 // import ResourceHub from './Components/ResourceHub.jsx';
 import PeerSupport from './Components/PeerSupport.jsx';
@@ -258,7 +259,7 @@ export default function App() {
           <Route path="/dashboard" element={<ProtectedRoute userRole={userRole} requiredRole="student" isLoading={loading}><StudentDashboard /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute userRole={userRole} requiredRole="student" isLoading={loading}><UserProfile /></ProtectedRoute>} />
           <Route path="/chat" element={<ProfileProtectedRoute user={user} isLoading={loading}><AIChat /></ProfileProtectedRoute>} />
-          <Route path="/ai" element={<ProfileProtectedRoute user={user} isLoading={loading}><AIChat /></ProfileProtectedRoute>} />
+          <Route path="/ai" element={<ProfileProtectedRoute user={user} isLoading={loading}><Voice /></ProfileProtectedRoute>} />
           <Route path="/appointments" element={<ProfileProtectedRoute user={user} isLoading={loading}><AppointmentBooking /></ProfileProtectedRoute>} />
           {/* <Route path="/resources" element={<ProtectedRoute userRole={userRole} requiredRole="student" isLoading={loading}><ResourceHub /></ProtectedRoute>} /> */}
           <Route path="/community" element={<ProfileProtectedRoute user={user} isLoading={loading}><PeerSupport /></ProfileProtectedRoute>} />

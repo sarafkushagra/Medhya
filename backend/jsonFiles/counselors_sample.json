@@ -4,6 +4,7 @@
     "email": "sarah.johnson@mindcare.edu",
     "phone": "+91-98765-43210",
     "specialization": ["Anxiety", "Depression", "Academic Stress"],
+    "expertise": "mental",
     "languages": ["English", "Hindi"],
     "appointmentType": "both",
     "availability": {
@@ -91,6 +92,7 @@
     "email": "raj.patel@mindcare.edu",
     "phone": "+91-98765-43211",
     "specialization": ["Relationship Issues", "Social Anxiety", "Career Counseling"],
+    "expertise": "mental",
     "languages": ["English", "Hindi", "Gujarati"],
     "appointmentType": "oncampus",
     "availability": {
@@ -172,6 +174,7 @@
     "email": "priya.sharma@mindcare.edu",
     "phone": "+91-98765-43212",
     "specialization": ["Trauma", "PTSD", "Family Issues"],
+    "expertise": "neuro",
     "languages": ["English", "Hindi", "Punjabi"],
     "appointmentType": "online",
     "availability": {
@@ -253,6 +256,7 @@
     "email": "amit.kumar@mindcare.edu",
     "phone": "+91-98765-43213",
     "specialization": ["Stress Management", "Mindfulness", "Self-Esteem"],
+    "expertise": "mental",
     "languages": ["English", "Hindi", "Bengali"],
     "appointmentType": "both",
     "availability": {
@@ -336,6 +340,7 @@
     "email": "meera.iyer@mindcare.edu",
     "phone": "+91-98765-43214",
     "specialization": ["Eating Disorders", "Body Image Issues", "Self-Esteem"],
+    "expertise": "gynoman",
     "languages": ["English", "Hindi", "Tamil", "Telugu"],
     "appointmentType": "oncampus",
     "availability": {
@@ -417,6 +422,7 @@
     "email": "arjun.singh@mindcare.edu",
     "phone": "+91-98765-43215",
     "specialization": ["Substance Abuse", "Addiction", "Behavioral Therapy"],
+    "expertise": "mental",
     "languages": ["English", "Hindi", "Punjabi", "Marathi"],
     "appointmentType": "both",
     "availability": {
@@ -498,6 +504,7 @@
     "email": "kavita.reddy@mindcare.edu",
     "phone": "+91-98765-43216",
     "specialization": ["Grief and Loss", "Bereavement", "Life Transitions"],
+    "expertise": "mental",
     "languages": ["English", "Hindi", "Telugu", "Kannada"],
     "appointmentType": "online",
     "availability": {
@@ -581,6 +588,7 @@
     "email": "sanjay.verma@mindcare.edu",
     "phone": "+91-98765-43217",
     "specialization": ["General", "Academic Stress", "Career Counseling"],
+    "expertise": "mental",
     "languages": ["English", "Hindi", "Marathi", "Gujarati"],
     "appointmentType": "oncampus",
     "availability": {

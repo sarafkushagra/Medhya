@@ -60,6 +60,22 @@ const userSchema = new mongoose.Schema({
     default: null
   },
 
+  // Counselor-specific fields (for counselors without separate counselor profile)
+  bio: {
+    type: String,
+    default: null
+  },
+
+  specialization: [{
+    type: String,
+    trim: true
+  }],
+
+  expertise: {
+    type: String,
+    default: null
+  },
+
   // Reference to counselor profile (for counselor users)
   counselorProfile: {
     type: mongoose.Schema.Types.ObjectId,

@@ -29,6 +29,12 @@ const counselorSchema = new mongoose.Schema({
       "Body Image Issues", "Addiction", "Behavioral Therapy", "Bereavement", "Life Transitions"
     ]
   }],
+  expertise: {
+    type: String,
+    required: [true, "Expertise field is required"],
+    enum: ["mental", "neuro", "gynoman"],
+    default: "mental"
+  },
   languages: [{
     type: String,
     required: [true, "At least one language is required"],
@@ -236,6 +242,7 @@ counselorSchema.methods.isActiveAndVerified = async function() {
 counselorSchema.index({ specialization: 1 });
 counselorSchema.index({ languages: 1 });
 counselorSchema.index({ appointmentType: 1 });
+counselorSchema.index({ expertise: 1 });
 counselorSchema.index({ isActive: 1 });
 counselorSchema.index({ rating: -1 });
 counselorSchema.index({ name: 'text', bio: 'text' });

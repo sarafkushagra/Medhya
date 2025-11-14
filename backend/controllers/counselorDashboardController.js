@@ -526,6 +526,7 @@ export const getCounselorProfile = catchAsync(async (req, res) => {
               experience: counselor.experience,
               education: counselor.education,
               bio: counselor.bio,
+              expertise: counselor.expertise,
               rating: counselor.rating,
               totalRatings: counselor.totalRatings,
               appointmentType: counselor.appointmentType,
@@ -547,7 +548,7 @@ export const getCounselorProfile = catchAsync(async (req, res) => {
           email: user.email,
           phone: user.phone,
           profileImage: user.profileImage,
-          specialization: ["Anxiety", "Depression", "Stress Management"],
+          specialization: user.specialization || ["Anxiety", "Depression", "Stress Management"],
           languages: ["English", "Hindi"],
           experience: 5,
           education: {
@@ -555,7 +556,8 @@ export const getCounselorProfile = catchAsync(async (req, res) => {
             institution: "University",
             year: 2020
           },
-          bio: "Experienced counselor helping students with mental health challenges.",
+          bio: user.bio || "Experienced counselor helping students with mental health challenges.",
+          expertise: user.expertise || null,
           rating: 4.5,
           totalRatings: 20,
           appointmentType: "both",
@@ -583,6 +585,7 @@ export const getCounselorProfile = catchAsync(async (req, res) => {
           experience: counselor.experience,
           education: counselor.education,
           bio: counselor.bio,
+          expertise: counselor.expertise,
           rating: counselor.rating,
           totalRatings: counselor.totalRatings,
           appointmentType: counselor.appointmentType,
@@ -605,21 +608,91 @@ export const updateCounselorProfile = catchAsync(async (req, res) => {
   delete updateData.email;
   delete updateData.license;
 
-  // First try to update in User model (for OAuth users)
-  let counselor = await User.findByIdAndUpdate(
+  // First try to find in User model (for OAuth users)
+  let user = await User.findById(counselorId);
+
+  if (user && user.role === 'counselor') {
+    // If it's an OAuth counselor user, update their counselor profile
+    if (user.counselorProfile) {
+      const counselor = await Counselor.findByIdAndUpdate(
+        user.counselorProfile,
+        updateData,
+        { new: true, runValidators: true }
+      );
+
+      if (counselor) {
+        return res.status(200).json({
+          status: 'success',
+          data: {
+            counselor: {
+              _id: counselor._id,
+              name: counselor.name,
+              email: counselor.email,
+              phone: counselor.phone,
+              profileImage: counselor.profileImage,
+              specialization: counselor.specialization,
+              languages: counselor.languages,
+              experience: counselor.experience,
+              education: counselor.education,
+              bio: counselor.bio,
+              expertise: counselor.expertise,
+              rating: counselor.rating,
+              totalRatings: counselor.totalRatings,
+              appointmentType: counselor.appointmentType,
+              availability: counselor.availability,
+              isActive: counselor.isActive
+            }
+          }
+        });
+      }
+    }
+
+    // If no counselor profile linked, update user data
+    const updatedUser = await User.findByIdAndUpdate(
+      counselorId,
+      {
+        bio: updateData.bio,
+        expertise: updateData.expertise,
+        specialization: updateData.specialization
+      },
+      { new: true, runValidators: true }
+    );
+
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        counselor: {
+          _id: updatedUser._id,
+          name: updatedUser.firstName + ' ' + updatedUser.lastName,
+          email: updatedUser.email,
+          phone: updatedUser.phone,
+          profileImage: updatedUser.profileImage,
+          specialization: updatedUser.specialization,
+          languages: ["English", "Hindi"],
+          experience: 5,
+          education: {
+            degree: "Masters in Psychology",
+            institution: "University",
+            year: 2020
+          },
+          bio: updatedUser.bio,
+          expertise: updatedUser.expertise,
+          rating: 4.5,
+          totalRatings: 20,
+          appointmentType: "both",
+          availability: {},
+          isActive: true
+        }
+      }
+    });
+  }
+
+  // If not found in User model, try Counselor model directly
+  const counselor = await Counselor.findByIdAndUpdate(
     counselorId,
     updateData,
     { new: true, runValidators: true }
   );
-
-  if (!counselor) {
-    // If not found in User model, try Counselor model
-    counselor = await Counselor.findByIdAndUpdate(
-      counselorId,
-      updateData,
-      { new: true, runValidators: true }
-    );
-  }
 
   if (!counselor) {
     throw new AppError('Counselor not found', 404);
@@ -628,7 +701,24 @@ export const updateCounselorProfile = catchAsync(async (req, res) => {
   res.status(200).json({
     status: 'success',
     data: {
-      counselor
+      counselor: {
+        _id: counselor._id,
+        name: counselor.name,
+        email: counselor.email,
+        phone: counselor.phone,
+        profileImage: counselor.profileImage,
+        specialization: counselor.specialization,
+        languages: counselor.languages,
+        experience: counselor.experience,
+        education: counselor.education,
+        bio: counselor.bio,
+        expertise: counselor.expertise,
+        rating: counselor.rating,
+        totalRatings: counselor.totalRatings,
+        appointmentType: counselor.appointmentType,
+        availability: counselor.availability,
+        isActive: counselor.isActive
+      }
     }
   });
 });
