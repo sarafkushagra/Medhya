@@ -29,6 +29,7 @@ import supplierRoutes from "./routes/suppliers.js";
 import reportRoutes from "./routes/reports.js";
 import gamesRoutes from "./routes/gamesRoutes.js";
 import openRouterChatController from "./controllers/openRouterChatController.js";
+import sendMessageStream from "./controllers/openRouterChatController.js";
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -236,6 +237,9 @@ app.use("/api/games", gamesRoutes);
 
 // Separate AI chat route (directly accessible at /chat)
 app.post('/chat', openRouterChatController);
+
+
+
 
 // Health check
 app.get("/api/health", (req, res) => {
