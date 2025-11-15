@@ -24,8 +24,6 @@ import InnovationShowcase from './Components/InnovationShowcase.jsx';
 import ErrorBoundary from './Components/ErrorBoundary.jsx';
 import UserProfile from './Components/UserProfile.jsx';
 
-// Import Wellness component
-import Wellness from './Components/Wellness.jsx';
 import CounselorDashboard from './Components/CounselorDashboard.jsx';
 import Games from './Components/Games.jsx';
 import Report from './Components/Report.jsx';
@@ -278,7 +276,6 @@ export default function App() {
           <Route path="/appointments" element={<ProfileProtectedRoute user={user} isLoading={loading}><AppointmentBooking /></ProfileProtectedRoute>} />
           {/* <Route path="/resources" element={<ProtectedRoute userRole={userRole} requiredRole="student" isLoading={loading}><ResourceHub /></ProtectedRoute>} /> */}
           <Route path="/community" element={<ProfileProtectedRoute user={user} isLoading={loading}><PeerSupport /></ProfileProtectedRoute>} />
-          <Route path="/wellness" element={<ProfileProtectedRoute user={user} isLoading={loading}><Wellness /></ProfileProtectedRoute>} />
           <Route path="/games" element={<ProfileProtectedRoute user={user} isLoading={loading}><Games /></ProfileProtectedRoute>} />
           <Route path="/cognitive-report" element={<ProfileProtectedRoute user={user} isLoading={loading}><Report /></ProfileProtectedRoute>} />
           <Route path="/reports" element={<ProfileProtectedRoute user={user} isLoading={loading}><MedicalReports /></ProfileProtectedRoute>} />

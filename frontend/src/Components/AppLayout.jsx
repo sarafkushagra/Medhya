@@ -20,9 +20,8 @@ const studentNavItems = [
   // { path: '/resources', label: 'Resources', icon: BookOpen },
   { path: '/games', label: 'Cognitive Games', icon: Brain },
   { path: '/community', label: 'Community', icon: Users },
-  { path: '/wellness', label: 'Wellness', icon: Heart },
   { path: '/reports', label: 'Report', icon: Database },
-  { path: '/delivery', label: 'Delivery', icon: Box },
+  { path: '/delivery', label: 'Market Place', icon: Box },
 ];
 
 const adminNavItems = [

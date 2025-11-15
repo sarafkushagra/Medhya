@@ -6,13 +6,15 @@ import { Progress } from '../ui/Progress.jsx';
 import {
   MessageCircle, Calendar, Users, Shield, Heart, Brain, Phone,
   TrendingUp, Globe, Zap, CheckCircle, Target, Smartphone, AlertTriangle, Lock,
-  BookOpen, X, Badge, Gamepad2, Puzzle, Smile, Leaf
+  BookOpen, X, Badge, Gamepad2, Puzzle, Smile, Leaf, BarChart3
 } from 'lucide-react';
 import ResourceContent from './ResourceContent.jsx';
 import AssessmentGraph from './AssessmentGraph.jsx';
 import DailyJournal from './DailyJournal.jsx';
+import DailyAssessment from './DailyAssessment.jsx';
 import MoodTrackerModal from './MoodTrackerModal.jsx';
 import { moodAPI } from '../services/api.js';
+import { useJournal } from '../hooks/useJournal.js';
 
 const wellnessTips = [
   "Take a 5-minute breathing break every hour",
@@ -36,6 +38,8 @@ const StudentDashboard = () => {
   const [todaysMood, setTodaysMood] = useState(null);
   const [isLoadingMood, setIsLoadingMood] = useState(true);
 
+  const { weeklyProgress, getWeeklyProgress } = useJournal();
+
   // Fetch today's mood on component mount
   useEffect(() => {
     const fetchTodaysMood = async () => {
@@ -51,6 +55,7 @@ const StudentDashboard = () => {
     };
 
     fetchTodaysMood();
+    getWeeklyProgress();
   }, []);
 
   // Handle mood submission
@@ -77,6 +82,17 @@ const StudentDashboard = () => {
   const handleMoodTrackerClick = () => {
     setIsMoodTrackerModalOpen(true);
   };
+
+  const getMoodEmoji = (mood) => {
+    const moodMap = {
+      happy: '😊',
+      neutral: '😐',
+      sad: '😔',
+      anxious: '😰',
+      stressed: '😡'
+    }
+    return moodMap[mood] || '😐'
+  };
   // Full Dashboard Content for Complete Profiles
   const FullDashboardContent = () => (
     <div className="space-y-6">
@@ -90,7 +106,7 @@ const StudentDashboard = () => {
       <div className="grid flex-row gap-6 md:grid-cols-2">
         <div className="grid flex-cols gap-6 md:grid-row-2">
           <div className="grid flex-row gap-6 md:grid-cols-2">
-            <DailyJournal />
+            <DailyAssessment />
             {/* Mood Check-in Card */}
             <Card className="border-blue-200 hover:shadow-lg transition-shadow duration-300">
               <CardHeader className="pb-3">
@@ -144,6 +160,50 @@ const StudentDashboard = () => {
           <AssessmentGraph />
         </Card>
       </div>
+      {/* Weekly Wellness Progress */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <BarChart3 className="w-5 h-5 text-purple-600" />
+            Weekly Wellness Progress
+          </CardTitle>
+          <CardDescription>Your wellness score over the past week</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-7 gap-2">
+            {weeklyProgress.map((day, index) => (
+              <div key={index} className="text-center">
+                <div className="text-sm font-medium mb-2">{day.day}</div>
+                <div className="w-full bg-gray-200 rounded-full h-24 relative">
+                  {day.hasEntry ? (
+                    <>
+                      <div
+                        className="bg-gradient-to-t from-green-400 to-green-600 rounded-full absolute bottom-0 w-full"
+                        style={{ height: `${day.entry?.wellnessScore || 70}%` }}
+                      ></div>
+                      <div className="absolute inset-0 flex items-end justify-center pb-1">
+                        <span className="text-xs font-bold text-white">{day.entry?.wellnessScore || 70}%</span>
+                      </div>
+                      <div className="absolute -top-1 -right-1">
+                        <CheckCircle className="w-4 h-4 text-green-600 bg-white rounded-full" />
+                      </div>
+                    </>
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-xs text-gray-500">No entry</span>
+                    </div>
+                  )}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">
+                  {day.hasEntry && day.entry?.mood && (
+                    <span>{getMoodEmoji(day.entry.mood)}</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
       <div className="grid flex-row gap-6 md:grid-cols-2">
         {/* Play Games */}
         <div className="grid flex-row gap-6 md:grid-cols-1">
