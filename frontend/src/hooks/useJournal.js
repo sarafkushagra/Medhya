@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import apiClient from '../utils/apiClient.js';
 
 export const useJournal = () => {
@@ -11,7 +11,7 @@ export const useJournal = () => {
   const [pagination, setPagination] = useState({});
 
   // Get all journal entries
-  const getJournalEntries = async (params = {}) => {
+  const getJournalEntries = useCallback(async (params = {}) => {
     setLoading(true);
     setError(null);
     try {
@@ -32,7 +32,7 @@ export const useJournal = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // Get today's entry
   const getTodayEntry = async () => {

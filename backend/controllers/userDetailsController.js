@@ -10,14 +10,12 @@ export const getUserDetails = catchAsync(async (req, res, next) => {
   const userDetails = await UserDetails.findOne({ user: userId })
     .populate('user', 'email role isProfileComplete');
 
-  if (!userDetails) {
-    return next(new AppError('User details not found', 404));
-  }
-
+  // Instead of throwing 404, return successful response with null data
+  // This allows the frontend to handle the case where user hasn't completed their profile yet
   res.status(200).json({
     status: 'success',
     data: {
-      userDetails
+      userDetails: userDetails || null
     }
   });
 });

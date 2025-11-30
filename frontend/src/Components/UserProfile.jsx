@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
 import { apiCall, userDetailsAPI } from '../services/api.js';
@@ -113,12 +113,14 @@ const UserProfile = () => {
       } else {
         setUserDetails(null);
         setEditedDetails({});
+        setIsInitialLoad(false);
       }
     } catch (err) {
       if (err.message.includes('404') || err.message.includes('not found')) {
         setError('No profile details found. Please complete your profile first.');
         setUserDetails(null);
         setEditedDetails({});
+        setIsInitialLoad(false);
       } else {
         setError('Failed to load profile details. Please try again.');
         // Retry after 2 seconds for network errors
@@ -129,7 +131,7 @@ const UserProfile = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [user?._id, isLoading, lastFetchTime, userDetails, isInitialLoad]);
+  }, [user?._id, isLoading, lastFetchTime]);
 
   // Fetch user details on component mount or when user changes
   useEffect(() => {
@@ -318,7 +320,7 @@ const UserProfile = () => {
     setSuccess('');
   };
 
-  const calculateProfileCompletion = () => {
+  const calculateProfileCompletion = useCallback(() => {
     if (!userDetails) return 0;
 
     const requiredFields = [
@@ -335,9 +337,9 @@ const UserProfile = () => {
     );
 
     return Math.round((completedFields.length / requiredFields.length) * 100);
-  };
+  }, [userDetails]);
 
-  const profileCompletion = calculateProfileCompletion();
+  const profileCompletion = useMemo(() => calculateProfileCompletion(), [calculateProfileCompletion]);
 
   if (!user) {
     return (

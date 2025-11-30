@@ -76,18 +76,22 @@ const CounselorDashboard = () => {
   const [payments, setPayments] = useState([]);
 
   const socket = useSocket();
-  // After login
-  socket.emit("counselor-online", user?.counselorProfile);
+  // After login - only emit when user is authenticated
+  if (user) {
+    socket.emit("counselor-online", user?.counselorProfile);
+  }
 
   socket.on("student-status", ({ studentID, isOnline }) => {
   });
 
 
-  // Load initial data - only once on mount
+  // Load initial data - only once on mount when authenticated
   useEffect(() => {
-    loadDashboardData();
-    loadProfile();
-  }, []);
+    if (user) {
+      loadDashboardData();
+      loadProfile();
+    }
+  }, [user]);
 
   // Check if password change is required when user data is available
   useEffect(() => {
@@ -439,6 +443,21 @@ const CounselorDashboard = () => {
     setActiveView('messages');
   };
 
+
+  // Show loading state if user is not authenticated yet
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <Card className="max-w-md w-full mx-4">
+          <CardContent className="p-6 text-center">
+            <RefreshCw className="h-12 w-12 animate-spin text-indigo-600 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold text-gray-800 mb-2">Loading Dashboard</h2>
+            <p className="text-gray-600">Please wait while we authenticate you...</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   // Show error message if there's an error
   if (error && !loading) {

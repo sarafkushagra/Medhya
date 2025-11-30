@@ -88,11 +88,13 @@ const AdminDashboard = () => {
     }
   };
 
-  // Load data when component mounts
+  // Load data when component mounts - only when authenticated
   useEffect(() => {
-    fetchUsers();
-    fetchCounselors();
-  }, []);
+    if (user) {
+      fetchUsers();
+      fetchCounselors();
+    }
+  }, [user]);
 
   // Handle viewing user details
   const handleViewUserDetails = (user) => {
@@ -189,9 +191,21 @@ const AdminDashboard = () => {
   };
 
   return (
-
-    <div className="min-h-screen  text-gray-800 bg-gradient-to-br from-sky-100 via-white to-blue-100 transition-colors duration-300">
-      <div className="container mx-auto px-4 py-8 shadow-2xl shadow-gray-800 rounded-lg">
+    <>
+      {/* Show loading state if user is not authenticated yet */}
+      {!user ? (
+        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+          <Card className="max-w-md w-full mx-4">
+            <CardContent className="p-6 text-center">
+              <RefreshCw className="h-12 w-12 animate-spin text-indigo-600 mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-gray-800 mb-2">Loading Dashboard</h2>
+              <p className="text-gray-600">Please wait while we authenticate you...</p>
+            </CardContent>
+          </Card>
+        </div>
+      ) : (
+        <div className="min-h-screen  text-gray-800 bg-gradient-to-br from-sky-100 via-white to-blue-100 transition-colors duration-300">
+          <div className="container mx-auto px-4 py-8 shadow-2xl shadow-gray-800 rounded-lg">
         <Card className="shadow-2xl rounded-2xl mb-8 transform transition-transform duration-500 hover:scale-[1.005]">
           <CardHeader>
             <CardTitle className="flex items-center gap-4 text-4xl font-extrabold text-indigo-800">
@@ -585,7 +599,9 @@ const AdminDashboard = () => {
             </Alert>
           </TabsContent>
         </Tabs>
-      </div>
+        </div>
+        </div>
+      )}
 
       {/* Password Verification Modal */}
       {showPasswordPrompt && (
@@ -1416,7 +1432,8 @@ const AdminDashboard = () => {
           </div>
         </div>
       )}
-    </div>
+
+    </>
   );
 };
 

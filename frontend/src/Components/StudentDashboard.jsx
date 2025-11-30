@@ -15,6 +15,7 @@ import DailyAssessment from './DailyAssessment.jsx';
 import MoodTrackerModal from './MoodTrackerModal.jsx';
 import { moodAPI } from '../services/api.js';
 import { useJournal } from '../hooks/useJournal.js';
+import { useAuth } from '../hooks/useAuth.js';
 
 const wellnessTips = [
   "Take a 5-minute breathing break every hour",
@@ -34,15 +35,22 @@ const games = [
 ];
 
 const StudentDashboard = () => {
+  const { user, loading: authLoading } = useAuth();
   const [isMoodTrackerModalOpen, setIsMoodTrackerModalOpen] = useState(false);
   const [todaysMood, setTodaysMood] = useState(null);
   const [isLoadingMood, setIsLoadingMood] = useState(true);
 
   const { weeklyProgress, getWeeklyProgress } = useJournal();
 
-  // Fetch today's mood on component mount
+  // Fetch today's mood on component mount - only when user is authenticated
   useEffect(() => {
     const fetchTodaysMood = async () => {
+      // Only fetch if user is authenticated and not loading
+      if (!user || authLoading) {
+        setIsLoadingMood(false);
+        return;
+      }
+
       try {
         const response = await moodAPI.getTodaysMood();
         setTodaysMood(response.data);
@@ -55,11 +63,18 @@ const StudentDashboard = () => {
     };
 
     fetchTodaysMood();
-    getWeeklyProgress();
-  }, []);
+    if (user && !authLoading) {
+      getWeeklyProgress();
+    }
+  }, [user, authLoading]); // Add user and authLoading as dependencies
 
   // Handle mood submission
   const handleMoodSubmit = async (moodData) => {
+    // Ensure user is authenticated before submitting
+    if (!user || authLoading) {
+      throw new Error('Please wait for authentication to complete');
+    }
+
     try {
       if (todaysMood) {
         // Update existing mood
@@ -264,7 +279,22 @@ const StudentDashboard = () => {
 
   return (
     <div className="space-y-6">
-      <FullDashboardContent />
+      {/* Show loading state while authentication is being established */}
+      {authLoading ? (
+        <div className="flex flex-col items-center justify-center py-12 space-y-4">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <p className="text-gray-600 font-medium">Setting up your dashboard...</p>
+          <p className="text-sm text-gray-500">Please wait while we load your personalized content</p>
+        </div>
+      ) : !user ? (
+        <div className="flex flex-col items-center justify-center py-12 space-y-4">
+          <AlertTriangle className="w-12 h-12 text-orange-500" />
+          <p className="text-gray-600 font-medium">Authentication required</p>
+          <p className="text-sm text-gray-500">Please log in to access your dashboard</p>
+        </div>
+      ) : (
+        <FullDashboardContent />
+      )}
 
       {/* Mood Tracker Modal */}
       <MoodTrackerModal
