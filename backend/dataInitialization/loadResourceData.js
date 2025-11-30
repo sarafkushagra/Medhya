@@ -17,7 +17,7 @@ import Resource from '../models/resourceModel.js';
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
+    
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
     process.exit(1);
@@ -33,11 +33,11 @@ const loadResourceData = async () => {
 
     // Clear existing resources
     await Resource.deleteMany({});
-    console.log('Cleared existing resources');
+    
 
     // Insert sample data
     const resources = await Resource.insertMany(sampleData);
-    console.log(`Successfully loaded ${resources.length} resources`);
+    
 
     // Log some statistics
     const stats = await Resource.aggregate([
@@ -55,12 +55,12 @@ const loadResourceData = async () => {
 
     if (stats.length > 0) {
       const stat = stats[0];
-      console.log('\nResource Statistics:');
-      console.log(`Total Resources: ${stat.totalResources}`);
-      console.log(`Featured Resources: ${stat.featuredResources}`);
-      console.log(`Active Resources: ${stat.activeResources}`);
-      console.log(`Total Views: ${stat.totalViews}`);
-      console.log(`Total Downloads: ${stat.totalDownloads}`);
+      
+      
+      
+      
+      
+      
     }
 
     // Language statistics
@@ -74,9 +74,9 @@ const loadResourceData = async () => {
       { $sort: { count: -1 } }
     ]);
 
-    console.log('\nResources by Language:');
+    
     languageStats.forEach(stat => {
-      console.log(`${stat._id}: ${stat.count} resources`);
+      
     });
 
     // Category statistics
@@ -90,12 +90,12 @@ const loadResourceData = async () => {
       { $sort: { count: -1 } }
     ]);
 
-    console.log('\nResources by Category:');
+    
     categoryStats.forEach(stat => {
-      console.log(`${stat._id}: ${stat.count} resources`);
+      
     });
 
-    console.log('\n✅ Resource data loaded successfully!');
+    
     process.exit(0);
   } catch (error) {
     console.error('Error loading resource data:', error);

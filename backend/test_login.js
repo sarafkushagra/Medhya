@@ -17,7 +17,6 @@ const options = {
 };
 
 const req = http.request(options, (res) => {
-  console.log('Status:', res.statusCode);
 
   let data = '';
   res.on('data', (chunk) => {
@@ -27,9 +26,7 @@ const req = http.request(options, (res) => {
   res.on('end', () => {
     try {
       const jsonData = JSON.parse(data);
-      console.log('Response:', JSON.stringify(jsonData, null, 2));
     } catch (e) {
-      console.log('Raw Response:', data);
     }
   });
 });

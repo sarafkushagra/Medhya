@@ -23,34 +23,9 @@ export const getDomainInfo = () => {
   };
 };
 
-// Log domain information for OAuth configuration
 export const logDomainInfo = () => {
   const domainInfo = getDomainInfo();
-  
-  console.log('🌐 Domain Information for OAuth Configuration:');
-  console.log('==============================================');
-  console.log('Hostname:', domainInfo.hostname);
-  console.log('Protocol:', domainInfo.protocol);
-  console.log('Port:', domainInfo.port || 'default');
-  console.log('Origin:', domainInfo.origin);
-  console.log('Full URL:', domainInfo.fullUrl);
-  console.log('');
-  console.log('📝 Add these to Google Cloud Console OAuth settings:');
-  console.log('===================================================');
-  console.log('Authorized JavaScript origins:');
-  console.log(`  ${domainInfo.origin}`);
-  console.log('');
-  console.log('Authorized redirect URIs:');
-  console.log(`  ${domainInfo.origin}`);
-  console.log('==============================================');
   
   return domainInfo;
 };
 
-// Auto-log domain info when imported
-if (typeof window !== 'undefined') {
-  // Log after a short delay to ensure the page is loaded
-  setTimeout(() => {
-    logDomainInfo();
-  }, 1000);
-}

@@ -15,7 +15,6 @@ dotenv.config();
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mindcare');
-    console.log('✅ Connected to MongoDB');
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
     process.exit(1);
@@ -81,7 +80,6 @@ const createTestCounselor = async () => {
     counselorUser.counselorProfile = counselor._id;
     await counselorUser.save();
 
-    console.log('✅ Test counselor created:', counselor.name);
     return { counselor, counselorUser };
   } catch (error) {
     console.error('❌ Error creating test counselor:', error);
@@ -141,7 +139,6 @@ const createTestStudents = async () => {
       students.push(student);
     }
 
-    console.log('✅ Test students created:', students.length);
     return students;
   } catch (error) {
     console.error('❌ Error creating test students:', error);
@@ -220,7 +217,6 @@ const createTestAppointments = async (counselor, students) => {
       appointments.push(appointment);
     }
 
-    console.log('✅ Test appointments created:', appointments.length);
     return appointments;
   } catch (error) {
     console.error('❌ Error creating test appointments:', error);
@@ -296,7 +292,6 @@ const createTestMessages = async (counselor, students) => {
       messages.push(message);
     }
 
-    console.log('✅ Test messages created:', messages.length);
     return messages;
   } catch (error) {
     console.error('❌ Error creating test messages:', error);
@@ -365,7 +360,6 @@ const createTestPayments = async (counselor, students) => {
       payments.push(payment);
     }
 
-    console.log('✅ Test payments created:', payments.length);
     return payments;
   } catch (error) {
     console.error('❌ Error creating test payments:', error);
@@ -440,7 +434,6 @@ const createTestSessionNotes = async (counselor, students, appointments) => {
       sessionNotes.push(sessionNote);
     }
 
-    console.log('✅ Test session notes created:', sessionNotes.length);
     return sessionNotes;
   } catch (error) {
     console.error('❌ Error creating test session notes:', error);
@@ -526,7 +519,6 @@ const createCounselorStats = async (counselor) => {
       }
     });
 
-    console.log('✅ Counselor stats created');
     return stats;
   } catch (error) {
     console.error('❌ Error creating counselor stats:', error);
@@ -537,7 +529,6 @@ const createCounselorStats = async (counselor) => {
 // Main function to create all test data
 const createTestData = async () => {
   try {
-    console.log('🚀 Starting to create test data for counselor dashboard...\n');
 
     // Connect to database
     await connectDB();
@@ -563,29 +554,11 @@ const createTestData = async () => {
     // Create counselor stats
     const stats = await createCounselorStats(counselor);
 
-    console.log('\n🎉 All test data created successfully!');
-    console.log('\n📊 Summary:');
-    console.log(`- Counselor: ${counselor.name} (${counselor.email})`);
-    console.log(`- Students: ${students.length}`);
-    console.log(`- Appointments: ${appointments.length}`);
-    console.log(`- Messages: ${messages.length}`);
-    console.log(`- Payments: ${payments.length}`);
-    console.log(`- Session Notes: ${sessionNotes.length}`);
-    console.log(`- Counselor Stats: Created`);
-
-    console.log('\n🔑 Test Login Credentials:');
-    console.log(`Email: ${counselorUser.email}`);
-    console.log(`Password: password123`);
-    console.log(`Role: counselor`);
-
-    console.log('\n✅ You can now test the counselor dashboard with this data!');
-
   } catch (error) {
     console.error('❌ Error creating test data:', error);
   } finally {
     // Close database connection
     await mongoose.connection.close();
-    console.log('\n🔌 Database connection closed');
     process.exit(0);
   }
 };

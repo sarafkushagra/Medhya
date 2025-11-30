@@ -14,8 +14,7 @@ class FastAPIChatService {
     this.apiKey = apiKey;
     this.baseUrl = baseUrl;
     this.isConnected = true;
-    console.log('FastAPI Chat Service initialized');
-  }
+   }
 
   // Send message to the AI model (updated for your friend's API)
   async sendMessage(message = {}) {
@@ -66,13 +65,11 @@ class FastAPIChatService {
 
   // Get conversation history (not implemented in your friend's API yet)
   async getConversationHistory() {
-    console.log('Conversation history not implemented in current API');
     return [];
   }
 
   // Clear conversation (not implemented in your friend's API yet)
   async clearConversation() {
-    console.log('Clear conversation not implemented in current API');
     return true;
   }
 }

@@ -20,9 +20,8 @@ const ResourceContent = () => {
     useEffect(() => {
         const fetchResources = async () => {
             try {
-                console.log('🔧 ResourceContent: Starting to fetch all resources...');
-                const result = await getResources({}, 1, 12); // Get all resources, page 1, limit 12
-                console.log('✅ ResourceContent: Fetched resources:', result);
+                const _result = await getResources({}, 1, 12); // Get all resources, page 1, limit 12
+                
             } catch (err) {
                 console.error('❌ ResourceContent: Error fetching resources:', err);
             } finally {

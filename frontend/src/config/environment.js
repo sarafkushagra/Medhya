@@ -67,16 +67,6 @@ export const isProduction = () => {
 export const API_BASE_URL = getApiBaseUrl();
 export const API_URL = getApiUrl();
 
-// Debug logging (only in development)
-if (isDevelopment()) {
-  console.log('🔧 Environment Configuration:', {
-    API_BASE_URL,
-    API_URL,
-    hostname: typeof window !== 'undefined' ? window.location.hostname : 'server-side',
-    isDevelopment: isDevelopment(),
-    isProduction: isProduction()
-  });
-}
 
 export default {
   API_BASE_URL,

@@ -163,7 +163,6 @@ const medicineOrder = (io) => {
             `
           };
           await transporter.sendMail(mailOptions);
-          console.log('Rejection email sent to patient:', order.patientId.email);
         } catch (emailError) {
           console.error('Failed to send rejection email:', emailError);
         }
@@ -214,7 +213,6 @@ const medicineOrder = (io) => {
           `
         };
         await transporter.sendMail(mailOptions);
-        console.log('Approval email sent to patient:', order.patientId.email);
       } catch (emailError) {
         console.error('Failed to send approval email:', emailError);
       }

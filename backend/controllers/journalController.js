@@ -163,22 +163,14 @@ export const updateJournalEntry = catchAsync(async (req, res, next) => {
 
 // Delete a journal entry
 export const deleteJournalEntry = catchAsync(async (req, res, next) => {
-  console.log('Delete request for journal entry ID:', req.params.id);
-  console.log('User ID:', req.user._id);
-
   const journalEntry = await JournalEntry.findOneAndDelete({
     _id: req.params.id,
     user: req.user._id
   });
 
-  console.log('Found journal entry to delete:', journalEntry);
-
   if (!journalEntry) {
-    console.log('No journal entry found with ID:', req.params.id, 'for user:', req.user._id);
     return next(new AppError("Journal entry not found", 404));
   }
-
-  console.log('Successfully deleted journal entry:', journalEntry._id);
 
   res.status(200).json({
     status: "success",

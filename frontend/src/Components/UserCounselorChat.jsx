@@ -27,7 +27,6 @@ const UserCounselorChat = () => {
     const [counselorInfo, setCounselorInfo] = useState(null);
     const [isCounselorOnline, setIsCounselorOnline] = useState(false);
 
-      console.log(user);
     //   socket.emit("counselor-online", { counselorID: counselorId });
 
     // Get appointment and counselor info from navigation state
@@ -40,11 +39,9 @@ const UserCounselorChat = () => {
 
         const handleStartVideoCall = async () => {
         try {
-            console.log(appointmentId)
             const res = await apiClient.get(
                 `/appointments/find/${appointmentId}`
             );
-            console.log(res);
             if (res?.roomId) {
                 navigate(`/room/${res.roomId}`); // Go to video call page
             } else {
@@ -58,10 +55,8 @@ const UserCounselorChat = () => {
 
     useEffect(() => {
         socket.on("counselor-status", ({ counselorID, isOnline }) => {
-            console.log("Received counselor status:", { counselorID, isOnline });
             if (counselorId === counselorID) {
                 setIsCounselorOnline(isOnline);
-                console.log(`Counselor ${counselorID} is now ${isOnline ? 'online' : 'offline'}`);
             }
         });
 

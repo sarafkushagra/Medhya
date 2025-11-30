@@ -102,11 +102,6 @@ export const useJournal = () => {
       
       return response.data.journalEntry;
     } catch (err) {
-      console.log('Journal creation error:', err);
-      console.log('Error response:', err.response);
-      console.log('Error status:', err.response?.status);
-      console.log('Error data:', err.response?.data);
-      
       // Handle the case where user already has an entry for today
       if (err.response?.status === 400) {
         const errorMessage = err.response?.data?.message || 'You already have a journal entry for today. You can view it in the "View All Journals" tab.';
@@ -152,13 +147,10 @@ export const useJournal = () => {
     setLoading(true);
     setError(null);
     try {
-      console.log('Deleting journal entry with ID:', entryId);
       const response = await apiClient.delete(`/journal/${entryId}`);
-      console.log('Delete response:', response);
 
       // Check if the response indicates success
       if (response && (response.status === 'success' || response.message)) {
-        console.log('Journal entry deleted successfully');
       }
 
       // Refresh today's entry and weekly progress

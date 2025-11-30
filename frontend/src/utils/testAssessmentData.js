@@ -35,10 +35,8 @@ export const generateTestAssessmentData = () => {
 // Send test assessment data to backend
 export const sendTestAssessmentData = async () => {
   try {
-    console.log('📊 Generating test assessment data...');
     const testData = generateTestAssessmentData();
     
-    console.log(`📤 Sending ${testData.length} test assessments to backend...`);
     
     const results = await Promise.allSettled(
       testData.map(assessment => assessmentAPI.createAssessment(assessment))
@@ -47,10 +45,6 @@ export const sendTestAssessmentData = async () => {
     const successful = results.filter(result => result.status === 'fulfilled').length;
     const failed = results.filter(result => result.status === 'rejected').length;
     
-    console.log(`✅ Successfully created ${successful} assessments`);
-    if (failed > 0) {
-      console.log(`❌ Failed to create ${failed} assessments`);
-    }
     
     return { successful, failed, total: testData.length };
   } catch (error) {
@@ -62,10 +56,8 @@ export const sendTestAssessmentData = async () => {
 // Test the assessment analytics API
 export const testAssessmentAnalytics = async () => {
   try {
-    console.log('🔍 Testing assessment analytics API...');
     
     const analytics = await assessmentAPI.getAssessmentAnalytics('7d');
-    console.log('📊 Analytics data:', analytics);
     
     return analytics;
   } catch (error) {
@@ -77,10 +69,8 @@ export const testAssessmentAnalytics = async () => {
 // Test the weekly patterns API
 export const testWeeklyPatterns = async () => {
   try {
-    console.log('📈 Testing weekly patterns API...');
     
     const patterns = await assessmentAPI.getWeeklyPatterns();
-    console.log('📊 Weekly patterns:', patterns);
     
     return patterns;
   } catch (error) {
@@ -92,7 +82,6 @@ export const testWeeklyPatterns = async () => {
 // Comprehensive test function
 export const runAssessmentTests = async () => {
   try {
-    console.log('🧪 Starting assessment API tests...');
     
     // First, send some test data
     await sendTestAssessmentData();
@@ -106,7 +95,6 @@ export const runAssessmentTests = async () => {
     // Test weekly patterns
     await testWeeklyPatterns();
     
-    console.log('✅ All assessment tests completed successfully!');
   } catch (error) {
     console.error('❌ Assessment tests failed:', error);
   }

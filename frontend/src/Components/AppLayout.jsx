@@ -14,6 +14,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar';
 
 const studentNavItems = [
   { path: '/dashboard', label: 'Dashboard', icon: BarChart3 },
+  // { path: '/neurodashboard', label: 'Dashboard', icon: BarChart3 },
   { path: '/chat', label: 'Medhya Support', icon: MessageCircle },
   { path: '/doctor', label: 'Doctor', icon: BriefcaseMedical },
   { path: '/appointments', label: 'Appointments', icon: Calendar },

@@ -209,7 +209,7 @@ app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 // MongoDB
 mongoose
   .connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ MongoDB connected"))
+  .then(() => console.log(" MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB error:", err));
 
 // Routes
@@ -300,6 +300,4 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 httpServer.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || "development"}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
 });

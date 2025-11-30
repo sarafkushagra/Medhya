@@ -40,6 +40,10 @@ export const getAllResources = catchAsync(async (req, res, next) => {
     filter.difficulty = req.query.difficulty;
   }
 
+  if (req.query.expertise && req.query.expertise !== 'all') {
+    filter.expertise = req.query.expertise;
+  }
+
   // Build search query
   let searchQuery = {};
   if (req.query.search) {

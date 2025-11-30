@@ -157,7 +157,6 @@ const MedicineDeliveryModal = ({ isOpen, onClose, onOrderUploaded }) => {
         console.error('Failed to parse response as JSON:', parseError);
         uploadData = {};
       }
-      console.log('Upload response:', { status: uploadRes.status, ok: uploadRes.ok, data: uploadData });
       if (!uploadRes.ok) {
         const errorMessage = uploadData?.message || uploadData?.error || `Upload failed (${uploadRes.status})`;
         throw new Error(errorMessage);

@@ -3,22 +3,27 @@ import catchAsync from '../utils/catchAsync.js';
 import AppError from '../utils/appError.js';
 import GAD7 from '../models/gad7Model.js';
 import PHQ9 from '../models/phq9Model.js';
+import NeuroQuestion from '../models/neuroQuestionModel.js';
 
 // Get questions for a specific assessment type
 export const getQuestions = catchAsync(async (req, res) => {
   const { type } = req.params;
-  
-  if (!['GAD-7', 'PHQ-9'].includes(type)) {
+
+  if (!['GAD-7', 'PHQ-9', 'Neuro'].includes(type)) {
     throw new AppError('Invalid assessment type', 400);
   }
 
-  const Model = type === 'GAD-7' ? GAD7 : PHQ9;
+  let Model;
+  if (type === 'GAD-7') Model = GAD7;
+  else if (type === 'PHQ-9') Model = PHQ9;
+  else if (type === 'Neuro') Model = NeuroQuestion;
+
   const questionsData = await Model.findOne({});
-  
+
   if (!questionsData || !questionsData.questions || questionsData.questions.length === 0) {
     throw new AppError('Questions not found in database', 404);
   }
-  
+
   res.status(200).json({
     status: 'success',
     data: {
@@ -33,7 +38,7 @@ export const submitAssessment = catchAsync(async (req, res) => {
   const { type, responses } = req.body;
   const userId = req.user.id;
 
-  if (!['GAD-7', 'PHQ-9'].includes(type)) {
+  if (!['GAD-7', 'PHQ-9', 'Neuro'].includes(type)) {
     throw new AppError('Invalid assessment type', 400);
   }
 
@@ -99,7 +104,7 @@ export const getAssessmentHistory = catchAsync(async (req, res) => {
   const { type, limit = 10 } = req.query;
 
   const filter = { user: userId };
-  if (type && ['GAD-7', 'PHQ-9'].includes(type)) {
+  if (type && ['GAD-7', 'PHQ-9', 'Neuro'].includes(type)) {
     filter.type = type;
   }
 
@@ -132,13 +137,10 @@ export const getFiveDayAverages = catchAsync(async (req, res) => {
 
 // Get today's assessment if exists
 export const getTodayAssessment = catchAsync(async (req, res) => {
-  console.log('🔍 getTodayAssessment called with params:', req.params);
-  console.log('🔍 User from auth middleware:', req.user);
-
   const userId = req.user.id;
   const { type } = req.params;
 
-  if (!['GAD-7', 'PHQ-9'].includes(type)) {
+  if (!['GAD-7', 'PHQ-9', 'Neuro'].includes(type)) {
     throw new AppError('Invalid assessment type', 400);
   }
 
@@ -146,8 +148,6 @@ export const getTodayAssessment = catchAsync(async (req, res) => {
   today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
-
-  console.log('🔍 Searching for assessment:', { userId, type, today, tomorrow });
 
   const assessment = await Assessment.findOne({
     user: userId,
@@ -158,10 +158,7 @@ export const getTodayAssessment = catchAsync(async (req, res) => {
     }
   });
 
-  console.log('🔍 Assessment found:', assessment);
-
   if (!assessment) {
-    console.log('🔍 No assessment found, returning 404');
     return res.status(404).json({
       status: 'error',
       message: 'No assessment found for today'
@@ -212,7 +209,7 @@ export const getAssessmentStats = catchAsync(async (req, res) => {
   const { type, period = 30 } = req.query;
 
   const filter = { user: userId };
-  if (type && ['GAD-7', 'PHQ-9'].includes(type)) {
+  if (type && ['GAD-7', 'PHQ-9', 'Neuro'].includes(type)) {
     filter.type = type;
   }
 
@@ -242,24 +239,29 @@ export const getAssessmentStats = catchAsync(async (req, res) => {
   if (!type) {
     const gad7Assessments = assessments.filter(a => a.type === 'GAD-7');
     const phq9Assessments = assessments.filter(a => a.type === 'PHQ-9');
+    const neuroAssessments = assessments.filter(a => a.type === 'Neuro');
 
     stats.assessmentsByType = {
       'GAD-7': {
         count: gad7Assessments.length,
-        averageScore: gad7Assessments.length > 0 
-          ? gad7Assessments.reduce((sum, a) => sum + a.score, 0) / gad7Assessments.length 
+        averageScore: gad7Assessments.length > 0
+          ? gad7Assessments.reduce((sum, a) => sum + a.score, 0) / gad7Assessments.length
           : 0
       },
       'PHQ-9': {
         count: phq9Assessments.length,
-        averageScore: phq9Assessments.length > 0 
-          ? phq9Assessments.reduce((sum, a) => sum + a.score, 0) / phq9Assessments.length 
+        averageScore: phq9Assessments.length > 0
+          ? phq9Assessments.reduce((sum, a) => sum + a.score, 0) / phq9Assessments.length
+          : 0
+      },
+      'Neuro': {
+        count: neuroAssessments.length,
+        averageScore: neuroAssessments.length > 0
+          ? neuroAssessments.reduce((sum, a) => sum + a.score, 0) / neuroAssessments.length
           : 0
       }
     };
-  }
-
-  res.status(200).json({
+  }  res.status(200).json({
     status: 'success',
     data: {
       stats: stats || {

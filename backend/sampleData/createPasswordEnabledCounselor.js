@@ -11,7 +11,6 @@ dotenv.config();
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mindcare');
-    console.log('✅ Connected to MongoDB');
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
     process.exit(1);
@@ -21,7 +20,6 @@ const connectDB = async () => {
 // Create password-enabled counselor account
 const createPasswordEnabledCounselor = async () => {
   try {
-    console.log('🚀 Creating Password-Enabled Counselor Account: headphonehoon56@gmail.com\n');
 
     // Connect to database
     await connectDB();
@@ -30,10 +28,8 @@ const createPasswordEnabledCounselor = async () => {
     const password = 'password123';
 
     // Clear existing data if any
-    console.log('🧹 Clearing existing data...');
     await User.deleteMany({ email });
     await Counselor.deleteMany({ email });
-    console.log('✅ Existing data cleared');
 
     // Create user account with password (not Google OAuth)
     // Note: Don't hash the password here - let the pre-save hook handle it
@@ -49,7 +45,6 @@ const createPasswordEnabledCounselor = async () => {
       isVerified: true,
       // Note: No googleId field - this makes it a password-based account
     });
-    console.log('✅ Password-enabled user account created');
 
     // Create counselor profile
     const counselor = await Counselor.create({
@@ -91,48 +86,21 @@ const createPasswordEnabledCounselor = async () => {
       crisisIntervention: true,
       userAccount: user._id
     });
-    console.log('✅ Counselor profile created');
 
     // Link profiles
     user.counselorProfile = counselor._id;
     await user.save();
-    console.log('✅ Profiles linked');
 
     // Test the setup
-    console.log('\n🧪 Testing Account Setup...');
     
     // Test profile linking
     const userWithCounselor = await User.findById(user._id).populate('counselorProfile');
     const counselorWithUser = await Counselor.findById(counselor._id).populate('userAccount');
-    
-    console.log(`🔗 User -> Counselor: ${userWithCounselor.counselorProfile ? '✅ LINKED' : '❌ NOT LINKED'}`);
-    console.log(`🔗 Counselor -> User: ${counselorWithUser.userAccount ? '✅ LINKED' : '❌ NOT LINKED'}`);
-
-    console.log('\n🎉 Password-Enabled Counselor Account Created Successfully!');
-    console.log('\n🔑 Login Credentials:');
-    console.log(`Email: ${email}`);
-    console.log(`Password: ${password}`);
-    console.log('Role: counselor');
-    console.log('Authentication: Email/Password (NOT Google OAuth)');
-
-    console.log('\n📊 Account Summary:');
-    console.log(`- User ID: ${user._id}`);
-    console.log(`- Counselor ID: ${counselor._id}`);
-    console.log(`- Name: ${counselor.name}`);
-    console.log(`- Specialization: ${counselor.specialization.join(', ')}`);
-    console.log(`- Rating: ${counselor.rating}`);
-    console.log(`- Experience: ${counselor.experience} years`);
-    console.log(`- Is Active: ${counselor.isActive}`);
-    console.log(`- Has Password: true`);
-    console.log(`- Has Google ID: false`);
-
-    console.log('\n🚀 Ready to test the counselor dashboard with email/password login!');
 
   } catch (error) {
     console.error('❌ Error creating password-enabled counselor account:', error);
   } finally {
     await mongoose.connection.close();
-    console.log('\n🔌 Database connection closed');
     process.exit(0);
   }
 };

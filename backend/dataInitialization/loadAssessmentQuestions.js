@@ -7,11 +7,11 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: "../.env" });
+dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('✅ MongoDB connected for seeding assessment questions'))
+  .then(() => {})
   .catch(err => console.error('❌ MongoDB error:', err));
 
 // Define schemas inline since the models use CommonJS
@@ -58,8 +58,31 @@ const PHQ9Schema = new mongoose.Schema({
   questions: [phq9QuestionSchema]
 });
 
+const neuroQuestionSchema = new mongoose.Schema({
+  questionText: {
+    type: String,
+    required: true
+  },
+  options: [{
+    label: {
+      type: String,
+      required: true
+    },
+    value: {
+      type: Number,
+      enum: [0, 1, 2, 3],
+      required: true
+    }
+  }]
+});
+
+const NeuroQuestionSchema = new mongoose.Schema({
+  questions: [neuroQuestionSchema]
+});
+
 const GAD7 = mongoose.model('GAD7', GAD7Schema);
 const PHQ9 = mongoose.model('PHQ9', PHQ9Schema);
+const NeuroQuestion = mongoose.model('NeuroQuestion', NeuroQuestionSchema);
 
 async function seedQuestions() {
   try {
@@ -71,9 +94,14 @@ async function seedQuestions() {
     const phq9Path = path.join(__dirname,'..', 'jsonFiles', 'phq9Questions.json');
     const phq9Data = JSON.parse(fs.readFileSync(phq9Path, 'utf8'));
 
+    // Read Neuro questions
+    const neuroPath = path.join(__dirname,'..', 'jsonFiles', 'neuroQuestions.json');
+    const neuroData = JSON.parse(fs.readFileSync(neuroPath, 'utf8'));
+
     // Clear existing questions
     await GAD7.deleteMany({});
     await PHQ9.deleteMany({});
+    await NeuroQuestion.deleteMany({});
 
     // Insert GAD-7 questions
     await GAD7.create({
@@ -85,16 +113,16 @@ async function seedQuestions() {
       questions: phq9Data.questions
     });
 
-    console.log('✅ GAD-7 questions seeded successfully');
-    console.log('✅ PHQ-9 questions seeded successfully');
-    console.log(`📊 GAD-7: ${gad7Data.questions.length} questions`);
-    console.log(`📊 PHQ-9: ${phq9Data.questions.length} questions`);
+    // Insert Neuro questions
+    await NeuroQuestion.create({
+      questions: neuroData.questions
+    });
 
+   
   } catch (error) {
     console.error('❌ Error seeding questions:', error);
   } finally {
     mongoose.connection.close();
-    console.log('🔌 Database connection closed');
   }
 }
 

@@ -42,13 +42,7 @@ export const apiCall = async (endpoint, options = {}) => {
     
     clearTimeout(timeoutId);
     const data = await response.json();
-    console.log('🔧 Response data:', data);
-
-    console.log('🔧 API Response:', {
-      url,
-      status: response.status,
-      ok: response.ok
-    });
+    
 
     if (!response.ok) {
       // Handle different error response formats

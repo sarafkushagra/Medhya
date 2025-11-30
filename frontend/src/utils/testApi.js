@@ -2,24 +2,19 @@
 import { crisisAPI, appointmentAPI } from '../services/api';
 
 export const testAPI = async () => {
-  console.log('🧪 Testing API endpoints...');
   
   try {
     // Test crisis alerts endpoint
-    console.log('📡 Testing crisis alerts endpoint...');
     const crisisAlerts = await crisisAPI.getCrisisAlerts();
-    console.log('✅ Crisis alerts fetched:', crisisAlerts?.length || 0, 'alerts');
+    
     
     // Test appointments endpoint
-    console.log('📡 Testing appointments endpoint...');
     const appointments = await appointmentAPI.getStudentAppointments('demo-student-123');
-    console.log('✅ Appointments fetched:', appointments?.length || 0, 'appointments');
     
-    console.log('🎉 All API tests passed!');
+    
     return true;
   } catch (error) {
     console.error('❌ API test failed:', error.message);
-    console.log('💡 Make sure your backend server is running on http://localhost:5000');
     return false;
   }
 };
@@ -39,7 +34,6 @@ export const testCreateCrisisAlert = async () => {
     };
     
     const result = await crisisAPI.createCrisisAlert(testAlert);
-    console.log('✅ Test crisis alert created:', result);
     return result;
   } catch (error) {
     console.error('❌ Failed to create test crisis alert:', error);
@@ -63,7 +57,6 @@ export const testCreateAppointment = async () => {
     };
     
     const result = await appointmentAPI.createAppointment(testAppointment);
-    console.log('✅ Test appointment created:', result);
     return result;
   } catch (error) {
     console.error('❌ Failed to create test appointment:', error);

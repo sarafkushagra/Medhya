@@ -20,7 +20,7 @@ export const SupplierDashboard = () => {
   const safeToast = (typeof toast !== 'undefined' && toast)
     ? toast
     : {
-        success: (msg) => console.log('[toast.success]', msg),
+        success: (msg) => {},
         error: (msg) => console.error('[toast.error]', msg),
       };
 
@@ -76,7 +76,6 @@ export const SupplierDashboard = () => {
     
     try {
       const note = customNote[orderId] || '';
-      console.log('Updating status:', { orderId, status, note, isMainStatus });
       
       const res = await fetch(`${API_BASE}/api/suppliers/orders/${orderId}/status`, {
         method: 'PATCH',
@@ -84,9 +83,7 @@ export const SupplierDashboard = () => {
         body: JSON.stringify({ status, note, isMainStatus })
       });
       
-      console.log('Response status:', res.status);
       const data = await res.json().catch(() => ({}));
-      console.log('Response data:', data);
       
       if (!res.ok) {
         if (res.status === 401 || res.status === 403) {

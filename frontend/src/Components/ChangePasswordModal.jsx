@@ -81,23 +81,14 @@ const ChangePasswordModal = ({ isOpen, onClose, onSubmit }) => {
     setIsLoading(true);
     setBackendError('');
 
-    console.log('🔐 Modal handleSubmit called');
-    console.log('🔐 Form data:', {
-      currentPassword: formData.currentPassword ? '***' : '',
-      newPassword: formData.newPassword ? '***' : '',
-      confirmPassword: formData.confirmPassword ? '***' : ''
-    });
-
+   
     try {
-      console.log('🔐 Calling onSubmit...');
       await onSubmit({
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword,
         newPasswordConfirm: formData.confirmPassword // Backend expects newPasswordConfirm
       });
 
-      console.log('🔐 onSubmit completed successfully');
-      // Reset form and close modal on success
       setFormData({
         currentPassword: '',
         newPassword: '',

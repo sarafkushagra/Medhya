@@ -31,7 +31,7 @@ export const SupplierLoginPage = () => {
   const safeToast = (typeof toast !== 'undefined' && toast)
     ? toast
     : {
-        success: (msg) => console.log('[toast.success]', msg),
+        success: (msg) => {},
         error: (msg) => console.error('[toast.error]', msg),
       };
 

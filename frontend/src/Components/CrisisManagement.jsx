@@ -8,8 +8,8 @@ import { Progress } from '../ui/Progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/Tabs';
 import { Input } from '../ui/Input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/Select';
-import { 
-  AlertTriangle, Shield, Phone, Brain,  
+import {
+  AlertTriangle, Shield, Phone, Brain,
   CheckCircle, X, ArrowRight, TrendingUp, MapPin, Bell, Eye,
   Target, MessageCircle, Calendar, UserCheck,
   Search, Filter, RefreshCw, Loader2
@@ -22,7 +22,7 @@ const CrisisManagement = () => {
   const [selectedAlert, setSelectedAlert] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(10);
-  
+
   // Search and filter functionality
   const {
     searchTerm,
@@ -131,7 +131,7 @@ const CrisisManagement = () => {
     const now = new Date();
     const alertTime = new Date(timestamp);
     const diffInMinutes = Math.floor((now.getTime() - alertTime.getTime()) / (1000 * 60));
-    
+
     if (diffInMinutes < 60) return `${diffInMinutes} minutes ago`;
     const diffInHours = Math.floor(diffInMinutes / 60);
     if (diffInHours < 24) return `${diffInHours} hours ago`;
@@ -144,13 +144,12 @@ const CrisisManagement = () => {
         const newStatus = 'in_progress'; // This could be dynamic based on action
         await updateOptimistically(
           { alertId, status: newStatus },
-          (prevData) => prevData?.map(alert => 
+          (prevData) => prevData?.map(alert =>
             alert._id === alertId ? { ...alert, status: newStatus } : alert
           )
         );
       }
-      
-      console.log(`${action} for alert ${alertId}`);
+
       // In real implementation, this would trigger actual interventions
     } catch (error) {
       console.error('Error updating alert:', error);
@@ -161,7 +160,7 @@ const CrisisManagement = () => {
     try {
       await updateOptimistically(
         { alertId, status: newStatus },
-        (prevData) => prevData?.map(alert => 
+        (prevData) => prevData?.map(alert =>
           alert._id === alertId ? { ...alert, status: newStatus } : alert
         )
       );
@@ -173,15 +172,15 @@ const CrisisManagement = () => {
   // Filter alerts based on search term (optimized)
   const filteredAlerts = React.useMemo(() => {
     if (!crisisAlerts) return [];
-    
+
     if (!searchTerm) return crisisAlerts;
-    
+
     const searchLower = searchTerm.toLowerCase();
-    return crisisAlerts.filter(alert => 
+    return crisisAlerts.filter(alert =>
       alert.studentId?.toLowerCase().includes(searchLower) ||
       alert.type?.toLowerCase().includes(searchLower) ||
       alert.source?.toLowerCase().includes(searchLower) ||
-      alert.keywordsTrigger?.some(keyword => 
+      alert.keywordsTrigger?.some(keyword =>
         keyword.toLowerCase().includes(searchLower)
       )
     );
@@ -334,35 +333,33 @@ const CrisisManagement = () => {
                   Crisis Alerts ({filteredAlerts.length})
                   {loading && <Loader2 className="w-4 h-4 ml-2 animate-spin" />}
                 </h3>
-                  <div className="flex gap-2">
-                    <Button size="sm" variant="outline" onClick={testAPI} disabled={loading}>
-                      <Bell className="w-4 h-4 mr-2" />
-                      Test API
-                    </Button>
-                    <Button size="sm" variant="outline" onClick={testCreateCrisisAlert} disabled={loading}>
-                      <AlertTriangle className="w-4 h-4 mr-2" />
-                      Create Test Alert
-                    </Button>
-                    <Button size="sm" variant="outline" onClick={() => {
-                      console.log('🔍 Current state:', { crisisAlerts, loading, error });
-                      console.log('📊 Stats data:', statsData);
-                    }}>
-                      <Eye className="w-4 h-4 mr-2" />
-                      Debug State
-                    </Button>
-                    <Button size="sm" variant="outline" onClick={refetch} disabled={loading}>
-                      {loading ? (
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      ) : (
-                        <RefreshCw className="w-4 h-4 mr-2" />
-                      )}
-                      Refresh
-                    </Button>
-                    <Button size="sm">
-                      <Phone className="w-4 h-4 mr-2" />
-                      Emergency Contacts
-                    </Button>
-                  </div>
+                <div className="flex gap-2">
+                  <Button size="sm" variant="outline" onClick={testAPI} disabled={loading}>
+                    <Bell className="w-4 h-4 mr-2" />
+                    Test API
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={testCreateCrisisAlert} disabled={loading}>
+                    <AlertTriangle className="w-4 h-4 mr-2" />
+                    Create Test Alert
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={() => {
+                  }}>
+                    <Eye className="w-4 h-4 mr-2" />
+                    Debug State
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={refetch} disabled={loading}>
+                    {loading ? (
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    ) : (
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                    )}
+                    Refresh
+                  </Button>
+                  <Button size="sm">
+                    <Phone className="w-4 h-4 mr-2" />
+                    Emergency Contacts
+                  </Button>
+                </div>
               </div>
 
               {loading ? (
@@ -375,8 +372,8 @@ const CrisisManagement = () => {
                   <CardContent className="p-8 text-center">
                     <AlertTriangle className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
                     <p className="text-muted-foreground">
-                      {searchTerm || Object.values(filters).some(f => f && f !== 'all') 
-                        ? 'No alerts match your search criteria' 
+                      {searchTerm || Object.values(filters).some(f => f && f !== 'all')
+                        ? 'No alerts match your search criteria'
                         : 'No crisis alerts found'}
                     </p>
                   </CardContent>
@@ -386,11 +383,10 @@ const CrisisManagement = () => {
                   {paginatedAlerts.map((alert) => {
                     const protocol = responseProtocols[alert.severity] || responseProtocols.medium;
                     return (
-                      <Card 
-                        key={alert._id || alert.id} 
-                        className={`${protocol.borderColor} cursor-pointer transition-all hover:shadow-md ${
-                          selectedAlert?._id === alert._id ? 'ring-2 ring-blue-500' : ''
-                        }`}
+                      <Card
+                        key={alert._id || alert.id}
+                        className={`${protocol.borderColor} cursor-pointer transition-all hover:shadow-md ${selectedAlert?._id === alert._id ? 'ring-2 ring-blue-500' : ''
+                          }`}
                         onClick={() => setSelectedAlert(alert)}
                       >
                         <CardContent className="p-4">
@@ -406,9 +402,9 @@ const CrisisManagement = () => {
                                 {alert.type?.replace('_', ' ').toUpperCase()}
                               </Badge>
                             </div>
-                            <Badge 
-                              variant={alert.status === 'active' ? 'destructive' : 
-                                       alert.status === 'in_progress' ? 'default' : 'secondary'}
+                            <Badge
+                              variant={alert.status === 'active' ? 'destructive' :
+                                alert.status === 'in_progress' ? 'default' : 'secondary'}
                             >
                               {alert.status?.replace('_', ' ')}
                             </Badge>
@@ -419,7 +415,7 @@ const CrisisManagement = () => {
                               <span className="font-medium">Student ID: {alert.studentId}</span>
                               <span className="text-muted-foreground">{getTimeAgo(alert.timestamp || alert.createdAt)}</span>
                             </div>
-                            
+
                             <div className="flex items-center gap-4 text-sm text-muted-foreground">
                               <span>Source: {alert.source?.replace('_', ' ')}</span>
                               <span>AI Confidence: {alert.aiConfidence}%</span>
@@ -450,43 +446,43 @@ const CrisisManagement = () => {
                               </div>
                             )}
 
-                              {alert.status === 'active' && (
-                                <div className="flex gap-2 mt-3">
-                                  <Button 
-                                    size="sm" 
-                                    className="bg-red-600 hover:bg-red-700"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleAlertAction(alert._id || alert.id, 'emergency_response');
-                                    }}
-                                  >
-                                    <Phone className="w-4 h-4 mr-2" />
-                                    Emergency Response
-                                  </Button>
-                                  <Button 
-                                    size="sm" 
-                                    variant="outline"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleStatusUpdate(alert._id || alert.id, 'in_progress');
-                                    }}
-                                  >
-                                    <MessageCircle className="w-4 h-4 mr-2" />
-                                    Start Response
-                                  </Button>
-                                  <Button 
-                                    size="sm" 
-                                    variant="outline"
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleAlertAction(alert._id || alert.id, 'assign_counselor');
-                                    }}
-                                  >
-                                    <UserCheck className="w-4 h-4 mr-2" />
-                                    Assign Counselor
-                                  </Button>
-                                </div>
-                              )}
+                            {alert.status === 'active' && (
+                              <div className="flex gap-2 mt-3">
+                                <Button
+                                  size="sm"
+                                  className="bg-red-600 hover:bg-red-700"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAlertAction(alert._id || alert.id, 'emergency_response');
+                                  }}
+                                >
+                                  <Phone className="w-4 h-4 mr-2" />
+                                  Emergency Response
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleStatusUpdate(alert._id || alert.id, 'in_progress');
+                                  }}
+                                >
+                                  <MessageCircle className="w-4 h-4 mr-2" />
+                                  Start Response
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleAlertAction(alert._id || alert.id, 'assign_counselor');
+                                  }}
+                                >
+                                  <UserCheck className="w-4 h-4 mr-2" />
+                                  Assign Counselor
+                                </Button>
+                              </div>
+                            )}
                           </div>
                         </CardContent>
                       </Card>
@@ -533,8 +529,8 @@ const CrisisManagement = () => {
                   <CardHeader>
                     <CardTitle className="flex items-center justify-between">
                       <span>Alert Details</span>
-                      <Button 
-                        size="sm" 
+                      <Button
+                        size="sm"
                         variant="ghost"
                         onClick={() => setSelectedAlert(null)}
                       >
@@ -587,15 +583,15 @@ const CrisisManagement = () => {
 
                     {selectedAlert.status === 'active' && (
                       <div className="space-y-2">
-                        <Button 
+                        <Button
                           className="w-full bg-red-600 hover:bg-red-700"
                           onClick={() => handleAlertAction(selectedAlert._id || selectedAlert.id, 'emergency_response')}
                         >
                           <AlertTriangle className="w-4 h-4 mr-2" />
                           Initiate Emergency Response
                         </Button>
-                        <Button 
-                          variant="outline" 
+                        <Button
+                          variant="outline"
                           className="w-full"
                           onClick={() => handleStatusUpdate(selectedAlert._id || selectedAlert.id, 'in_progress')}
                         >

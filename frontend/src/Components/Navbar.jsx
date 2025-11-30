@@ -53,17 +53,14 @@ const Navbar = ({ userRole, user, onLogout }) => {
 
   // Handle password change
   const handlePasswordChange = async (passwordData) => {
-    console.log('🔐 handlePasswordChange called with:', passwordData);
     try {
       // Make API call to change password
-      console.log('🔐 Making API call to change password...');
       await authAPI.changePassword({
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword,
         newPasswordConfirm: passwordData.newPasswordConfirm // Backend expects newPasswordConfirm
       });
 
-      console.log('🔐 Password change API call successful');
       // Show success message
       alert('Password changed successfully!');
 

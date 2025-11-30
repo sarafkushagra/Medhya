@@ -10,7 +10,6 @@ const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://ksaraf0004_db_user:Aja
 async function createDemoUsers() {
   try {
     await mongoose.connect(MONGO_URI);
-    console.log("MongoDB connected ✅");
 
     // Demo users data with different roles for full portal access
     const demoUsers = [
@@ -91,13 +90,10 @@ async function createDemoUsers() {
       }
     ];
 
-    console.log("Creating demo users with full portal access...");
-
     for (const userData of demoUsers) {
       // Check if user already exists
       const existingUser = await User.findOne({ email: userData.email });
       if (existingUser) {
-        console.log(`User ${userData.email} already exists ✅`);
         continue;
       }
 
@@ -138,31 +134,9 @@ async function createDemoUsers() {
         await user.save();
       }
 
-      console.log(`✅ Created ${userData.role} user: ${userData.email}`);
-      console.log(`   Password: ${userData.role === 'admin' ? 'Admin@123' : userData.role === 'counselor' ? 'Counselor@123' : 'Student@123'}`);
-      console.log(`   Role: ${userData.role}`);
-      console.log('');
     }
 
-    console.log("🎉 Demo users created successfully!");
-    console.log("\n📋 Login Credentials:");
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log("👑 ADMIN ACCESS:");
-    console.log("   Email: admin@mindcare.com");
-    console.log("   Password: Admin@123");
-    console.log("   Access: Full admin panel, user management, counselor management");
-    console.log("");
-    console.log("👩‍⚕️ COUNSELOR ACCESS:");
-    console.log("   Email: counselor@mindcare.com");
-    console.log("   Password: Counselor@123");
-    console.log("   Access: Counselor dashboard, appointment management, session notes");
-    console.log("");
-    console.log("🎓 STUDENT ACCESS:");
-    console.log("   Email: student@mindcare.com");
-    console.log("   Password: Student@123");
-    console.log("   Access: Student portal, assessments, appointments, chat");
-    console.log("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
-    console.log("\n💡 To run this script: node sampleData/createDemoUser.js");
+    
 
     process.exit(0);
   } catch (err) {

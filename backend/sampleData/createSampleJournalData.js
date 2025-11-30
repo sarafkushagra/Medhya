@@ -8,7 +8,6 @@ dotenv.config();
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("✅ MongoDB connected for sample journal data");
   } catch (error) {
     console.error("❌ MongoDB connection error:", error);
     process.exit(1);
@@ -21,11 +20,8 @@ const createSampleJournalData = async () => {
     const student = await User.findOne({ role: "student" });
     
     if (!student) {
-      console.log("❌ No student user found. Please create a student user first.");
       return;
     }
-
-    console.log(`📝 Creating sample journal entries for student: ${student.firstName} ${student.lastName}`);
 
     // Sample journal entries for the past 30 days
     const sampleEntries = [
@@ -141,27 +137,6 @@ const createSampleJournalData = async () => {
     // Insert new entries
     const createdEntries = await JournalEntry.insertMany(entries);
     
-    console.log(`✅ Created ${createdEntries.length} sample journal entries`);
-    console.log(`📊 Sample data summary:`);
-    console.log(`   - User: ${student.firstName} ${student.lastName}`);
-    console.log(`   - Institution: ${student.institutionId}`);
-    console.log(`   - Date range: ${entries[entries.length - 1].createdAt.toDateString()} to ${entries[0].createdAt.toDateString()}`);
-    
-    // Calculate some statistics
-    const moodCounts = {};
-    let totalWellnessScore = 0;
-    let totalMoodScore = 0;
-    
-    createdEntries.forEach(entry => {
-      moodCounts[entry.mood] = (moodCounts[entry.mood] || 0) + 1;
-      totalWellnessScore += entry.wellnessScore;
-      totalMoodScore += entry.moodScore;
-    });
-    
-    console.log(`   - Average wellness score: ${Math.round(totalWellnessScore / createdEntries.length)}`);
-    console.log(`   - Average mood score: ${Math.round(totalMoodScore / createdEntries.length * 10) / 10}`);
-    console.log(`   - Mood distribution:`, moodCounts);
-    
   } catch (error) {
     console.error("❌ Error creating sample journal data:", error);
   }
@@ -171,7 +146,6 @@ const main = async () => {
   await connectDB();
   await createSampleJournalData();
   await mongoose.disconnect();
-  console.log("✅ Sample journal data creation completed");
 };
 
 main();

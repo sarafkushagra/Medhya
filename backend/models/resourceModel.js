@@ -24,6 +24,12 @@ const resourceSchema = new mongoose.Schema({
     required: [true, "Resource category is required"],
     enum: ["anxiety", "depression", "stress", "sleep", "relationships", "academic", "mindfulness", "self-care", "crisis", "general"]
   },
+  expertise: {
+    type: String,
+    required: [true, "Expertise field is required"],
+    enum: ["mental", "neuro", "gynoman"],
+    default: "mental"
+  },
   resourceLanguage: {
     type: String,
     required: [true, "Resource language is required"],
@@ -178,6 +184,7 @@ resourceSchema.methods.addRating = function(userId, rating, review = null) {
 resourceSchema.index({ title: 'text', description: 'text', tags: 'text' });
 resourceSchema.index({ category: 1, type: 1 });
 resourceSchema.index({ resourceLanguage: 1 });
+resourceSchema.index({ expertise: 1 });
 resourceSchema.index({ isFeatured: 1 });
 resourceSchema.index({ isActive: 1 });
 resourceSchema.index({ publishDate: -1 });

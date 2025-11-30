@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import apiClient from '../utils/apiClient.js';
 
 export const useAssessment = () => {
@@ -7,11 +7,11 @@ export const useAssessment = () => {
   const [error, setError] = useState(null);
   const [assessmentHistory, setAssessmentHistory] = useState([]);
   const [fiveDayAverages, setFiveDayAverages] = useState([]);
-  const [todayAssessments, setTodayAssessments] = useState({ 'GAD-7': null, 'PHQ-9': null });
+  const [todayAssessments, setTodayAssessments] = useState({ 'GAD-7': null, 'PHQ-9': null, 'Neuro': null });
   const [stats, setStats] = useState(null);
 
   // Get questions for a specific assessment type
-  const getQuestions = async (type) => {
+  const getQuestions = useCallback(async (type) => {
     setLoading(true);
     setError(null);
     try {
@@ -25,10 +25,10 @@ export const useAssessment = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // Submit assessment responses
-  const submitAssessment = async (type, responses) => {
+  const submitAssessment = useCallback(async (type, responses) => {
     setLoading(true);
     setError(null);
     try {
@@ -36,10 +36,10 @@ export const useAssessment = () => {
         type,
         responses
       });
-      
+
       // Refresh today's assessment
       await getTodayAssessment(type);
-      
+
       return response.data.assessment;
     } catch (err) {
       const errorMessage = err.response?.data?.message || err.message || 'Failed to submit assessment';
@@ -48,10 +48,10 @@ export const useAssessment = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // Get assessment history
-  const getAssessmentHistory = async (type = null, limit = 10) => {
+  const getAssessmentHistory = useCallback(async (type = null, limit = 10) => {
     setLoading(true);
     setError(null);
     try {
@@ -71,10 +71,10 @@ export const useAssessment = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // Get 5-day averages
-  const getFiveDayAverages = async () => {
+  const getFiveDayAverages = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -89,10 +89,10 @@ export const useAssessment = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // Get today's assessment
-  const getTodayAssessment = async (type) => {
+  const getTodayAssessment = useCallback(async (type) => {
     try {
       const response = await apiClient.get(`/assessments/today/${type}`);
       setTodayAssessments(prev => ({
@@ -116,10 +116,10 @@ export const useAssessment = () => {
       setError(errorMessage);
       return null;
     }
-  };
+  }, []);
 
-  // Get all today's assessments
-  const getTodayAssessments = async () => {
+  // Get all today's assessments (GAD-7 and PHQ-9 only for backward compatibility)
+  const getTodayAssessments = useCallback(async () => {
     try {
       await Promise.allSettled([
         getTodayAssessment('GAD-7'),
@@ -128,10 +128,10 @@ export const useAssessment = () => {
     } catch (err) {
       console.error('Failed to fetch today\'s assessments:', err);
     }
-  };
+  }, [getTodayAssessment]);
 
   // Get assessment statistics
-  const getAssessmentStats = async (type = null, period = 30) => {
+  const getAssessmentStats = useCallback(async (type = null, period = 30) => {
     setLoading(true);
     setError(null);
     try {
@@ -150,21 +150,21 @@ export const useAssessment = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   // Delete assessment
-  const deleteAssessment = async (id) => {
+  const deleteAssessment = useCallback(async (id) => {
     setLoading(true);
     setError(null);
     try {
       await apiClient.delete(`/assessments/${id}`);
-      
+
       // Refresh data after deletion
       getAssessmentHistory();
       getFiveDayAverages();
       getAssessmentStats();
       getTodayAssessments();
-      
+
       return true;
     } catch (err) {
       const errorMessage = err.response?.data?.message || err.message || 'Failed to delete assessment';
@@ -173,12 +173,12 @@ export const useAssessment = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [getAssessmentHistory, getFiveDayAverages, getAssessmentStats, getTodayAssessments]);
 
   // Clear error
-  const clearError = () => {
+  const clearError = useCallback(() => {
     setError(null);
-  };
+  }, []);
 
   return {
     questions,

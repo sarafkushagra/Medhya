@@ -15,7 +15,6 @@ dotenv.config();
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mindcare');
-    console.log('✅ Connected to MongoDB');
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
     process.exit(1);
@@ -25,7 +24,6 @@ const connectDB = async () => {
 // Create your counselor account with test data
 const createYourCounselorAccount = async () => {
   try {
-    console.log('🚀 Creating Your Counselor Account: headphonehoon56@gmail.com\n');
 
     // Connect to database
     await connectDB();
@@ -34,16 +32,13 @@ const createYourCounselorAccount = async () => {
     const password = 'password123'; // You can change this
 
     // Clear existing data if any
-    console.log('🧹 Clearing existing data...');
     await User.deleteMany({ email });
     await Counselor.deleteMany({ email });
     // Also clear test students
     await User.deleteMany({ email: { $in: ['rahul.student@example.com', 'priya.student@example.com'] } });
-    console.log('✅ Existing data cleared');
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
-    console.log('🔐 Password hashed');
 
     // Create user account
     const user = await User.create({
@@ -57,7 +52,6 @@ const createYourCounselorAccount = async () => {
       isEmailVerified: true,
       isVerified: true
     });
-    console.log('✅ User account created');
 
     // Create counselor profile
     const counselor = await Counselor.create({
@@ -99,12 +93,10 @@ const createYourCounselorAccount = async () => {
       crisisIntervention: true,
       userAccount: user._id
     });
-    console.log('✅ Counselor profile created');
 
     // Link profiles
     user.counselorProfile = counselor._id;
     await user.save();
-    console.log('✅ Profiles linked');
 
     // Create some test students
     const students = await User.create([
@@ -129,7 +121,6 @@ const createYourCounselorAccount = async () => {
         isVerified: true
       }
     ]);
-    console.log('✅ Test students created');
 
     // Create test appointments
     const appointments = await Appointment.create([
@@ -156,7 +147,6 @@ const createYourCounselorAccount = async () => {
         reason: 'Stress management consultation'
       }
     ]);
-    console.log('✅ Test appointments created');
 
     // Create test messages
     const messages = await Message.create([
@@ -175,7 +165,6 @@ const createYourCounselorAccount = async () => {
         isRead: true
       }
     ]);
-    console.log('✅ Test messages created');
 
     // Create test payments
     const payments = await Payment.create([
@@ -198,7 +187,6 @@ const createYourCounselorAccount = async () => {
         transactionId: 'TXN123456790'
       }
     ]);
-    console.log('✅ Test payments created');
 
     // Create test session notes
     const sessionNotes = await SessionNote.create([
@@ -212,22 +200,16 @@ const createYourCounselorAccount = async () => {
         nextSteps: 'Schedule follow-up in 2 weeks'
       }
     ]);
-    console.log('✅ Test session notes created');
 
     // Test the setup
-    console.log('\n🧪 Testing Account Setup...');
     
     // Test password verification
     const testUser = await User.findOne({ email }).select('+password');
     const isPasswordValid = await bcrypt.compare(password, testUser.password);
-    console.log(`🔐 Password verification: ${isPasswordValid ? '✅ PASS' : '❌ FAIL'}`);
 
     // Test profile linking
     const userWithCounselor = await User.findById(user._id).populate('counselorProfile');
     const counselorWithUser = await Counselor.findById(counselor._id).populate('userAccount');
-    
-    console.log(`🔗 User -> Counselor: ${userWithCounselor.counselorProfile ? '✅ LINKED' : '❌ NOT LINKED'}`);
-    console.log(`🔗 Counselor -> User: ${counselorWithUser.userAccount ? '✅ LINKED' : '❌ NOT LINKED'}`);
 
     // Test dashboard data
     const upcomingAppointments = await Appointment.find({
@@ -244,33 +226,10 @@ const createYourCounselorAccount = async () => {
       counselor: counselor._id
     }).countDocuments();
 
-    console.log(`📊 Dashboard Data: ${upcomingAppointments} appointments, ${unreadMessages} unread messages, ${totalPayments} payments`);
-
-    console.log('\n🎉 Your Counselor Account Created Successfully!');
-    console.log('\n🔑 Login Credentials:');
-    console.log(`Email: ${email}`);
-    console.log(`Password: ${password}`);
-    console.log('Role: counselor');
-
-    console.log('\n📊 Account Summary:');
-    console.log(`- User ID: ${user._id}`);
-    console.log(`- Counselor ID: ${counselor._id}`);
-    console.log(`- Name: ${counselor.name}`);
-    console.log(`- Specialization: ${counselor.specialization.join(', ')}`);
-    console.log(`- Rating: ${counselor.rating}`);
-    console.log(`- Experience: ${counselor.experience} years`);
-    console.log(`- Test Students: ${students.length}`);
-    console.log(`- Test Appointments: ${appointments.length}`);
-    console.log(`- Test Messages: ${messages.length}`);
-    console.log(`- Test Payments: ${payments.length}`);
-
-    console.log('\n🚀 Ready to test the counselor dashboard!');
-
   } catch (error) {
     console.error('❌ Error creating counselor account:', error);
   } finally {
     await mongoose.connection.close();
-    console.log('\n🔌 Database connection closed');
     process.exit(0);
   }
 };

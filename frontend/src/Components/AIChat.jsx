@@ -14,6 +14,8 @@ import {
   Volume2,
   VolumeX,
   Globe,
+  MoreVertical,
+  X
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -29,7 +31,7 @@ const LANGUAGES = [
 // ──────────────────────────────────────────────────────
 const t = {
   en: {
-    welcome: "Hello! I'm your NeuroPath Health Assistant. How can I help you today?",
+    welcome: "Hello! I'm your Medhya Health Assistant. How can I help you today?",
     placeholder: "Ask about symptoms, diet, stress… or tap mic",
     quick: [
       "I have chest pain",
@@ -47,7 +49,7 @@ const t = {
     online: "Online",
   },
   hi: {
-    welcome: "नमस्ते! मैं आपका NeuroPath हेल्थ असिस्टेंट हूँ। आज मैं आपकी कैसे मदद कर सकता हूँ?",
+    welcome: "नमस्ते! मैं आपका Medhya हेल्थ असिस्टेंट हूँ। आज मैं आपकी कैसे मदद कर सकता हूँ?",
     placeholder: "लक्षण, आहार, तनाव के बारे में पूछें… या माइक दबाएँ",
     quick: [
       "मुझे सीने में दर्द है",
@@ -312,36 +314,51 @@ const AIChat = () => {
 
   /* --------------------------------- UI -------------------------------- */
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center p-4">
-      <div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl flex flex-col h-[90vh] overflow-hidden relative">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4 md:p-6">
+      <div className="w-full max-w-5xl bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[85vh] border border-white/40 relative">
 
         {/* Floating Voice Recorder Popup */}
         {isRecording && (
-          <div className="absolute inset-0 z-50 flex items-center justify-center pointer-events-none">
-            <div className="animate-float pointer-events-auto">
-              <div className="bg-white rounded-3xl shadow-2xl p-6 border border-gray-200 backdrop-blur-lg bg-opacity-95 max-w-sm w-full">
-                <div className="flex flex-col items-center space-y-4">
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm">
+            <div className="animate-in zoom-in duration-300">
+              <div className="bg-white rounded-3xl shadow-2xl p-8 border border-gray-100 w-[320px] text-center relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-500 via-pink-500 to-red-500 animate-gradient"></div>
+
+                <div className="flex flex-col items-center space-y-6">
                   <div className="relative">
-                    <div className="absolute inset-0 rounded-full bg-red-200 animate-ping"></div>
-                    <div className="relative p-4 bg-red-500 rounded-full">
+                    <div className="absolute inset-0 rounded-full bg-red-100 animate-ping opacity-75"></div>
+                    <div className="relative p-6 bg-gradient-to-br from-red-500 to-pink-600 rounded-full shadow-lg shadow-red-500/30">
                       {isListening ? (
-                        <Volume2 className="h-9 w-9 text-white animate-pulse" />
+                        <Volume2 className="h-8 w-8 text-white animate-pulse" />
                       ) : (
-                        <MicOff className="h-9 w-9 text-white" />
+                        <MicOff className="h-8 w-8 text-white" />
                       )}
                     </div>
                   </div>
-                  <p className="text-lg font-medium text-gray-800">
-                    {isListening ? texts.listening : texts.starting}
-                  </p>
+
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-bold text-gray-800">
+                      {isListening ? texts.listening : texts.starting}
+                    </h3>
+                    <p className="text-sm text-gray-500">Tap stop when you're done</p>
+                  </div>
+
                   <div
                     ref={previewScrollRef}
-                    className="max-h-32 w-full overflow-y-auto bg-gray-50 rounded-lg p-3 text-sm text-gray-700 border border-gray-200 whitespace-pre-wrap break-words"
+                    className="w-full max-h-32 overflow-y-auto bg-gray-50 rounded-xl p-4 text-sm text-gray-700 border border-gray-100 text-left shadow-inner"
                   >
-                    {inputMessage || (lang === 'hi-IN' ? 'अब बोलें...' : 'Speak now...')}
+                    {inputMessage || (
+                      <span className="text-gray-400 italic">
+                        {lang === 'hi-IN' ? 'अब बोलें...' : 'Listening to your voice...'}
+                      </span>
+                    )}
                   </div>
-                  <Button onClick={toggleRecording} size="sm" className="bg-red-600 hover:bg-red-700 text-white">
-                    <MicOff className="h-4 w-4 mr-1" />
+
+                  <Button
+                    onClick={toggleRecording}
+                    className="w-full bg-slate-900 text-white hover:bg-slate-800 rounded-xl py-6 shadow-lg transition-all hover:scale-[1.02]"
+                  >
+                    <MicOff className="h-4 w-4 mr-2" />
                     {texts.stopMic}
                   </Button>
                 </div>
@@ -351,103 +368,106 @@ const AIChat = () => {
         )}
 
         {/* Header */}
-        {/* Header – FIXED: dropdown & speaker toggle */}
-        <header className="bg-teal-600 text-white p-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="p-2 bg-teal-500 rounded-full">
-              <Bot className="h-6 w-6" />
+        <header className="bg-white/90 backdrop-blur-md border-b border-gray-100 p-4 md:p-5 flex items-center justify-between sticky top-0 z-10">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <div className="p-3 bg-gradient-to-br from-teal-500 to-emerald-500 rounded-2xl shadow-lg shadow-teal-500/20">
+                <Bot className="h-6 w-6 text-white" />
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-white rounded-full flex items-center justify-center">
+                <div className="w-2.5 h-2.5 bg-green-500 rounded-full animate-pulse"></div>
+              </div>
             </div>
             <div>
-              <h1 className="text-lg font-semibold">NeuroPath Health Assistant</h1>
-              <p className="text-xs opacity-90 flex items-center gap-1">
-                <Sparkles className="h-3 w-3" />
-                AI‑Powered Guidance
-              </p>
+              <h1 className="text-lg font-bold text-gray-800 tracking-tight">Medhya Assistant</h1>
+              <div className="flex items-center gap-1.5">
+                <Badge variant="secondary" className="bg-teal-50 text-teal-700 hover:bg-teal-100 border-teal-100 text-[10px] px-2 h-5">
+                  <Sparkles className="h-2.5 w-2.5 mr-1" />
+                  AI Powered
+                </Badge>
+                <span className="text-xs text-gray-400 font-medium">• {texts.online}</span>
+              </div>
             </div>
           </div>
 
-          {/* ---- LANGUAGE SELECTOR (now works) ---- */}
-          <div className="flex items-center gap-2">
-            <Globe className="h-5 w-5 text-white" />
-            <select
-              value={lang}
-              onChange={(e) => setLang(e.target.value)}
-              className="bg-teal-700 text-white text-xs rounded px-2 py-1 focus:outline-none cursor-pointer appearance-none"
-              style={{ backgroundImage: 'none' }}
-            >
+          <div className="flex items-center gap-3">
+            <div className="hidden md:flex items-center bg-gray-100/80 rounded-full p-1 border border-gray-200">
               {LANGUAGES.map((l) => (
-                <option key={l.code} value={l.code}>
-                  {l.flag} {l.name}
-                </option>
+                <button
+                  key={l.code}
+                  onClick={() => setLang(l.code)}
+                  className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 flex items-center gap-1.5 ${lang === l.code
+                      ? 'bg-white text-gray-800 shadow-sm'
+                      : 'text-gray-500 hover:text-gray-700'
+                    }`}
+                >
+                  <span className="text-sm">{l.flag}</span>
+                  {l.name}
+                </button>
               ))}
-            </select>
+            </div>
+
+            <div className="h-8 w-px bg-gray-200 mx-1 hidden md:block"></div>
+
+            <Button
+              onClick={toggleSpeaking}
+              size="icon"
+              variant="ghost"
+              className={`rounded-full w-10 h-10 transition-all ${isSpeaking
+                  ? 'bg-teal-50 text-teal-600 ring-2 ring-teal-100'
+                  : 'text-gray-500 hover:bg-gray-100'
+                }`}
+              disabled={!messages.length || messages[messages.length - 1]?.sender !== 'bot'}
+            >
+              {isSpeaking ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
+            </Button>
           </div>
-
-          {/* ---- SPEAKER TOGGLE (stops + replays) ---- */}
-          <Button
-            onClick={toggleSpeaking}
-            size="sm"
-            variant="ghost"
-            className="text-white hover:bg-teal-700"
-            disabled={!messages.length || messages[messages.length - 1]?.sender !== 'bot'}
-          >
-            {isSpeaking ? <VolumeX className="h-5 w-5" /> : <Volume2 className="h-5 w-5" />}
-          </Button>
-
-          <Badge className="bg-teal-700 text-xs">
-            <span className="w-2 h-2 bg-green-300 rounded-full mr-1"></span>
-            {texts.online}
-          </Badge>
         </header>
 
         {/* Messages Area */}
-        <section className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+        <section className="flex-1 overflow-y-auto p-4 md:p-6 space-y-6 scroll-smooth bg-gradient-to-b from-transparent to-white/50">
           {messages.map((msg) => (
             <div
               key={msg.id}
-              className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+              className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} group`}
             >
-              <div className="flex items-start gap-2 max-w-[80%]">
-                {msg.sender === 'bot' && (
-                  <div className="p-1.5 bg-teal-100 rounded-full flex-shrink-0">
-                    <Bot className="h-5 w-5 text-teal-700" />
-                  </div>
-                )}
-                <div
-                  className={`px-4 py-3 rounded-2xl shadow-sm text-sm ${msg.sender === 'user'
-                      ? 'bg-teal-600 text-white'
-                      : 'bg-white border border-gray-200 text-gray-800'
-                    }`}
-                >
-                  <p className="whitespace-pre-wrap">{msg.text}</p>
-                  <p className="text-xs mt-1 opacity-70">
-                    {msg.timestamp.toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })}
+              <div className={`flex items-end gap-3 max-w-[85%] md:max-w-[75%] ${msg.sender === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+
+                {/* Avatar */}
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 shadow-sm ${msg.sender === 'bot'
+                    ? 'bg-gradient-to-br from-teal-100 to-emerald-100 text-teal-600'
+                    : 'bg-gradient-to-br from-blue-100 to-indigo-100 text-blue-600'
+                  }`}>
+                  {msg.sender === 'bot' ? <Bot className="h-4 w-4" /> : <User className="h-4 w-4" />}
+                </div>
+
+                {/* Message Bubble */}
+                <div className={`relative px-5 py-3.5 shadow-sm transition-all duration-200 hover:shadow-md ${msg.sender === 'user'
+                    ? 'bg-gradient-to-r from-teal-600 to-teal-500 text-white rounded-2xl rounded-tr-none'
+                    : 'bg-white border border-gray-100 text-gray-800 rounded-2xl rounded-tl-none'
+                  }`}>
+                  <p className="text-[15px] leading-relaxed whitespace-pre-wrap">{msg.text}</p>
+                  <p className={`text-[10px] mt-1.5 font-medium ${msg.sender === 'user' ? 'text-teal-100' : 'text-gray-400'
+                    }`}>
+                    {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>
                 </div>
-                {msg.sender === 'user' && (
-                  <div className="p-1.5 bg-teal-100 rounded-full flex-shrink-0">
-                    <User className="h-5 w-5 text-teal-700" />
-                  </div>
-                )}
               </div>
             </div>
           ))}
 
           {isTyping && (
             <div className="flex justify-start">
-              <div className="flex items-center gap-2">
-                <div className="p-1.5 bg-teal-100 rounded-full">
-                  <Bot className="h-5 w-5 text-teal-700" />
+              <div className="flex items-end gap-3">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-100 to-emerald-100 text-teal-600 flex items-center justify-center shadow-sm">
+                  <Bot className="h-4 w-4" />
                 </div>
-                <div className="bg-white px-4 py-3 rounded-2xl border border-gray-200 shadow-sm">
-                  <div className="flex space-x-1">
+                <div className="bg-white px-4 py-3 rounded-2xl rounded-tl-none border border-gray-100 shadow-sm">
+                  <div className="flex space-x-1.5">
                     {[0, 150, 300].map((d) => (
                       <div
                         key={d}
-                        className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"
+                        className="w-2 h-2 bg-teal-400 rounded-full animate-bounce"
                         style={{ animationDelay: `${d}ms` }}
                       />
                     ))}
@@ -460,65 +480,82 @@ const AIChat = () => {
         </section>
 
         {/* Input Area */}
-        <footer className="border-t border-gray-200 p-4 bg-white">
-          <div className="flex gap-2">
-            <Input
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder={texts.placeholder}
-              className="flex-1 text-base"
-              disabled={isTyping || isRecording}
-            />
+        <footer className="bg-white/80 backdrop-blur-md border-t border-gray-100 p-4 md:p-6">
+          <div className="max-w-4xl mx-auto space-y-4">
 
-            <Button
-              onClick={toggleRecording}
-              disabled={isTyping}
-              className={`h-12 w-12 p-0 rounded-xl transition-all ${isRecording
-                  ? 'bg-red-600 hover:bg-red-700 animate-pulse'
-                  : 'bg-gray-600 hover:bg-gray-700'
-                } disabled:opacity-50`}
-            >
-              {isRecording ? <MicOff className="h-5 w-5 text-white" /> : <Mic className="h-5 w-5 text-white" />}
-            </Button>
+            {/* Quick Replies */}
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide mask-fade-right">
+              {texts.quick.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => !isRecording && setInputMessage(s)}
+                  disabled={isRecording}
+                  className="flex-shrink-0 px-4 py-2 bg-gray-50 hover:bg-teal-50 text-gray-600 hover:text-teal-700 border border-gray-200 hover:border-teal-200 rounded-full text-xs font-medium transition-all duration-200 whitespace-nowrap"
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
 
-            <Button
-              onClick={handleSendMessage}
-              disabled={!inputMessage.trim() || isTyping || isRecording}
-              className="h-12 w-12 p-0 rounded-xl bg-teal-600 hover:bg-teal-700 disabled:opacity-50 transition-colors"
-            >
-              {isTyping ? <Loader2 className="h-5 w-5 animate-spin text-white" /> : <Send className="h-5 w-5 text-white" />}
-            </Button>
-          </div>
+            {/* Input Bar */}
+            <div className="flex items-center gap-3 bg-white p-2 rounded-[20px] border border-gray-200 shadow-sm focus-within:shadow-md focus-within:border-teal-200 transition-all duration-200">
 
-          <div className="mt-3 flex flex-wrap gap-2 justify-center">
-            {texts.quick.map((s) => (
               <Button
-                key={s}
-                size="sm"
-                variant="outline"
-                onClick={() => !isRecording && setInputMessage(s)}
-                className="text-xs h-8 border-gray-300"
-                disabled={isRecording}
+                onClick={toggleRecording}
+                disabled={isTyping}
+                variant="ghost"
+                className={`h-10 w-10 rounded-full transition-all duration-300 ${isRecording
+                    ? 'bg-red-50 text-red-500 hover:bg-red-100 animate-pulse'
+                    : 'text-gray-400 hover:text-teal-600 hover:bg-teal-50'
+                  }`}
               >
-                {s}
+                {isRecording ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
               </Button>
-            ))}
-          </div>
 
-          <p className="text-center text-xs text-gray-500 mt-3">
-            {texts.disclaimer}
-          </p>
+              <Input
+                value={inputMessage}
+                onChange={(e) => setInputMessage(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder={texts.placeholder}
+                className="flex-1 border-none shadow-none focus-visible:ring-0 bg-transparent text-base placeholder:text-gray-400 h-10"
+                disabled={isTyping || isRecording}
+              />
+
+              <Button
+                onClick={handleSendMessage}
+                disabled={!inputMessage.trim() || isTyping || isRecording}
+                className={`h-10 w-10 rounded-full transition-all duration-200 ${!inputMessage.trim()
+                    ? 'bg-gray-100 text-gray-400'
+                    : 'bg-teal-600 hover:bg-teal-700 text-white shadow-md shadow-teal-600/20'
+                  }`}
+              >
+                {isTyping ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+              </Button>
+            </div>
+
+            <p className="text-center text-[10px] text-gray-400 font-medium">
+              {texts.disclaimer}
+            </p>
+          </div>
         </footer>
       </div>
 
       <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-10px); }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
         }
-        .animate-float {
-          animation: float 3s ease-in-out infinite;
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .animate-gradient {
+          background-size: 200% 200%;
+          animation: gradient 3s ease infinite;
+        }
+        @keyframes gradient {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
         }
       `}</style>
     </div>

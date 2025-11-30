@@ -13,7 +13,6 @@ dotenv.config();
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('✅ MongoDB connected for seeding');
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
     process.exit(1);
@@ -29,21 +28,15 @@ const createSampleCounselorData = async () => {
     });
 
     if (!oauthCounselor) {
-      console.log('❌ OAuth counselor user not found');
       return;
     }
-
-    console.log('✅ Found OAuth counselor:', oauthCounselor.email);
 
     // Get the counselor profile
     const counselor = await Counselor.findOne({ email: oauthCounselor.email });
     
     if (!counselor) {
-      console.log('❌ Counselor profile not found');
       return;
     }
-
-    console.log('✅ Found counselor profile:', counselor.name);
 
     // Clear existing data for this counselor
     await Appointment.deleteMany({ counselor: counselor._id });
@@ -57,13 +50,10 @@ const createSampleCounselorData = async () => {
     await SessionNote.deleteMany({ counselor: counselor._id });
     await CounselorStats.deleteMany({ counselor: counselor._id });
 
-    console.log('🗑️ Cleared existing data for counselor');
-
     // Get some existing students
     const students = await User.find({ role: 'student' }).limit(5);
 
     if (students.length === 0) {
-      console.log('⚠️ No students found. Please create students first.');
       return;
     }
 
@@ -96,8 +86,6 @@ const createSampleCounselorData = async () => {
       appointments.push(appointment);
     }
 
-    console.log('✅ Created sample appointments');
-
     // Create sample messages
     const messages = [];
     for (let i = 0; i < 15; i++) {
@@ -120,8 +108,6 @@ const createSampleCounselorData = async () => {
 
       messages.push(message);
     }
-
-    console.log('✅ Created sample messages');
 
     // Create sample payments
     const payments = [];
@@ -157,8 +143,6 @@ const createSampleCounselorData = async () => {
 
       payments.push(payment);
     }
-
-    console.log('✅ Created sample payments');
 
     // Create sample session notes
     const sessionNotes = [];
@@ -196,8 +180,6 @@ const createSampleCounselorData = async () => {
 
       sessionNotes.push(sessionNote);
     }
-
-    console.log('✅ Created sample session notes');
 
     // Create counselor stats
     const counselorStats = await CounselorStats.create({
@@ -276,19 +258,10 @@ const createSampleCounselorData = async () => {
       lastUpdated: new Date()
     });
 
-    console.log('✅ Created counselor stats');
-
-    console.log('🎉 All sample data created successfully!');
-    console.log(`📊 Created ${appointments.length} appointments`);
-    console.log(`💬 Created ${messages.length} messages`);
-    console.log(`💰 Created ${payments.length} payments`);
-    console.log(`📝 Created ${sessionNotes.length} session notes`);
-
   } catch (error) {
     console.error('❌ Error creating sample data:', error);
   } finally {
     await mongoose.disconnect();
-    console.log('🔌 Disconnected from MongoDB');
   }
 };
 

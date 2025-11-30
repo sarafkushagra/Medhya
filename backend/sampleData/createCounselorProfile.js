@@ -8,7 +8,7 @@ dotenv.config();
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('✅ MongoDB connected for creating counselor profile');
+    
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
     process.exit(1);
@@ -24,17 +24,17 @@ const createCounselorProfile = async () => {
     });
 
     if (!oauthCounselor) {
-      console.log('❌ OAuth counselor user not found');
+      
       return;
     }
 
-    console.log('✅ Found OAuth counselor:', oauthCounselor.email);
+    
 
     // Check if counselor profile already exists
     const existingCounselor = await Counselor.findOne({ email: oauthCounselor.email });
     
     if (existingCounselor) {
-      console.log('✅ Counselor profile already exists');
+      
       return;
     }
 
@@ -124,20 +124,20 @@ const createCounselorProfile = async () => {
       crisisIntervention: true
     });
 
-    console.log('✅ Created counselor profile:', counselor.name);
+    
 
     // Update the OAuth user to link to the counselor profile
     await User.findByIdAndUpdate(oauthCounselor._id, {
       counselorProfile: counselor._id
     });
 
-    console.log('✅ Linked OAuth user to counselor profile');
+    
 
   } catch (error) {
     console.error('❌ Error creating counselor profile:', error);
   } finally {
     await mongoose.disconnect();
-    console.log('🔌 Disconnected from MongoDB');
+    
   }
 };
 

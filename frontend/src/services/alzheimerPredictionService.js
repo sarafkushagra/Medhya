@@ -8,8 +8,7 @@ class AlzheimerPredictionService {
   initialize(apiKey, baseUrl = 'http://localhost:8000') {
     this.baseUrl = baseUrl;
     this.apiKey = apiKey;
-    console.log('AlzheimerPredictionService initialized with URL:', baseUrl);
-  }
+    }
 
   async healthCheck() {
     try {

@@ -1,6 +1,5 @@
 // Google OAuth Configuration Test
 export const testGoogleOAuth = () => {
-  console.log('🔍 Testing Google OAuth Configuration...');
   
   // Check if Google OAuth script is loaded
   if (typeof window.google === 'undefined') {
@@ -15,19 +14,13 @@ export const testGoogleOAuth = () => {
     return false;
   }
   
-  console.log('✅ Google OAuth script loaded');
-  console.log('✅ Client ID configured:', clientId);
   
   // Test OAuth initialization
   try {
     window.google.accounts.oauth2.initTokenClient({
       client_id: clientId,
-      scope: 'email profile',
-      callback: (response) => {
-        console.log('✅ OAuth callback working:', response);
-      }
+      scope: 'email profile'
     });
-    console.log('✅ OAuth client initialized successfully');
     return true;
   } catch (error) {
     console.error('❌ OAuth client initialization failed:', error);

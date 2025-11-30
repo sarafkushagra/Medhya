@@ -12,8 +12,7 @@ class EEGPredictionService {
   initialize(baseUrl = 'http://localhost:8002') {
     this.baseUrl = baseUrl;
     this.isConnected = true;
-    console.log('EEG Prediction Service initialized');
-  }
+   }
 
   // Upload CSV file and get EEG predictions
   async predictFromCSV(file) {

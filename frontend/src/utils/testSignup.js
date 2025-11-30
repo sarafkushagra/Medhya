@@ -32,7 +32,6 @@ export const testSignup = async () => {
   };
 
   try {
-    console.log('🧪 Testing signup with sample data...');
     
     const response = await fetch('http://localhost:5000/api/users/signup', {
       method: 'POST',
@@ -49,7 +48,6 @@ export const testSignup = async () => {
       return { success: false, error: result.message };
     }
 
-    console.log('✅ Signup test successful:', result);
     return { success: true, data: result };
   } catch (error) {
     console.error('❌ Signup test error:', error);
@@ -60,7 +58,6 @@ export const testSignup = async () => {
 // Test login functionality
 export const testLogin = async (email, password) => {
   try {
-    console.log('🧪 Testing login...');
     
     const response = await fetch('http://localhost:5000/api/users/login', {
       method: 'POST',
@@ -77,7 +74,6 @@ export const testLogin = async (email, password) => {
       return { success: false, error: result.message };
     }
 
-    console.log('✅ Login test successful:', result);
     return { success: true, data: result };
   } catch (error) {
     console.error('❌ Login test error:', error);

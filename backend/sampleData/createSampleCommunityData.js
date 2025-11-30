@@ -10,16 +10,12 @@ const MONGO_URI = process.env.MONGO_URI;
 async function createSampleCommunityData() {
   try {
     await mongoose.connect(MONGO_URI);
-    console.log("MongoDB connected ✅");
 
     // Find some student users
     const students = await User.find({ role: 'student' }).limit(10);
     if (students.length === 0) {
-      console.log("❌ No student users found. Please create student users first.");
       process.exit(1);
     }
-
-    console.log(`✅ Found ${students.length} students`);
 
     // Sample posts data
     const samplePosts = [
@@ -196,36 +192,6 @@ async function createSampleCommunityData() {
 
     // Save all posts
     await CommunityPost.insertMany(posts);
-    console.log(`✅ Created ${posts.length} community posts with comments`);
-
-    // Calculate and display summary
-    const totalPosts = posts.length;
-    const totalComments = posts.reduce((sum, post) => sum + post.comments.length, 0);
-    const totalLikes = posts.reduce((sum, post) => sum + post.likes.length, 0);
-    const totalViews = posts.reduce((sum, post) => sum + post.views, 0);
-
-    console.log("\n📊 Community Data Summary:");
-    console.log("=".repeat(40));
-    console.log(`Total Posts: ${totalPosts}`);
-    console.log(`Total Comments: ${totalComments}`);
-    console.log(`Total Likes: ${totalLikes}`);
-    console.log(`Total Views: ${totalViews}`);
-    console.log(`Average Comments per Post: ${(totalComments / totalPosts).toFixed(1)}`);
-    console.log(`Average Likes per Post: ${(totalLikes / totalPosts).toFixed(1)}`);
-
-    // Show category distribution
-    const categoryCounts = {};
-    posts.forEach(post => {
-      categoryCounts[post.category] = (categoryCounts[post.category] || 0) + 1;
-    });
-
-    console.log("\n📈 Category Distribution:");
-    Object.entries(categoryCounts).forEach(([category, count]) => {
-      console.log(`${category}: ${count} posts`);
-    });
-
-    console.log("\n✅ Sample community data created successfully!");
-    console.log("You can now test the community feature in the frontend.");
 
     process.exit(0);
   } catch (err) {

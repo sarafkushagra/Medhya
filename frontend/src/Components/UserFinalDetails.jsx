@@ -372,10 +372,6 @@ const Signup = ({ onLogin, onShowLogin, userData, onBackToUserSignup }) => {
         }
         const userId = user._id;
 
-        console.log('📤 Sending user details data:', userDetailsData);
-        console.log('📤 Password included:', 'password' in userDetailsData);
-        console.log('📤 Password value:', userDetailsData.password || 'not provided');
-
         const detailsResponse = await fetch(`${API_BASE_URL}/user-details/${userId}`, {
           method: "POST",
           headers: {

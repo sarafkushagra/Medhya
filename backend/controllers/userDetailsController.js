@@ -34,53 +34,38 @@ export const createOrUpdateUserDetails = catchAsync(async (req, res, next) => {
   }
 
   // Handle password update if provided
-  if (userDetailsData.password && userDetailsData.passwordConfirm && 
-      userDetailsData.password.trim() !== '' && userDetailsData.passwordConfirm.trim() !== '') {
-    
+  if (userDetailsData.password && userDetailsData.passwordConfirm &&
+    userDetailsData.password.trim() !== '' && userDetailsData.passwordConfirm.trim() !== '') {
+
     const password = userDetailsData.password.trim();
     const passwordConfirm = userDetailsData.passwordConfirm.trim();
-    
+
     if (password !== passwordConfirm) {
-      console.log('❌ Passwords do not match');
       return next(new AppError('Passwords do not match', 400));
     }
-    
+
     if (password.length < 8) {
-      console.log('❌ Password too short');
       return next(new AppError('Password must be at least 8 characters long', 400));
     }
-    
+
     if (!/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
-      console.log('❌ Password does not meet complexity requirements');
       return next(new AppError('Password must contain uppercase, lowercase, and number', 400));
     }
-    
+
     // Update user password
     user.password = password;
     user.markModified('password');
-    
+
     // Ensure passwordConfirm is not set to avoid validation issues
     user.passwordConfirm = undefined;
-    
+
     await user.save({ validateBeforeSave: false });
-    
+
     // Remove password fields from userDetailsData to avoid saving them in userDetails
     delete userDetailsData.password;
     delete userDetailsData.passwordConfirm;
-    
-    console.log('✅ Password updated for user:', userId);
-  } else {
-    console.log('ℹ️ No password update requested');
-    console.log('ℹ️ Password field present:', 'password' in userDetailsData);
-    console.log('ℹ️ PasswordConfirm field present:', 'passwordConfirm' in userDetailsData);
-    if (userDetailsData.password) {
-      console.log('ℹ️ Password value:', userDetailsData.password);
-    }
-    if (userDetailsData.passwordConfirm) {
-      console.log('ℹ️ PasswordConfirm value:', userDetailsData.passwordConfirm);
-    }
-  }
 
+  }
   // Check if user details already exist
   let userDetails = await UserDetails.findOne({ user: userId });
 
@@ -94,7 +79,7 @@ export const createOrUpdateUserDetails = catchAsync(async (req, res, next) => {
       user: userId,
       ...userDetailsData
     });
-    
+
     // Update the user's userDetails reference
     user.userDetails = userDetails._id;
     await user.save({ validateBeforeSave: false });
@@ -105,7 +90,7 @@ export const createOrUpdateUserDetails = catchAsync(async (req, res, next) => {
     'firstName', 'lastName', 'username', 'phone', 'dateOfBirth', 'gender',
     'institutionId', 'studentId', 'course', 'year',
     'securityQuestion', 'securityAnswer',
-    'privacyConsent', 'dataProcessingConsent', 'emergencyContact', 
+    'privacyConsent', 'dataProcessingConsent', 'emergencyContact',
     'emergencyPhone', 'mentalHealthConsent'
   ];
 
@@ -118,7 +103,7 @@ export const createOrUpdateUserDetails = catchAsync(async (req, res, next) => {
     // For other fields, check if they exist and are not empty strings
     return value !== undefined && value !== null && value.toString().trim() !== '';
   });
-  
+
   // Update user profile completion status based on field completion
   if (allFieldsComplete && !user.isProfileComplete) {
     user.isProfileComplete = true;
@@ -145,13 +130,9 @@ export const createOrUpdateUserDetails = catchAsync(async (req, res, next) => {
       }
     }
   };
-  
-  console.log('✅ User details updated successfully:', {
-    userId: user._id,
-    userIsProfileComplete: user.isProfileComplete,
-    userDetailsIsProfileComplete: userDetails.isProfileComplete
-  });
-  
+
+
+
   res.status(200).json(responseData);
 });
 
@@ -159,36 +140,25 @@ export const createOrUpdateUserDetails = catchAsync(async (req, res, next) => {
 export const markProfileComplete = catchAsync(async (req, res, next) => {
   const { userId } = req.params;
 
-  console.log('🔍 markProfileComplete called for user:', userId);
 
   // Check if user exists
   const user = await User.findById(userId);
   if (!user) {
-    console.log('❌ User not found:', userId);
     return next(new AppError('User not found', 404));
   }
-
-  console.log('✅ User found:', { userId: user._id, currentProfileStatus: user.isProfileComplete });
-
   // Check if user details exist and are complete
   const userDetails = await UserDetails.findOne({ user: userId });
   if (!userDetails) {
-    console.log('❌ User details not found for user:', userId);
     return next(new AppError('User details not found. Please complete your profile first.', 400));
   }
 
-  console.log('✅ User details found:', { 
-    userId: userDetails.user, 
-    isProfileComplete: userDetails.isProfileComplete,
-    hasAllFields: Boolean(userDetails.firstName && userDetails.lastName && userDetails.username)
-  });
 
   // Validate that all required fields are filled
   const requiredFields = [
     'firstName', 'lastName', 'username', 'phone', 'dateOfBirth', 'gender',
     'institutionId', 'studentId', 'course', 'year',
     'securityQuestion', 'securityAnswer',
-    'privacyConsent', 'dataProcessingConsent', 'emergencyContact', 
+    'privacyConsent', 'dataProcessingConsent', 'emergencyContact',
     'emergencyPhone', 'mentalHealthConsent'
   ];
 
@@ -201,15 +171,8 @@ export const markProfileComplete = catchAsync(async (req, res, next) => {
     // For other fields, check if they are empty or undefined
     return value === undefined || value === null || value.toString().trim() === '';
   });
-  
-  console.log('🔍 Field validation:', {
-    requiredFields,
-    missingFields,
-    userDetailsFields: Object.keys(userDetails._doc).filter(key => !key.startsWith('_'))
-  });
-  
+
   if (missingFields.length > 0) {
-    console.log('❌ Missing required fields:', missingFields);
     return next(new AppError(`Please complete the following fields: ${missingFields.join(', ')}`, 400));
   }
 
@@ -220,12 +183,6 @@ export const markProfileComplete = catchAsync(async (req, res, next) => {
   // Update user profile completion status
   user.isProfileComplete = true;
   await user.save({ validateBeforeSave: false });
-
-  console.log('✅ Profile marked complete successfully:', {
-    userId: user._id,
-    userIsProfileComplete: user.isProfileComplete,
-    userDetailsIsProfileComplete: userDetails.isProfileComplete
-  });
 
   res.status(200).json({
     status: 'success',
@@ -240,48 +197,28 @@ export const markProfileComplete = catchAsync(async (req, res, next) => {
 export const getProfileCompletionStatus = catchAsync(async (req, res, next) => {
   const { userId } = req.params;
 
-  console.log('🔍 getProfileCompletionStatus called for user:', userId);
-
   const user = await User.findById(userId);
   if (!user) {
-    console.log('❌ User not found:', userId);
     return next(new AppError('User not found', 404));
   }
 
-  console.log('✅ User found:', { userId: user._id, isProfileComplete: user.isProfileComplete });
-
   const userDetails = await UserDetails.findOne({ user: userId });
-  
+
   let completionPercentage = 0;
   let missingFields = [];
 
   if (userDetails) {
-    console.log('✅ User details found:', { 
-      userId: userDetails.user, 
-      isProfileComplete: userDetails.isProfileComplete 
-    });
-    
     const requiredFields = [
       'firstName', 'lastName', 'username', 'phone', 'dateOfBirth', 'gender',
       'institutionId', 'studentId', 'course', 'year',
       'securityQuestion', 'securityAnswer',
-      'privacyConsent', 'dataProcessingConsent', 'emergencyContact', 
+      'privacyConsent', 'dataProcessingConsent', 'emergencyContact',
       'emergencyPhone', 'mentalHealthConsent'
     ];
 
     const completedFields = requiredFields.filter(field => userDetails[field]);
     completionPercentage = Math.round((completedFields.length / requiredFields.length) * 100);
     missingFields = requiredFields.filter(field => !userDetails[field]);
-    
-    console.log('🔍 Profile completion analysis:', {
-      requiredFields,
-      completedFields,
-      missingFields,
-      completionPercentage,
-      userDetailsFields: Object.keys(userDetails._doc).filter(key => !key.startsWith('_'))
-    });
-  } else {
-    console.log('❌ User details not found for user:', userId);
   }
 
   const responseData = {
@@ -293,9 +230,7 @@ export const getProfileCompletionStatus = catchAsync(async (req, res, next) => {
       userDetails: userDetails || null
     }
   };
-  
-  console.log('✅ Sending profile completion status response:', responseData);
-  
+
   res.status(200).json(responseData);
 });
 
@@ -304,7 +239,7 @@ export const deleteUserDetails = catchAsync(async (req, res, next) => {
   const { userId } = req.params;
 
   const userDetails = await UserDetails.findOneAndDelete({ user: userId });
-  
+
   if (!userDetails) {
     return next(new AppError('User details not found', 404));
   }

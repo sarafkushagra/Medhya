@@ -17,13 +17,6 @@ export const getGoogleOAuthConfig = () => {
     ? `${protocol}//${hostname}:${port}`
     : `${protocol}//${hostname}`;
 
-  console.log('🔧 Google OAuth Configuration:', {
-    hostname,
-    protocol,
-    port,
-    currentOrigin,
-    clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID
-  });
 
   return {
     clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
@@ -46,7 +39,6 @@ export const validateGoogleOAuthConfig = () => {
     return false;
   }
 
-  console.log('✅ Google OAuth configuration valid');
   return true;
 };
 
@@ -63,12 +55,8 @@ export const initializeGoogleOAuth = () => {
     const client = window.google.accounts.oauth2.initTokenClient({
       client_id: config.clientId,
       scope: config.scope,
-      callback: (response) => {
-        console.log('✅ Google OAuth callback received:', response);
-      }
     });
 
-    console.log('✅ Google OAuth client initialized successfully');
     return client;
   } catch (error) {
     console.error('❌ Google OAuth initialization failed:', error);

@@ -1,0 +1,130 @@
+{
+  "questions": [
+    {
+      "questionText": "I have trouble concentrating on tasks (like reading, watching, or listening).",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "I forget appointments, conversations, or things I recently did.",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "I find it hard to start or keep doing tasks that require planning.",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "My thoughts feel slowed down or I take longer to finish simple mental tasks.",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "I make careless mistakes because I didn't pay attention.",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "I get easily distracted by small things or my surroundings.",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "I lose track of what I was doing because my mind suddenly goes elsewhere.",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "I have trouble calming down or controlling my reactions when upset.",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "I act on impulse or make quick decisions that I later regret.",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "I have difficulty switching between tasks or shifting my attention when needed.",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "I struggle to remember multi-step instructions (like 3–4 step directions).",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "I have trouble planning or finishing tasks because I underestimate how long things will take.",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "I experience moments of mental fogginess or zoning out.",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    },
+    {
+      "questionText": "My thinking feels more disorganized than usual or it's hard to keep a clear train of thought.",
+      "options": [
+        { "label": "Not at all", "value": 0 },
+        { "label": "Several days", "value": 1 },
+        { "label": "More than half the days", "value": 2 },
+        { "label": "Nearly every day", "value": 3 }
+      ]
+    }
+  ]
+}

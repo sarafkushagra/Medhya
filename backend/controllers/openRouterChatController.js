@@ -2,14 +2,14 @@
 import { openRouterChat } from "../utils/openRouter.js";
 
 const sendMessage = async (req, res) => {
-  const { user_message } = req.body;
+  const { user_message, lang = 'en-US' } = req.body;
 
   if (!user_message?.trim()) {
     return res.status(400).json({ error: "Message is required" });
   }
 
   try {
-    const reply = await openRouterChat(user_message);
+    const reply = await openRouterChat(user_message, lang);
     res.json({ reply });
   } catch (error) {
     console.error("Chat error:", error);

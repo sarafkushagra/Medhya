@@ -143,9 +143,7 @@ const DailyJournal = ({
 
     if (window.confirm('Are you sure you want to delete this journal entry?')) {
       try {
-        console.log('Attempting to delete entry with ID:', entryId);
         await deleteJournalEntry(entryId);
-        console.log('Successfully deleted entry, refreshing data...');
 
         // Refresh all data to ensure consistency
         await Promise.all([
@@ -154,7 +152,6 @@ const DailyJournal = ({
           getWeeklyProgress()
         ]);
 
-        console.log('Data refreshed after deletion');
         alert('Journal entry deleted successfully!');
       } catch (err) {
         console.error('Failed to delete entry:', err);

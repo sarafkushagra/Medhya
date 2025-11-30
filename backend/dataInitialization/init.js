@@ -14,14 +14,12 @@ const MONGO_URI = process.env.MONGO_URI; // change DB name if needed
 async function seed() {
   try {
     await mongoose.connect(MONGO_URI);
-    console.log("MongoDB connected ✅");
 
     // Clear old data
     await Promise.all([
       User.deleteMany()
     ]);
 
-    console.log("Old data cleared 🗑️");
 
     // ---------------- USERS ----------------
     const users = [];
@@ -54,9 +52,7 @@ async function seed() {
     }
 
     const savedUsers = await User.insertMany(users);
-    console.log("Users inserted ✅");
 
-    console.log("Seeding completed 🎉");
     process.exit();
   } catch (err) {
     console.error("Error seeding data ❌", err);

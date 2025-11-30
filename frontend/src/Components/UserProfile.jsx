@@ -93,7 +93,6 @@ const UserProfile = () => {
     // Cache check - don't refetch if data is fresh (less than 30 seconds old) unless forced
     const now = Date.now();
     if (!forceRefresh && lastFetchTime && (now - lastFetchTime) < 30000 && userDetails) {
-      console.log('📋 Using cached profile data');
       return;
     }
 
@@ -101,7 +100,6 @@ const UserProfile = () => {
     setError('');
 
     try {
-      console.log('🔍 Fetching user details for user:', user._id);
       const timestamp = Date.now(); // Cache buster
       const response = await apiCall(`/user-details/${user._id}?t=${timestamp}`, {
         method: 'GET'
@@ -112,20 +110,11 @@ const UserProfile = () => {
         setEditedDetails(response.data.userDetails);
         setLastFetchTime(Date.now());
         setIsInitialLoad(false);
-        console.log('✅ User details loaded successfully');
-
-        // Show success message only if this was a manual refresh
-        if (!isInitialLoad && forceRefresh) {
-          setSuccess('Profile data refreshed successfully!');
-          setTimeout(() => setSuccess(''), 2000);
-        }
       } else {
-        console.warn('⚠️ No user details found in response');
         setUserDetails(null);
         setEditedDetails({});
       }
     } catch (err) {
-      console.error('❌ Failed to fetch user details:', err);
       if (err.message.includes('404') || err.message.includes('not found')) {
         setError('No profile details found. Please complete your profile first.');
         setUserDetails(null);
@@ -238,14 +227,6 @@ const UserProfile = () => {
 
   // Password management functions
   const handleSetPassword = async () => {
-    console.log('🔐 Frontend: handleSetPassword called');
-    console.log('🔐 Frontend: Password data:', {
-      newPassword: !!passwordData.newPassword,
-      newPasswordLength: passwordData.newPassword ? passwordData.newPassword.length : 0,
-      newPasswordConfirm: !!passwordData.newPasswordConfirm,
-      newPasswordConfirmLength: passwordData.newPasswordConfirm ? passwordData.newPasswordConfirm.length : 0
-    });
-
     if (passwordData.newPassword !== passwordData.newPasswordConfirm) {
       setError('Passwords do not match');
       return;
@@ -261,7 +242,6 @@ const UserProfile = () => {
     setSuccess('');
 
     try {
-      console.log('🔐 Frontend: Making API call to /users/set-password');
       const response = await apiCall('/users/set-password', {
         method: 'PATCH',
         body: JSON.stringify({
@@ -270,24 +250,18 @@ const UserProfile = () => {
         })
       });
 
-      console.log('🔐 Frontend: API response:', response);
-
       setSuccess('Password set successfully! You can now login with email and password.');
       setPasswordData({ newPassword: '', newPasswordConfirm: '', currentPassword: '' });
       setShowPasswordSection(false);
-      console.log(response.data);
       // Update password status from response
       if (response.data && response.data.hasPassword !== undefined) {
         setHasPassword(response.data.hasPassword);
-        console.log('🔐 Frontend: Updated hasPassword to:', response.data.hasPassword);
       } else {
         setHasPassword(true);
-        console.log('🔐 Frontend: Set hasPassword to true (fallback)');
       }
 
       setTimeout(() => setSuccess(''), 5000);
     } catch (err) {
-      console.error('🔐 Frontend: API error:', err);
       setError(err.message || 'Failed to set password');
     } finally {
       setIsSettingPassword(false);
@@ -364,10 +338,6 @@ const UserProfile = () => {
   };
 
   const profileCompletion = calculateProfileCompletion();
-
-  // Debug: Log user object
-  console.log('🔍 UserProfile - Current user object:', user);
-  console.log('🔍 UserProfile - User ID:', user?._id);
 
   if (!user) {
     return (

@@ -58,7 +58,6 @@ export default function Wellness() {
   const handleMoodSelect = (mood) => {
     setCurrentMood(mood)
     // Here you would typically save to backend
-    console.log('Mood selected:', mood)
   }
 
   const getMoodEmoji = (mood) => {

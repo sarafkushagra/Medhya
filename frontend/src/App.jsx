@@ -4,7 +4,7 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from './hooks/useAuth.js';
 
 // Import Intro Screen
-import IntroScreen from './Components/IntroScreen.jsx';
+// import IntroScreen from './Components/IntroScreen.jsx';
 
 // Import Layouts & Pages
 import LandingPage from './Components/LandingPage.jsx';
@@ -13,6 +13,7 @@ import UserFinalData from './Components/UserFinalDetails.jsx';
 import UserInitialData from './Components/UserInitialDetails.jsx';
 import AppLayout from './Components/AppLayout.jsx';
 import StudentDashboard from './Components/StudentDashboard.jsx';
+import NeuroDashboard from './Components/NeuroDashboard.jsx';
 import AdminDashboard from './Components/AdminDashboard.jsx';
 import AIChat from './Components/AIChat.jsx';
 import Voice from './Components/Voice.jsx';
@@ -89,7 +90,7 @@ export default function App() {
   const [userRole, setUserRole] = useState('guest');
   const [userData, setUserData] = useState(null);
   const [refreshMoodData, setRefreshMoodData] = useState(0);
-  const [showIntro, setShowIntro] = useState(true);
+  // const [showIntro, setShowIntro] = useState(true);
   const navigate = useNavigate();
 
   const systemStats = {
@@ -128,22 +129,18 @@ export default function App() {
   // Always show intro on every page load/refresh
   // Remove localStorage check to show video every time
 
-  const handleLogin = (role, userData = null) => {
+  const handleLogin = (role) => {
     setUserRole(role);
 
-    console.log('🔍 handleLogin called with:', { role, userData });
-
+    
     // Handle different user types
     if (role === 'admin') {
-      console.log('🚀 Redirecting admin to dashboard');
       navigate('/admin');
     } else if (role === 'counselor') {
       // Counselor login flow - always redirect to counselor dashboard
-      console.log('🚀 Redirecting counselor to dashboard (no signup flow needed)');
       navigate('/counsellordash');
     } else if (role === 'student') {
       // Student login flow - ALWAYS redirect to contact-choice first
-      console.log('🚀 Redirecting student to contact-choice (first option choice)');
       navigate('/dashboard');
     }
 
@@ -156,11 +153,9 @@ export default function App() {
   };
 
   const handleLoginError = (role, error, googleData = null) => {
-    console.log('🔍 Login error occurred:', error, 'Google data:', googleData);
-
+   
     // If user not found in database, redirect to signup flow
     if (error && (error.includes('not found') || error.includes('User not found') || error.includes('Invalid credentials'))) {
-      console.log('🚀 User not found, redirecting to signup flow');
       if (role === 'student') {
         // Redirect to user-signup first, then signup, then contact-choice
         navigate('/user-signup', {
@@ -193,11 +188,11 @@ export default function App() {
   };
 
   // Show intro screen first (every time on refresh)
-  if (showIntro) {
-    return <IntroScreen onFinish={() => {
-      setShowIntro(false);
-    }} />;
-  }
+  // if (showIntro) {
+  //   return <IntroScreen onFinish={() => {
+  //     setShowIntro(false);
+  //   }} />;
+  // }
 
   // Show loading screen while checking authentication
   if (loading) {
@@ -270,6 +265,7 @@ export default function App() {
         >
           {/* Student Routes */}
           <Route path="/dashboard" element={<ProtectedRoute userRole={userRole} requiredRole="student" isLoading={loading}><StudentDashboard /></ProtectedRoute>} />
+          <Route path="/neurodashboard" element={<ProtectedRoute userRole={userRole} requiredRole="student" isLoading={loading}><NeuroDashboard /></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute userRole={userRole} requiredRole="student" isLoading={loading}><UserProfile /></ProtectedRoute>} />
           <Route path="/chat" element={<ProfileProtectedRoute user={user} isLoading={loading}><AIChat /></ProfileProtectedRoute>} />
           <Route path="/ai" element={<ProfileProtectedRoute user={user} isLoading={loading}><Voice /></ProfileProtectedRoute>} />

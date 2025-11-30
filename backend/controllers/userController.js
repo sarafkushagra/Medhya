@@ -94,10 +94,7 @@ export const registerUser = catchAsync(async (req, res, next) => {
 
   // Validate password for non-Google registration
   if (!googleId) {
-    console.log('🔐 Regular registration - validating password');
-    console.log('🔐 Password provided:', !!password);
-    console.log('🔐 PasswordConfirm provided:', !!passwordConfirm);
-    console.log('🔐 Password length:', password ? password.length : 0);
+    
     
     if (!password) {
       return next(new AppError('Password is required for registration', 400));
@@ -111,7 +108,6 @@ export const registerUser = catchAsync(async (req, res, next) => {
     const trimmedPasswordConfirm = passwordConfirm.trim();
     
     if (trimmedPassword !== password || trimmedPasswordConfirm !== passwordConfirm) {
-      console.log('🔐 Password had whitespace, trimmed');
     }
     
     if (trimmedPassword !== trimmedPasswordConfirm) {
@@ -121,15 +117,9 @@ export const registerUser = catchAsync(async (req, res, next) => {
       return next(new AppError('Password must be at least 8 characters long', 400));
     }
     
-    console.log('🔐 Password validation passed');
   }
 
-  console.log('🔐 Creating user with data:', {
-    email,
-    hasPassword: !!password,
-    hasGoogleId: !!googleId,
-    passwordLength: password ? password.trim().length : 0
-  });
+  
 
   // Prepare user data
   const userData = {
@@ -149,13 +139,7 @@ export const registerUser = catchAsync(async (req, res, next) => {
   // Create basic user first
   const user = await User.create(userData);
 
-  console.log('🔐 User created successfully:', {
-    userId: user._id,
-    email: user.email,
-    hasPassword: !!user.password,
-    passwordLength: user.password ? user.password.length : 0,
-    isPasswordHashed: user.password ? user.password.startsWith('$2') : false
-  });
+  
 
   // Create user details
   const userDetails = await UserDetails.create({
@@ -194,36 +178,36 @@ export const registerUser = catchAsync(async (req, res, next) => {
 });
 
 export const loginUser = catchAsync(async (req, res, next) => {
-  console.log('🔐 Login attempt:', { email: req.body.email, hasPassword: !!req.body.password });
+  
   
   const { email, password } = req.body;
 
   // Check if email and password exist
   if (!email || !password) {
-    console.log('🔐 Missing email or password');
+    
     return next(new AppError('Please provide email and password', 400));
   }
 
   // Check if user exists && password is correct
   const user = await User.findOne({ email }).select('+password');
-  console.log('🔐 User found:', !!user);
-  console.log('🔐 User has password:', !!(user && user.password));
+  
+  
   
   if (!user) {
-    console.log('🔐 User not found');
+    
     return next(new AppError('Incorrect email or password', 401));
   }
   
   if (!user.password) {
-    console.log('🔐 User has no password (Google OAuth user)');
+    
     return next(new AppError('This account uses Google login. Please use Google to sign in.', 401));
   }
   
   const isPasswordCorrect = await user.matchPassword(password);
-  console.log('🔐 Password correct:', isPasswordCorrect);
+  
   
   if (!isPasswordCorrect) {
-    console.log('🔐 Password incorrect');
+    
     return next(new AppError('Incorrect email or password', 401));
   }
 
@@ -240,7 +224,7 @@ export const googleAuth = catchAsync(async (req, res, next) => {
     return next(new AppError('Google ID and email are required', 400));
   }
 
-  console.log('🔍 Google OAuth login attempt:', { email, loginType });
+  
 
   // Validate loginType
   if (loginType && !['admin', 'student', 'counselor'].includes(loginType)) {
@@ -249,13 +233,7 @@ export const googleAuth = catchAsync(async (req, res, next) => {
 
   // EARLY SECURITY CHECK: Prevent admin/counselor role selection for Google OAuth
   if (loginType === 'admin' || loginType === 'counselor') {
-    console.log('🚫 SECURITY VIOLATION: Attempted Google OAuth with admin/counselor role:', {
-      email,
-      attemptedRole: loginType,
-      timestamp: new Date().toISOString(),
-      reason: 'Admin/Counselor roles require password authentication',
-      severity: 'HIGH'
-    });
+    
     return next(new AppError(
       `Google login is not allowed for ${loginType} accounts. Please use the regular login form with your password.`,
       403
@@ -273,15 +251,7 @@ export const googleAuth = catchAsync(async (req, res, next) => {
       // SECURITY CHECK: Block Google OAuth for ANY existing admin/counselor accounts
       // This prevents role escalation or bypass attempts
       if ((user.role === 'admin' || user.role === 'counselor') && user.password) {
-        console.log('🚫 SECURITY VIOLATION: Attempted Google OAuth bypass for existing admin/counselor:', {
-          email: user.email,
-          actualRole: user.role,
-          hasPassword: !!user.password,
-          attemptedLoginType: loginType,
-          timestamp: new Date().toISOString(),
-          reason: 'Attempted to bypass password requirement for privileged account',
-          severity: 'CRITICAL'
-        });
+        
         return next(new AppError(
           `This email is registered as ${user.role}. For security reasons, ${user.role} accounts cannot use Google login. Please use the regular login form with your password.`,
           403
@@ -294,16 +264,15 @@ export const googleAuth = catchAsync(async (req, res, next) => {
       // Update role if loginType is provided and different from current role
       if (loginType && loginType !== user.role) {
         const newRole = loginType === 'admin' ? 'admin' : loginType === 'counselor' ? 'counselor' : 'student';
-        console.log('🔍 Updating existing user role from', user.role, 'to', newRole);
+        
         user.role = newRole;
       } else if (!loginType) {
-        console.log('🔍 No loginType provided, keeping existing role:', user.role);
+        
       }
       
       await user.save({ validateBeforeSave: false });
     } else {
       // User doesn't exist - create minimal user record
-      console.log('🔍 Creating new user account with Google OAuth');
       
       const userData = {
         googleId,
@@ -315,14 +284,12 @@ export const googleAuth = catchAsync(async (req, res, next) => {
       };
       
       user = await User.create(userData);
-      console.log('✅ New user account created:', { email: user.email, role: user.role });
     }
   }
 
   // Log activity
   
 
-  console.log('✅ Google OAuth login successful for user:', { email: user.email, role: user.role });
   sendTokenResponse(user, 200, res);
 });
 
@@ -445,58 +412,33 @@ export const checkPasswordStatus = catchAsync(async (req, res, next) => {
 export const setPassword = catchAsync(async (req, res, next) => {
   const { newPassword, newPasswordConfirm } = req.body;
 
-  console.log('🔐 setPassword called for user:', req.user.id);
-  console.log('🔐 Password data:', { 
-    newPassword: !!newPassword, 
-    newPasswordConfirm: !!newPasswordConfirm,
-    newPasswordLength: newPassword ? newPassword.length : 0
-  });
-
   // Get user with password field included
   const user = await User.findById(req.user.id).select('+password');
 
-  console.log('🔐 User found:', !!user);
-  console.log('🔐 User already has password:', !!(user && user.password));
-  console.log('🔐 User object keys:', user ? Object.keys(user._doc) : 'No user');
-
   // Check if user already has a password
   if (user.password) {
-    console.log('🔐 User already has password, rejecting');
     return next(new AppError('Password already set. Use change-password endpoint instead.', 400));
   }
 
   // Validate password confirmation
   if (newPassword !== newPasswordConfirm) {
-    console.log('🔐 Passwords do not match');
     return next(new AppError('Passwords do not match', 400));
   }
 
   // Validate password length (must match schema requirement)
   if (newPassword.length < 8) {
-    console.log('🔐 Password too short:', newPassword.length);
     return next(new AppError('Password must be at least 8 characters long', 400));
   }
-
-  console.log('🔐 Setting new password for user');
-  console.log('🔐 Password before save:', user.password);
-  console.log('🔐 PasswordConfirm before save:', user.passwordConfirm);
 
   // Set new password
   user.password = newPassword;
   user.passwordConfirm = newPasswordConfirm;
   
-  console.log('🔐 Password after setting:', user.password);
-  console.log('🔐 PasswordConfirm after setting:', user.passwordConfirm);
-  console.log('🔐 User modified fields:', user.modifiedPaths());
-  
       try {
       const savedUser = await user.save();
-      console.log('🔐 Password saved successfully');
-      console.log('🔐 Saved user has password:', !!(savedUser && savedUser.password));
       
       // Verify the password was saved by fetching the user again
       const verifyUser = await User.findById(req.user.id).select('+password');
-      console.log('🔐 Verification: User has password after save:', !!(verifyUser && verifyUser.password));
       
       res.status(200).json({
         status: 'success',
@@ -520,42 +462,30 @@ export const setPassword = catchAsync(async (req, res, next) => {
 export const changePassword = catchAsync(async (req, res, next) => {
   const { currentPassword, newPassword, newPasswordConfirm } = req.body;
 
-  console.log('🔐 changePassword called for user:', req.user.id);
-
   // Get user with password
   const user = await User.findById(req.user.id).select('+password');
 
-  console.log('🔐 User found:', !!user);
-  console.log('🔐 User has password:', !!(user && user.password));
-
   // Check if user has a password
   if (!user.password) {
-    console.log('🔐 User has no password, rejecting');
     return next(new AppError('No password set. Use set-password endpoint instead.', 400));
   }
 
   // Check current password
   const isCurrentPasswordCorrect = await user.matchPassword(currentPassword);
-  console.log('🔐 Current password correct:', isCurrentPasswordCorrect);
   
   if (!isCurrentPasswordCorrect) {
-    console.log('🔐 Current password incorrect');
     return next(new AppError('Current password is incorrect', 401));
   }
 
   // Validate password confirmation
   if (newPassword !== newPasswordConfirm) {
-    console.log('🔐 New passwords do not match');
     return next(new AppError('New passwords do not match', 400));
   }
 
   // Validate password length (must match schema requirement)
   if (newPassword.length < 8) {
-    console.log('🔐 New password too short:', newPassword.length);
     return next(new AppError('Password must be at least 8 characters long', 400));
   }
-
-  console.log('🔐 Updating password for user');
 
   // Update password
   user.password = newPassword;
@@ -564,7 +494,6 @@ export const changePassword = catchAsync(async (req, res, next) => {
   
   try {
     await user.save();
-    console.log('🔐 Password updated successfully');
     
     sendTokenResponse(user, 200, res);
   } catch (saveError) {

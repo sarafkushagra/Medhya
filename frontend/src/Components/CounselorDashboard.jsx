@@ -77,11 +77,9 @@ const CounselorDashboard = () => {
 
   const socket = useSocket();
   // After login
-  console.log(user?.counselorProfile);
   socket.emit("counselor-online", user?.counselorProfile);
 
   socket.on("student-status", ({ studentID, isOnline }) => {
-    console.log(`Student ${studentID} is now ${isOnline ? "online" : "offline"}`);
   });
 
 

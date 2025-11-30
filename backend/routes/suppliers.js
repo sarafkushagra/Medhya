@@ -54,7 +54,6 @@ const supplierRoutes = (io) => {
         };
 
         await transporter.sendMail(mailOptions);
-        console.log('Supplier account details email sent successfully to:', email);
       } catch (emailError) {
         console.error('Failed to send supplier email:', emailError);
         // Don't fail the creation if email fails
@@ -123,7 +122,6 @@ const supplierRoutes = (io) => {
         };
 
         await transporter.sendMail(mailOptions);
-        console.log('Supplier password recovery email sent to:', supplier.email);
         return res.json({ message: 'Recovery instructions sent to your registered email' });
       } catch (emailError) {
         console.error('Failed to send supplier password email:', emailError);
@@ -162,11 +160,10 @@ const supplierRoutes = (io) => {
   // Supplier: assigned orders
   router.get('/orders', authenticateToken, authorizeSupplier, async (req, res) => {
     try {
-      console.log('Fetching orders for supplier:', req.user.id);
       const orders = await MedicineOrder.find({ supplierId: req.user.id })
         .populate('patientId', 'name email')
         .sort({ createdAt: -1 });
-      console.log('Found', orders.length, 'orders');
+      
       
       // Ensure orders have valid data
       const safeOrders = orders.map(order => ({
@@ -187,31 +184,20 @@ const supplierRoutes = (io) => {
       const { id } = req.params;
       const { status, note, isMainStatus } = req.body;
       
-      console.log('Update status request:', { id, status, note, isMainStatus, userId: req.user.id });
       
       if (!status || typeof status !== 'string' || status.trim().length === 0) {
         return res.status(400).json({ message: 'Status is required' });
       }
       
       const order = await MedicineOrder.findById(id).populate('patientId', 'name email');
-      console.log('Found order:', order ? { id: order._id, supplierId: order.supplierId, status: order.status } : 'Order not found');
+      
       
       if (!order) return res.status(404).json({ message: 'Order not found' });
       
-      console.log('Checking authorization:', { 
-        orderSupplierId: order.supplierId, 
-        userId: req.user.id, 
-        userSupplierId: req.user.supplierId,
-        orderSupplierIdType: typeof order.supplierId,
-        userIdType: typeof req.user.id
-      });
-      
       // Ensure supplier can only update orders assigned to them
       if (!order.supplierId || (String(order.supplierId) !== String(req.user.id))) {
-        console.log('Authorization failed');
         return res.status(403).json({ message: 'Not authorized for this order' });
       }
-      console.log('Authorization passed');
 
       // Only update order.status for main status changes (from buttons)
       if (isMainStatus) {
@@ -244,15 +230,12 @@ const supplierRoutes = (io) => {
         note: note || (isMainStatus ? 'Status updated' : 'Note added'), 
         at: new Date() 
       };
-      console.log('Adding timeline entry:', timelineEntry);
       
       order.timeline.push(timelineEntry);
       order.updatedAt = new Date();
       
       try {
-        console.log('Attempting to save order with status:', order.status, 'timeline length:', order.timeline.length);
         await order.save();
-        console.log('Order saved successfully');
       } catch (saveError) {
         console.error('Save error details:', saveError);
         return res.status(500).json({ message: 'Failed to save order', error: saveError.message });
@@ -286,7 +269,6 @@ const supplierRoutes = (io) => {
             `
           };
           await transporter.sendMail(mailOptions);
-          console.log('Order update email sent to patient:', order.patientId.email);
         }
       } catch (emailError) {
         console.error('Failed to send order update email:', emailError);

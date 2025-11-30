@@ -17,12 +17,6 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-console.log('Cloudinary config loaded:', {
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME ? 'SET' : 'NOT SET',
-  api_key: process.env.CLOUDINARY_API_KEY ? 'SET' : 'NOT SET',
-  api_secret: process.env.CLOUDINARY_API_SECRET ? 'SET' : 'NOT SET',
-});
-
 // Health check for Cloudinary
 router.get('/cloudinary-test', (req, res) => {
   const config = {
@@ -30,8 +24,6 @@ router.get('/cloudinary-test', (req, res) => {
     api_key: process.env.CLOUDINARY_API_KEY ? 'SET' : 'NOT SET',
     api_secret: process.env.CLOUDINARY_API_SECRET ? 'SET' : 'NOT SET',
   };
-  
-  console.log('Cloudinary test endpoint called:', config);
   
   res.json({
     status: 'Cloudinary config check',

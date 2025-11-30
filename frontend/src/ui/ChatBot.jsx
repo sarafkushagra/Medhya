@@ -151,23 +151,18 @@ const ChatBot = ({ isOpen, onToggle }) => {
 
   const initializeAI = async (baseUrl = 'http://localhost:5000') => {
     try {
-      console.log('Initializing AI with URL:', baseUrl);
       fastAPIService.initialize(null, baseUrl); // No API key needed for your friend's API
 
-      console.log('Testing AI health...');
       const isHealthy = await fastAPIService.healthCheck();
-      console.log('Health check result:', isHealthy);
 
       if (isHealthy) {
         setAiConnected(true);
         setUseAI(true);
         toast.success('AI Assistant connected!');
-        console.log('AI successfully connected');
       } else {
         setAiConnected(false);
         setUseAI(false);
         toast.error('AI service unavailable - check if FastAPI server is running');
-        console.log('AI health check failed');
       }
     } catch (error) {
       console.error('Failed to initialize AI:', error);
@@ -188,21 +183,16 @@ const ChatBot = ({ isOpen, onToggle }) => {
 
   const initializeEEG = async (baseUrl = 'http://localhost:8002') => {
     try {
-      console.log('Initializing EEG service with URL:', baseUrl);
       eegService.initialize(baseUrl);
 
-      console.log('Testing EEG health...');
       const isHealthy = await eegService.healthCheck();
-      console.log('EEG Health check result:', isHealthy);
 
       if (isHealthy) {
         setEegConnected(true);
         toast.success('EEG Analysis service connected!');
-        console.log('EEG service successfully connected');
       } else {
         setEegConnected(false);
         toast.error('EEG service unavailable - check if backend server is running');
-        console.log('EEG health check failed');
       }
     } catch (error) {
       console.error('Failed to initialize EEG service:', error);
@@ -213,21 +203,16 @@ const ChatBot = ({ isOpen, onToggle }) => {
 
   const initializeAlzheimer = async (apiKey, baseUrl = 'http://localhost:8000') => {
     try {
-      console.log('Initializing Alzheimer service with URL:', baseUrl);
       alzheimerService.initialize(apiKey, baseUrl);
 
-      console.log('Testing Alzheimer health...');
       const isHealthy = await alzheimerService.healthCheck();
-      console.log('Alzheimer Health check result:', isHealthy);
 
       if (isHealthy) {
         setAlzheimerConnected(true);
         toast.success('Alzheimer Analysis service connected!');
-        console.log('Alzheimer service successfully connected');
       } else {
         setAlzheimerConnected(false);
         toast.error('Alzheimer service unavailable - check if Python API server is running');
-        console.log('Alzheimer health check failed');
       }
     } catch (error) {
       console.error('Failed to initialize Alzheimer service:', error);

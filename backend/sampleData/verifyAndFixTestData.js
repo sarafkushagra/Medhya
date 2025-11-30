@@ -11,7 +11,6 @@ dotenv.config();
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/mindcare');
-    console.log('✅ Connected to MongoDB');
   } catch (error) {
     console.error('❌ MongoDB connection error:', error);
     process.exit(1);
@@ -21,13 +20,11 @@ const connectDB = async () => {
 // Verify and fix test data
 const verifyAndFixTestData = async () => {
   try {
-    console.log('🔍 Checking test data...\n');
 
     // Check if counselor user exists
     const counselorUser = await User.findOne({ email: 'anjali.sharma@medhya.com' });
     
     if (!counselorUser) {
-      console.log('❌ Test counselor user not found. Creating...');
       
       // Hash the password properly
       const hashedPassword = await bcrypt.hash('password123', 12);
@@ -45,29 +42,23 @@ const verifyAndFixTestData = async () => {
         isVerified: true
       });
       
-      console.log('✅ Test counselor user created');
     } else {
-      console.log('✅ Test counselor user found');
       
       // Check if password is properly hashed
       if (counselorUser.password === 'password123') {
-        console.log('⚠️  Password not hashed. Fixing...');
+        
         const hashedPassword = await bcrypt.hash('password123', 12);
         counselorUser.password = hashedPassword;
         await counselorUser.save();
-        console.log('✅ Password hashed and updated');
       } else {
-        console.log('✅ Password is properly hashed');
-      }
       
       // Check if user is verified
       if (!counselorUser.isVerified) {
-        console.log('⚠️  User not verified. Fixing...');
+        
         counselorUser.isVerified = true;
         await counselorUser.save();
-        console.log('✅ User verification status updated');
       } else {
-        console.log('✅ User is verified');
+        
       }
     }
 
@@ -75,7 +66,6 @@ const verifyAndFixTestData = async () => {
     const counselorProfile = await Counselor.findOne({ email: 'anjali.sharma@medhya.com' });
     
     if (!counselorProfile) {
-      console.log('❌ Test counselor profile not found. Creating...');
       
       const counselor = await Counselor.create({
         name: 'Dr. Anjali Sharma',
@@ -121,40 +111,31 @@ const verifyAndFixTestData = async () => {
       if (user) {
         user.counselorProfile = counselor._id;
         await user.save();
-        console.log('✅ Counselor profile linked to user');
       }
       
-      console.log('✅ Test counselor profile created');
     } else {
-      console.log('✅ Test counselor profile found');
-    }
 
     // Test password verification
     const testUser = await User.findOne({ email: 'anjali.sharma@medhya.com' });
     if (testUser) {
       const isPasswordValid = await bcrypt.compare('password123', testUser.password);
-      console.log(`🔐 Password verification test: ${isPasswordValid ? '✅ PASS' : '❌ FAIL'}`);
       
       if (!isPasswordValid) {
-        console.log('⚠️  Fixing password...');
+        
         const hashedPassword = await bcrypt.hash('password123', 12);
         testUser.password = hashedPassword;
         await testUser.save();
-        console.log('✅ Password fixed');
       }
     }
 
-    console.log('\n🎉 Test data verification complete!');
-    console.log('\n🔑 Login Credentials:');
-    console.log('Email: anjali.sharma@medhya.com');
-    console.log('Password: password123');
-    console.log('Role: counselor');
+    
+    
+    
 
   } catch (error) {
     console.error('❌ Error verifying test data:', error);
   } finally {
     await mongoose.connection.close();
-    console.log('\n🔌 Database connection closed');
     process.exit(0);
   }
 };

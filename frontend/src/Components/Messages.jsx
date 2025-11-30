@@ -43,7 +43,6 @@ const Messages = ({ sessions, messages, loadMessages, loadDashboardData, loading
   const sendMessage = async (messageData) => {
     try {
       const response = await appointmentAPI.sendMessage(messageData);
-      console.log('Message sent successfully:', response);
       return response;
     } catch (error) {
       console.error('Failed to send message:', error);
@@ -66,7 +65,6 @@ const Messages = ({ sessions, messages, loadMessages, loadDashboardData, loading
         throw new Error('Failed to mark message as read');
       }
       
-      console.log('Message marked as read:', messageId);
     } catch (error) {
       console.error('Failed to mark message as read:', error);
     }
@@ -80,7 +78,6 @@ const Messages = ({ sessions, messages, loadMessages, loadDashboardData, loading
         return { messages: response || [] };
       } else {
         // Fallback to general messages (this might need to be implemented)
-        console.log('Getting recent messages:', options);
         return { messages: [] };
       }
     } catch (error) {
@@ -91,7 +88,6 @@ const Messages = ({ sessions, messages, loadMessages, loadDashboardData, loading
 
   // All your existing functions (keeping exact same logic)
   const handleStartChat = async (sessionId, student) => {
-    console.log(sessionId, student)
     setSelectedChatStudent(student);
     setSelectedSessionId(sessionId);
 
@@ -118,37 +114,14 @@ const Messages = ({ sessions, messages, loadMessages, loadDashboardData, loading
     await loadDashboardData();
   };
 
-  // const handleStartVideoCall = async (student) => {
-  //   console.log("Starting video call for student:", student);
-  //   setIsStartingCall(true);
-
-  //   try {
-  //     // Generate a unique room ID for the video call
-  //     // const roomId = `call_${user._id}_${student._id}_${Date.now()}`;
-
-  //     console.log(`Navigating to video call room: ${roomId}`);
-
-  //     // Navigate to the video call room
-  //     navigate(`/room/${roomId}`);
-
-  //   } catch (error) {
-  //     console.error('Failed to start video call:', error);
-  //     alert('Failed to start video call. Please try again.');
-  //   } finally {
-  //     setIsStartingCall(false);
-  //   }
-  // };
-
+  
   const handleStartVideoCall = async (student) => {
-    console.log(student);
     try {
       const res = await apiClient.get(
         `/appointments/find/${student._id}/${user?.counselorProfile}`
       );
 
       if (res?.roomId) {
-        // console.log("Navigating to video room:", res.roomId);
-        console.log(user)
         socket.emit("counselor-on-video_call", {
           counselorProfile: user?.counselorProfile,
           studentId: student._id,
@@ -165,7 +138,6 @@ const Messages = ({ sessions, messages, loadMessages, loadDashboardData, loading
 
   const handleSendChatMessage = async () => {
     if (!newMessage.trim() || !selectedChatStudent?._id || !user?._id) return;
-    console.log(selectedSessionId)
 
     try {
       const messageData = {
@@ -258,14 +230,6 @@ const Messages = ({ sessions, messages, loadMessages, loadDashboardData, loading
         allStudents.push(session.student);
       }
     });
-
-    console.log('All Students for Message Modal:', allStudents.map(s => ({
-      id: s._id,
-      firstName: s.firstName,
-      lastName: s.lastName,
-      email: s.email,
-      hasName: !!(s.firstName && s.lastName)
-    })));
 
     return allStudents;
   };

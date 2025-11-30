@@ -19,13 +19,6 @@ export const getAdminDashboardStats = async (req, res) => {
       CommunityPost.countDocuments(),
       CrisisAlert.countDocuments({ status: 'critical' })
     ]);
-    console.log('[ADMIN DASHBOARD STATS]', {
-      totalUsers,
-      chatSessions,
-      appointments,
-      forumPosts,
-      criticalAlerts
-    });
     res.json({
       totalUsers,
       chatSessions,
@@ -59,7 +52,6 @@ export const getAllUsers = async (req, res) => {
       })
     );
 
-    console.log('[ADMIN GET USERS]', `Found ${usersWithDetails.length} users`);
     res.json(usersWithDetails);
   } catch (error) {
     console.error('[ADMIN GET USERS ERROR]', error);
@@ -75,7 +67,6 @@ export const getAllCounselors = async (req, res) => {
       .populate('counselorProfile', 'bio specializations experienceYears education certifications languages availability')
       .sort({ createdAt: -1 });
 
-    console.log('[ADMIN GET COUNSELORS]', `Found ${counselors.length} counselors`);
     res.json(counselors);
   } catch (error) {
     console.error('[ADMIN GET COUNSELORS ERROR]', error);
@@ -106,7 +97,6 @@ export const verifyAdminPassword = async (req, res) => {
       return res.status(401).json({ error: 'Invalid password' });
     }
 
-    console.log('[ADMIN PASSWORD VERIFICATION]', `Admin ${adminUser.email} verified successfully`);
     res.json({ success: true, message: 'Password verified successfully' });
 
   } catch (error) {
@@ -172,8 +162,7 @@ export const createCounselor = async (req, res) => {
     counselorUser.counselorProfile = counselorProfile._id;
     await counselorUser.save();
 
-    console.log('[ADMIN CREATE COUNSELOR]', `Created counselor: ${email} with ID: ${counselorUser._id}`);
-
+   
     res.json({
       success: true,
       message: 'Counselor created successfully',

@@ -67,15 +67,13 @@ export const useResources = () => {
 
     try {
       const token = getToken();
-      console.log('🔧 useResources: Token available:', !!token);
-
+     
       if (!token) {
         throw new Error('Authentication required. Please log in to access featured resources.');
       }
 
       const apiUrl = `${getApiBaseUrl()}/resources/featured?limit=${limit}`;
-      console.log('🔧 useResources: Fetching from:', apiUrl);
-
+      
       const response = await fetch(apiUrl, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -83,12 +81,9 @@ export const useResources = () => {
         }
       });
 
-      console.log('🔧 useResources: Response status:', response.status);
-
       if (!response.ok) {
         if (response.status === 403) {
           const errorData = await response.json();
-          console.log('🔧 useResources: 403 Error data:', errorData);
           if (errorData.code === 'PROFILE_INCOMPLETE') {
             throw new Error('Please complete your profile to access resources.');
           }
@@ -101,7 +96,6 @@ export const useResources = () => {
       }
 
       const data = await response.json();
-      console.log('✅ useResources: Response data:', data);
       setResources(data.data || []);
       return data.data || [];
     } catch (err) {

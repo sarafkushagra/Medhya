@@ -7,14 +7,16 @@ import StressAssessment from './StressAssessment.jsx';
 
 const DailyAssessment = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { todayAssessments, getTodayAssessments } = useAssessment();
+  const { todayAssessments, getTodayAssessment } = useAssessment();
 
   useEffect(() => {
-    getTodayAssessments();
-  }, []);
+    // Only load GAD-7 and PHQ-9 assessments for this component
+    getTodayAssessment('GAD-7');
+    getTodayAssessment('PHQ-9');
+  }, [getTodayAssessment]);
 
   const isCompleted = todayAssessments['GAD-7'] && todayAssessments['GAD-7'].score !== undefined &&
-                      todayAssessments['PHQ-9'] && todayAssessments['PHQ-9'].score !== undefined;
+    todayAssessments['PHQ-9'] && todayAssessments['PHQ-9'].score !== undefined;
 
   const handleAttemptClick = () => {
     setIsModalOpen(true);
@@ -22,7 +24,9 @@ const DailyAssessment = () => {
 
   const handleAssessmentComplete = () => {
     // Don't close modal automatically, let user do both assessments
-    getTodayAssessments(); // Refresh the status
+    // Refresh the status for GAD-7 and PHQ-9 only
+    getTodayAssessment('GAD-7');
+    getTodayAssessment('PHQ-9');
   };
 
   return (

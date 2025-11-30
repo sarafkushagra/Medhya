@@ -24,7 +24,7 @@ const stripMarkdown = (text) => {
     .trim();
 };
 
-export const openRouterChat = async (userMessage) => {
+export const openRouterChat = async (userMessage, lang = 'en-US') => {
   const response = await fetch(OPENROUTER_URL, {
     method: "POST",
     headers: {

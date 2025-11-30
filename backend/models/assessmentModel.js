@@ -4,7 +4,7 @@ const assessmentSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   type: { 
     type: String, 
-    enum: ["PHQ-9", "GAD-7"], 
+    enum: ["PHQ-9", "GAD-7", "Neuro"], 
     required: true 
   },
   score: { type: Number, required: true },
@@ -17,7 +17,7 @@ const assessmentAverageSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   type: { 
     type: String, 
-    enum: ["PHQ-9", "GAD-7", "GHQ-12"], 
+    enum: ["PHQ-9", "GAD-7", "Neuro"], 
     required: true 
   },
   fiveDayAverage: { type: Number, required: true },
