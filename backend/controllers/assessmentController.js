@@ -159,9 +159,11 @@ export const getTodayAssessment = catchAsync(async (req, res) => {
   });
 
   if (!assessment) {
-    return res.status(404).json({
-      status: 'error',
-      message: 'No assessment found for today'
+    return res.status(200).json({
+      status: 'success',
+      data: {
+        assessment: null
+      }
     });
   }
 

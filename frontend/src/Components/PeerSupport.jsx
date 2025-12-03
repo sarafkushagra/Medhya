@@ -58,7 +58,7 @@ const PeerSupport = () => {
   } = useCommunity();
 
   /* ----------------------- STATE ----------------------- */
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [selectedCategory, _setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
   const [newPost, setNewPost] = useState({
     title: '',
@@ -342,7 +342,7 @@ const PeerSupport = () => {
           {/* LEFT – FEED */}
           <div className="flex-1 min-w-0">
             {/* Header */}
-            <div className="bg-white/80 backdrop-blur-md sticky top-0 z-10 border-b border-gray-100 -mx-4 px-4 py-4 mb-6 flex items-center justify-between lg:rounded-2xl lg:border lg:mx-0 lg:mb-6 shadow-sm">
+            <div className="bg-white/80 backdrop-blur-md top-0 z-10 border-b border-gray-100 -mx-4 px-4 py-4 mb-6 flex items-center justify-between lg:rounded-2xl lg:border lg:mx-0 lg:mb-6 shadow-sm">
               <div>
                 <h1 className="text-2xl font-bold text-gray-900 tracking-tight">Community Feed</h1>
                 <p className="text-sm text-gray-500">Connect, share, and support each other</p>

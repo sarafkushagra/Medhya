@@ -69,7 +69,7 @@ const UserProfile = () => {
   });
 
   const [lastFetchTime, setLastFetchTime] = useState(null);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [_isInitialLoad, setIsInitialLoad] = useState(true);
 
   const checkPasswordStatus = useCallback(async () => {
     try {
@@ -131,7 +131,7 @@ const UserProfile = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [user?._id, isLoading, lastFetchTime]);
+  }, []);
 
   // Fetch user details on component mount or when user changes
   useEffect(() => {

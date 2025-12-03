@@ -54,7 +54,7 @@ const StudentDashboard = () => {
       try {
         const response = await moodAPI.getTodaysMood();
         setTodaysMood(response.data);
-      } catch (error) {
+      } catch  {
         // If no mood logged today, set to null
         setTodaysMood(null);
       } finally {

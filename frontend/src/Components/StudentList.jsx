@@ -12,7 +12,6 @@ import { API_BASE_URL } from '../config/environment';
 const StudentList = ({
   loading: externalLoading = false,
   onSendMessage,
-  onRefresh
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [students, setStudents] = useState([]);
@@ -99,7 +98,7 @@ const StudentList = ({
       } else {
         setPreviewUrl(report.previewUrl || report.url);
       }
-    } catch (err) {
+    } catch{
       setPreviewUrl(report.previewUrl || report.url);
     }
 

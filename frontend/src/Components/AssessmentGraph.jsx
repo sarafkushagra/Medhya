@@ -32,7 +32,7 @@ const AssessmentGraph = () => {
       }
 
       // Fetch last 30 days of assessments to get recent data
-      const response = await fetch(`${API_BASE_URL}/api/assessments/history?limit=30`, {
+      const response = await fetch(`${API_BASE_URL}/assessments/history?limit=30`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
