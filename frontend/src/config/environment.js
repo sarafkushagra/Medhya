@@ -1,55 +1,34 @@
 // Environment Configuration
+const DEFAULT_PROD_URL = 'https://medhya.onrender.com';
+
 export const getApiBaseUrl = () => {
   // Check if window is available (for SSR compatibility)
   if (typeof window === 'undefined') {
-    return 'http://localhost:5000/api'; // Default to development
+    return import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api'; // Default to development
   }
   
   // Check if we're in development (localhost)
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://localhost:5000/api';
+    return import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
   }
   
-  // Check for specific deployment domains
-  const hostname = window.location.hostname;
-  
-  // Vercel deployments
-  if (hostname.includes('vercel.app')) {
-    return 'https://mindcare-17y9.onrender.com/api';
-  }
-  
-  // Netlify deployments
-  if (hostname.includes('netlify.app')) {
-    return 'https://mindcare-17y9.onrender.com/api';
-  }
-  
-  // GitHub Pages
-  if (hostname.includes('github.io')) {
-    return 'https://mindcare-17y9.onrender.com/api';
-  }
-  
-  // Custom domains - you can add your specific domain here
-  if (hostname === 'mindcare.com' || hostname === 'www.mindcare.com') {
-    return 'https://mindcare-17y9.onrender.com/api';
-  }
-  
-  // Production URL (fallback)
-  return 'https://mindcare-17y9.onrender.com/api';
+  // Use env var if set, otherwise default to production
+  return import.meta.env.VITE_API_BASE_URL || `${DEFAULT_PROD_URL}/api`;
 };
 
 export const getApiUrl = () => {
   // Check if window is available (for SSR compatibility)
   if (typeof window === 'undefined') {
-    return 'http://localhost:5000'; // Default to development
+    return import.meta.env.VITE_API_URL || 'http://localhost:5000'; // Default to development
   }
   
   // Check if we're in development (localhost)
   if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-    return 'http://localhost:5000';
+    return import.meta.env.VITE_API_URL || 'http://localhost:5000';
   }
   
   // Production URL
-  return 'https://mindcare-17y9.onrender.com';
+  return import.meta.env.VITE_API_URL || DEFAULT_PROD_URL;
 };
 
 export const isDevelopment = () => {
