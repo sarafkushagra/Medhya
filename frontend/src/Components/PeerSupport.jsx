@@ -8,7 +8,7 @@ import {
 } from '../ui/Card';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
-import { Textarea } from '../ui/Textarea';
+import { Textarea } from '../ui/TextArea';
 import { Badge } from '../ui/Badge';
 import { Alert, AlertDescription } from '../ui/Alert';
 import { Avatar, AvatarFallback } from '../ui/Avatar';
