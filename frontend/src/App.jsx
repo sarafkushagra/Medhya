@@ -48,23 +48,8 @@ const Institutions = () => <div className="p-6 bg-white rounded-lg shadow">Insti
 
 // Protected Route Component
 const ProtectedRoute = ({ children, userRole, requiredRole = null, isLoading = false }) => {
-  if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center">
-      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
-    </div>;
-  }
-
-  if (userRole === 'guest') {
-    return <Navigate to="/login" replace />;
-  }
-  if (requiredRole && userRole !== requiredRole) {
-    return <Navigate to="/dashboard" replace />; // or a dedicated "unauthorized" page
-  }
-  return children;
-};
-
-// Profile Protected Route Component for restricted features
-const ProfileProtectedRoute = ({ children, user, isLoading = false }) => {
+  const { user } = useAuth();
+  
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center">
       <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
@@ -73,6 +58,28 @@ const ProfileProtectedRoute = ({ children, user, isLoading = false }) => {
 
   // Check if user exists (better than checking userRole which might have timing issues)
   if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  if (requiredRole && user.role !== requiredRole) {
+    return <Navigate to="/dashboard" replace />; // or a dedicated "unauthorized" page
+  }
+  return children;
+};
+
+// Profile Protected Route Component for restricted features
+const ProfileProtectedRoute = ({ children, user, isLoading = false }) => {
+  const { user: authUser } = useAuth();
+  const currentUser = authUser || user;
+  
+  if (isLoading) {
+    return <div className="min-h-screen flex items-center justify-center">
+      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+    </div>;
+  }
+
+  // Check if user exists (better than checking userRole which might have timing issues)
+  if (!currentUser) {
     return <Navigate to="/login" replace />;
   }
 
@@ -129,10 +136,12 @@ export default function App() {
   // Always show intro on every page load/refresh
   // Remove localStorage check to show video every time
 
-  const handleLogin = (role) => {
-    setUserRole(role);
+  const handleLogin = async (role, userData) => {
+    // Wait a bit for the authentication state to propagate
+    await new Promise(resolve => setTimeout(resolve, 100));
 
-    
+    // userRole will be updated automatically when user state changes in AuthContext
+
     // Handle different user types
     if (role === 'admin') {
       navigate('/admin');
@@ -140,7 +149,7 @@ export default function App() {
       // Counselor login flow - always redirect to counselor dashboard
       navigate('/counsellordash');
     } else if (role === 'student') {
-      // Student login flow - ALWAYS redirect to contact-choice first
+      // Student login flow - ALWAYS redirect to dashboard
       navigate('/dashboard');
     }
 
@@ -148,7 +157,7 @@ export default function App() {
     if (role === 'student') {
       setTimeout(() => {
         handleRefreshMoodData();
-      }, 1000); // Small delay to ensure user state is updated
+      }, 500); // Reduced delay since we already waited
     }
   };
 
@@ -216,8 +225,8 @@ export default function App() {
         <Route path="/supplier-login" element={<SupplierLoginPage />} />
         <Route path="/supplier-dashboard" element={<SupplierDashboard />} />
         <Route path="/login" element={
-          userRole !== 'guest' ?
-            <Navigate to={userRole === 'admin' ? '/admin' : userRole === 'counselor' ? '/counsellordash' : '/dashboard'} replace /> :
+          user ?
+            <Navigate to={user.role === 'admin' ? '/admin' : user.role === 'counselor' ? '/counsellordash' : '/dashboard'} replace /> :
             <Login
               onLogin={handleLogin}
               onLoginError={handleLoginError}

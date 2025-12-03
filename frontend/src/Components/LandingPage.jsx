@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 import Footer from './Footer';
 import LP from "../assets/LandingPageImg.png"; // Keeping the image for now, or we can use a new one if needed
+import { Link } from 'react-router-dom';
 
 const LandingPage = ({ onLogin }) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -57,7 +58,8 @@ const LandingPage = ({ onLogin }) => {
       description: "From booking appointments to getting medicines delivered and viewing reports - everything in one place.",
       benefits: ["Instant Doctor Access", "Medicine Delivery", "Digital Health Records"],
       action: "Find a Doctor",
-      color: "from-emerald-50 to-teal-50"
+      color: "from-emerald-50 to-teal-50",
+      control : "/login"
     },
     {
       role: "For Doctors",
@@ -66,7 +68,8 @@ const LandingPage = ({ onLogin }) => {
       description: "Streamline your practice with our advanced dashboard. Manage appointments, patients, and prescriptions effortlessly.",
       benefits: ["Smart Scheduling", "Digital Prescriptions", "Patient Analytics"],
       action: "Join as Doctor",
-      color: "from-blue-50 to-indigo-50"
+      color: "from-blue-50 to-indigo-50",
+      control : "/login"
     },
     {
       role: "For Suppliers",
@@ -75,7 +78,8 @@ const LandingPage = ({ onLogin }) => {
       description: "Connect directly with patients and doctors. Manage inventory and orders through a dedicated supplier dashboard.",
       benefits: ["Order Management", "Inventory Tracking", "Direct Payments"],
       action: "Partner with Us",
-      color: "from-amber-50 to-orange-50"
+      color: "from-amber-50 to-orange-50",
+      control : "/supplier-login"
     }
   ];
 
@@ -224,9 +228,11 @@ const LandingPage = ({ onLogin }) => {
                     ))}
                   </ul>
 
+                    <Link to={feature.control}>
                   <Button className="w-full bg-slate-900 text-white hover:bg-slate-800 py-6 rounded-xl shadow-lg">
                     {feature.action}
                   </Button>
+                    </Link>
                 </CardContent>
               </Card>
             ))}

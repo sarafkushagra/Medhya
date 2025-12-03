@@ -18,7 +18,6 @@ const studentNavItems = [
   { path: '/chat', label: 'Medhya Support', icon: MessageCircle },
   { path: '/doctor', label: 'Doctor', icon: BriefcaseMedical },
   { path: '/appointments', label: 'Appointments', icon: Calendar },
-  // { path: '/resources', label: 'Resources', icon: BookOpen },
   { path: '/games', label: 'Cognitive Games', icon: Brain },
   { path: '/community', label: 'Community', icon: Users },
   { path: '/reports', label: 'Report', icon: Database },

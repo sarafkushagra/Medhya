@@ -136,10 +136,18 @@ const UserProfile = () => {
   // Fetch user details on component mount or when user changes
   useEffect(() => {
     if (user?._id) {
+      // If profile is not complete, don't fetch details - show incomplete state immediately
+      if (user.isProfileComplete === false) {
+        setUserDetails(null);
+        setEditedDetails({});
+        setIsInitialLoad(false);
+        setIsLoading(false);
+        return;
+      }
       fetchUserDetails();
       checkPasswordStatus();
     }
-  }, [user?._id, fetchUserDetails, checkPasswordStatus]); // fetchUserDetails is memoized, checkPasswordStatus is memoized
+  }, [user?._id, user?.isProfileComplete, fetchUserDetails, checkPasswordStatus]); // fetchUserDetails is memoized, checkPasswordStatus is memoized
 
   // Load journal entries on component mount
   useEffect(() => {

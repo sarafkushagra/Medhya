@@ -79,9 +79,7 @@ const Login = ({ onLogin, onShowUserSignup, onLoginError }) => {
     } else if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
     }
-    if (loginType === "student" && !formData.institutionId) {
-      newErrors.institutionId = "Please select your institution";
-    }
+    // Removed institutionId requirement since admin users can login through student tab
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -215,8 +213,8 @@ const Login = ({ onLogin, onShowUserSignup, onLoginError }) => {
 
   const demoCredentials = {
     student: { email: "student@mindcare.com", password: "Student@123" },
-    counselor: { email: "counselor@mindcare.com", password: "Counselor@123" },
-    admin: { email: "admin@mindcare.com", password: "Admin@123" },
+    counselor: { email: "counselor@mindcare.com", password: "counselor123" },
+    admin: { email: "admin@mindcare.com", password: "admin123" },
   };
 
   const fillDemoCredentials = () => {
@@ -325,14 +323,7 @@ xlwZGl0YXRpb24lMjBuYXR1cmUlMjB3ZWxsbmVzc3xlbnwxfHx8fDE3NTc2NTczNzN8MA&ixlib=rb-4
                   <Zap className="w-5 h-5 mr-2" />
                   Try Demo
                 </Button>
-                <Button
-                  onClick={() => navigate('/supplier-login')}
-                  variant="outline"
-                  className="w-full h-12 border-2 border-sky-300 text-sky-700 hover:bg-sky-50 hover:border-sky-400 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
-                >
-                  <Zap className="w-5 h-5 mr-2" />
-                  Supplier Login
-                </Button>
+
               </div>
             )}
 
@@ -349,23 +340,6 @@ xlwZGl0YXRpb24lMjBuYXR1cmUlMjB3ZWxsbmVzc3xlbnwxfHx8fDE3NTc2NTczNzN8MA&ixlib=rb-4
                 >
                   <Zap className="w-5 h-5 mr-2" />
                   Try Demo
-                </Button>
-              </div>
-            )}
-
-            {loginType === "admin" && (
-              <div className="space-y-3">
-                <div className="text-center">
-                  <p className="font-semibold text-slate-700">Want to explore ?</p>
-                  <p className="text-sm text-slate-500">Contact us!!</p>
-                </div>
-                <Button
-
-                  variant="outline"
-                  className="w-full h-12 border-2 border-sky-300 text-sky-700 hover:bg-sky-50 hover:border-sky-400 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-0.5"
-                >
-                  <Mail className="w-5 h-5 mr-2" />
-                  medhya46@gmail.com
                 </Button>
               </div>
             )}
@@ -403,7 +377,7 @@ xlwZGl0YXRpb24lMjBuYXR1cmUlMjB3ZWxsbmVzc3xlbnwxfHx8fDE3NTc2NTczNzN8MA&ixlib=rb-4
               }}
               className="w-full"
             >
-              <TabsList className="grid w-full h-14 grid-cols-3 bg-slate-100/80 p-1 rounded-2xl border border-slate-200/50">
+              <TabsList className="grid w-full h-14 grid-cols-2 bg-slate-100/80 p-1 rounded-2xl border border-slate-200/50">
                 <TabsTrigger
                   value="student"
                   className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-emerald-700 data-[state=active]:border data-[state=active]:border-emerald-200 rounded-xl transition-all duration-300 hover:bg-white/70"
@@ -418,13 +392,6 @@ xlwZGl0YXRpb24lMjBuYXR1cmUlMjB3ZWxsbmVzc3xlbnwxfHx8fDE3NTc2NTczNzN8MA&ixlib=rb-4
                   <Heart className="w-4 h-4" />
                   Counselor
                 </TabsTrigger>
-                <TabsTrigger
-                  value="admin"
-                  className="flex items-center gap-2 data-[state=active]:bg-white data-[state=active]:shadow-md data-[state=active]:text-slate-700 data-[state=active]:border data-[state=active]:border-slate-200 rounded-xl transition-all duration-300 hover:bg-white/70"
-                >
-                  <Shield className="w-4 h-4" />
-                  Admin
-                </TabsTrigger>
               </TabsList>
             </Tabs>
 
@@ -434,28 +401,21 @@ xlwZGl0YXRpb24lMjBuYXR1cmUlMjB3ZWxsbmVzc3xlbnwxfHx8fDE3NTc2NTczNzN8MA&ixlib=rb-4
                   <div className="p-3 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-2xl">
                     <GraduationCap className="w-6 h-6 text-emerald-600" />
                   </div>
-                ) : loginType === "counselor" ? (
+                ) : (
                   <div className="p-3 bg-gradient-to-br from-sky-100 to-blue-100 rounded-2xl">
                     <Heart className="w-6 h-6 text-sky-600" />
-                  </div>
-                ) : (
-                  <div className="p-3 bg-gradient-to-br from-slate-100 to-gray-100 rounded-2xl">
-                    <Shield className="w-6 h-6 text-slate-600" />
                   </div>
                 )}
                 <div>
                   <CardTitle className="text-2xl text-slate-800 font-bold">
-                    {loginType === "student" ? "Student Portal" :
-                      loginType === "counselor" ? "Counselor Portal" : "Admin Portal"}
+                    {loginType === "student" ? "Student Portal" : "Counselor Portal"}
                   </CardTitle>
                 </div>
               </div>
               <CardDescription className="text-slate-600">
                 {loginType === "student"
                   ? "Access your personal wellness dashboard and resources"
-                  : loginType === "counselor"
-                    ? "Provide compassionate care and professional support"
-                    : "Manage institutional wellness programs and insights"}
+                  : "Provide compassionate care and professional support"}
               </CardDescription>
             </div>
           </CardHeader>
@@ -467,8 +427,8 @@ xlwZGl0YXRpb24lMjBuYXR1cmUlMjB3ZWxsbmVzc3xlbnwxfHx8fDE3NTc2NTczNzN8MA&ixlib=rb-4
               variant="outline"
               className="w-full h-12 border-2 border-slate-200 hover:bg-slate-50 hover:border-slate-300 transition-all duration-300 rounded-2xl shadow-sm hover:shadow-md"
               onClick={handleGoogleLogin}
-              disabled={loading || loginType === "admin" || loginType === "counselor"}
-              title={loginType === "admin" || loginType === "counselor" ? "Google login is not available for admin and counselor accounts. Please use password login." : ""}
+              disabled={loading || loginType === "counselor"}
+              title={loginType === "counselor" ? "Google login is not available for counselor accounts. Please use password login." : ""}
             >
               <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
