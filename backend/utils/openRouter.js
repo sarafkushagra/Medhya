@@ -10,6 +10,7 @@ You are a globally trusted Senior General Physician... [your full prompt]
 
 
 
+
 // Helper function to remove Markdown bold/italic
 const stripMarkdown = (text) => {
   if (!text) return text;
