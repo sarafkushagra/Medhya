@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import torch.nn as nn
 from fastapi import FastAPI, UploadFile, File, Header, HTTPException
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from datetime import datetime
 
 # ================================
@@ -12,7 +13,7 @@ from datetime import datetime
 # ================================
 load_dotenv()
 # API key for the EEG prediction API. Set this in your environment or an .env file as EEG_API_KEY
-API_KEY = os.environ.get("EEG_API_KEY", "")
+API_KEY = "test-key"  # Hardcoded for testing
 if not API_KEY:
     print("⚠️  EEG_API_KEY not set in environment. Requests to /predict will be rejected unless you set the key.")
 UPLOAD_DIR = "uploads"
@@ -119,9 +120,22 @@ eeg_app = FastAPI(
     version="1.0.1"
 )
 
+# Add CORS middleware
+eeg_app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @eeg_app.get("/")
 def root():
     return {"message": "EEG Prediction API is running 🚀"}
+
+@eeg_app.get("/api/health")
+def health_check():
+    return {"status": "OK", "message": "EEG Prediction API is healthy"}
 
 @eeg_app.post("/predict")
 async def predict(

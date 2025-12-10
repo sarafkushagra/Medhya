@@ -3,7 +3,7 @@ import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Card } from '../ui/Card';
 import { useThemeToggle } from '../hooks/useTheme';
-import FastAPIChatService from '../../src/services/fastAPIChatService';
+// import FastAPIChatService from '../../src/services/fastAPIChatService';
 import EEGPredictionService from '../../src/services/eegPredictionService';
 import AlzheimerPredictionService from '../../src/services/alzheimerPredictionService';
 import {
@@ -31,94 +31,93 @@ import { toast } from 'sonner';
 const ChatBot = ({ isOpen, onToggle }) => {
   const { isDarkMode } = useThemeToggle();
   const [messages, setMessages] = useState([]);
-  const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isMinimized, _setIsMinimized] = useState(false);
-  const [fastAPIService] = useState(new FastAPIChatService());
+  // const [fastAPIService] = useState(new FastAPIChatService());
   const [eegService] = useState(new EEGPredictionService());
   const [alzheimerService] = useState(new AlzheimerPredictionService());
-  const [useAI, setUseAI] = useState(false);
-  const [aiConnected, setAiConnected] = useState(false);
+  // const [useAI, setUseAI] = useState(false);
+  // const [aiConnected, setAiConnected] = useState(false);
   const [eegConnected, setEegConnected] = useState(false);
   const [alzheimerConnected, setAlzheimerConnected] = useState(false);
-  const [sessionId] = useState(`session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+  // const [sessionId] = useState(`session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const messagesEndRef = useRef(null);
-  const inputRef = useRef(null);
+  // const inputRef = useRef(null);
   const fileInputRef = useRef(null);
   const imageInputRef = useRef(null);
 
   // Predefined responses for common queries
-  const predefinedResponses = {
-    greetings: [
-      "Hello! I'm NeuroPath Assistant. How can I help you today?",
-      "Hi there! I'm here to assist you with your neurological health queries.",
-      "Welcome! I'm your AI assistant for NeuroPath. What would you like to know?"
-    ],
-    appointment: [
-      "To book an appointment, go to the 'Book Appointment' section in your dashboard and select your preferred neurologist and time slot.",
-      "You can schedule appointments through the appointment booking system. Choose your neurologist and available time slots.",
-      "For appointments, use the booking system in your dashboard. You'll be able to see available neurologists and their schedules."
-    ],
-    prescription: [
-      "Your prescriptions are available in the 'Prescriptions' section of your dashboard. You can view and download them there.",
-      "To access your prescriptions, go to the prescriptions tab in your dashboard where you can view all your current medications.",
-      "Prescriptions are stored in your dashboard under the prescriptions section. You can view, download, or request refills there."
-    ],
-    medicine: [
-      "You can order medicines through the 'Medicine Orders' section. Upload your prescription and we'll help you get your medications delivered.",
-      "For medicine orders, go to the medicine section in your dashboard, upload your prescription, and we'll process your order.",
-      "Medicine ordering is available in your dashboard. Simply upload your prescription and we'll arrange delivery to your address."
-    ],
-    report: [
-      "Your medical reports are stored in the 'Reports' section of your dashboard. You can view and download them anytime.",
-      "To access your reports, go to the reports tab in your dashboard where all your medical documents are stored.",
-      "Medical reports are available in the reports section of your dashboard. You can view, download, or share them as needed."
-    ],
-    eeg: [
-      "I can help you analyze EEG data! Upload a CSV file with your EEG signals and I'll provide seizure detection analysis.",
-      "For EEG analysis, upload your CSV file containing EEG signal data. I'll use our AI model to detect potential seizure activity.",
-      "EEG analysis is available! Simply upload your CSV file with EEG signals, and I'll process it to identify seizure patterns."
-    ],
-    emergency: [
-      "For medical emergencies, please contact emergency services immediately (911) or go to the nearest emergency room.",
-      "If this is a medical emergency, please call emergency services right away. This chatbot is not for emergency situations.",
-      "For urgent medical issues, please seek immediate medical attention. Contact emergency services or visit the nearest hospital."
-    ],
-    general: [
-      "I'm here to help with general questions about NeuroPath services. Feel free to ask about appointments, prescriptions, or any other queries.",
-      "I can assist you with information about NeuroPath's services, including appointments, prescriptions, medicine orders, and reports.",
-      "How can I help you today? I can provide information about our services and guide you through the platform."
-    ]
-  };
+  // const predefinedResponses = {
+  //   greetings: [
+  //     "Hello! I'm NeuroPath Assistant. How can I help you today?",
+  //     "Hi there! I'm here to assist you with your neurological health queries.",
+  //     "Welcome! I'm your AI assistant for NeuroPath. What would you like to know?"
+  //   ],
+  //   appointment: [
+  //     "To book an appointment, go to the 'Book Appointment' section in your dashboard and select your preferred neurologist and time slot.",
+  //     "You can schedule appointments through the appointment booking system. Choose your neurologist and available time slots.",
+  //     "For appointments, use the booking system in your dashboard. You'll be able to see available neurologists and their schedules."
+  //   ],
+  //   prescription: [
+  //     "Your prescriptions are available in the 'Prescriptions' section of your dashboard. You can view and download them there.",
+  //     "To access your prescriptions, go to the prescriptions tab in your dashboard where you can view all your current medications.",
+  //     "Prescriptions are stored in your dashboard under the prescriptions section. You can view, download, or request refills there."
+  //   ],
+  //   medicine: [
+  //     "You can order medicines through the 'Medicine Orders' section. Upload your prescription and we'll help you get your medications delivered.",
+  //     "For medicine orders, go to the medicine section in your dashboard, upload your prescription, and we'll process your order.",
+  //     "Medicine ordering is available in your dashboard. Simply upload your prescription and we'll arrange delivery to your address."
+  //   ],
+  //   report: [
+  //     "Your medical reports are stored in the 'Reports' section of your dashboard. You can view and download them anytime.",
+  //     "To access your reports, go to the reports tab in your dashboard where all your medical documents are stored.",
+  //     "Medical reports are available in the reports section of your dashboard. You can view, download, or share them as needed."
+  //   ],
+  //   eeg: [
+  //     "I can help you analyze EEG data! Upload a CSV file with your EEG signals and I'll provide seizure detection analysis.",
+  //     "For EEG analysis, upload your CSV file containing EEG signal data. I'll use our AI model to detect potential seizure activity.",
+  //     "EEG analysis is available! Simply upload your CSV file with EEG signals, and I'll process it to identify seizure patterns."
+  //   ],
+  //   emergency: [
+  //     "For medical emergencies, please contact emergency services immediately (911) or go to the nearest emergency room.",
+  //     "If this is a medical emergency, please call emergency services right away. This chatbot is not for emergency situations.",
+  //     "For urgent medical issues, please seek immediate medical attention. Contact emergency services or visit the nearest hospital."
+  //   ],
+  //   general: [
+  //     "I'm here to help with general questions about NeuroPath services. Feel free to ask about appointments, prescriptions, or any other queries.",
+  //     "I can assist you with information about NeuroPath's services, including appointments, prescriptions, medicine orders, and reports.",
+  //     "How can I help you today? I can provide information about our services and guide you through the platform."
+  //   ]
+  // };
 
   // Keywords to match user queries
-  const keywordMapping = {
-    'hello|hi|hey|greetings': 'greetings',
-    'appointment|book|schedule|meeting': 'appointment',
-    'prescription|medication|medicine|drug': 'prescription',
-    'order|buy|purchase|delivery': 'medicine',
-    'report|test|result|document': 'report',
-    'eeg|brain|seizure|epilepsy|analysis|signal': 'eeg',
-    'emergency|urgent|help|critical': 'emergency',
-    'default': 'general'
-  };
+  // const keywordMapping = {
+  //   'hello|hi|hey|greetings': 'greetings',
+  //   'appointment|book|schedule|meeting': 'appointment',
+  //   'prescription|medication|medicine|drug': 'prescription',
+  //   'order|buy|purchase|delivery': 'medicine',
+  //   'report|test|result|document': 'report',
+  //   'eeg|brain|seizure|epilepsy|analysis|signal': 'eeg',
+  //   'emergency|urgent|help|critical': 'emergency',
+  //   'default': 'general'
+  // };
 
-  useEffect(() => {
-    // Add welcome message
-    if (messages.length === 0) {
-      setMessages([
-        {
-          id: 1,
-          text: "Hello! I'm NeuroPath Assistant. How can I help you today?",
-          sender: 'bot',
-          timestamp: new Date(),
-          type: 'welcome'
-        }
-      ]);
-    }
-  }, [messages.length]);
+  // useEffect(() => {
+  //   // Add welcome message
+  //   if (messages.length === 0) {
+  //     setMessages([
+  //       {
+  //         id: 1,
+  //         text: "Hello! I'm NeuroPath Assistant. How can I help you today?",
+  //         sender: 'bot',
+  //         timestamp: new Date(),
+  //         type: 'welcome'
+  //       }
+  //     ]);
+  //   }
+  // }, [messages.length]);
 
   useEffect(() => {
     scrollToBottom();
@@ -129,57 +128,57 @@ const ChatBot = ({ isOpen, onToggle }) => {
     // Clear any old cached URLs and force correct ports
     // Use port 5100 for the AI assistant (FastAPI) to avoid colliding with backend on 5000
     localStorage.removeItem('neuropath_ai_api_url');
-    localStorage.setItem('neuropath_ai_api_url', 'http://localhost:5100');
+    // localStorage.setItem('neuropath_ai_api_url', 'http://localhost:5100');
     localStorage.setItem('neuropath_backend_url', 'http://localhost:8002');
     localStorage.setItem('neuropath_alzheimer_api_url', 'http://localhost:8000');
 
     // Check if API URL is available in localStorage
-    const apiUrl = localStorage.getItem('neuropath_ai_api_url') || 'http://localhost:5000';
-    if (apiUrl) {
-      initializeAI(apiUrl);
-    }
+    // const apiUrl = localStorage.getItem('neuropath_ai_api_url') || 'http://localhost:5000';
+    // if (apiUrl) {
+    //   initializeAI(apiUrl);
+    // }
 
     // Initialize EEG service
-    const backendUrl = localStorage.getItem('neuropath_backend_url') || 'http://localhost:8002';
-    initializeEEG(backendUrl);
+    // const backendUrl = localStorage.getItem('neuropath_backend_url') || 'http://localhost:8001';
+    // initializeEEG(backendUrl);
 
     // Initialize Alzheimer service
     const alzheimerUrl = localStorage.getItem('neuropath_alzheimer_api_url') || 'http://localhost:8000';
-    const alzheimerApiKey = localStorage.getItem('neuropath_alzheimer_api_key') || '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';
+    const alzheimerApiKey = localStorage.getItem('neuropath_alzheimer_api_key') || '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';
     initializeAlzheimer(alzheimerApiKey, alzheimerUrl);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const initializeAI = async (baseUrl = 'http://localhost:5000') => {
-    try {
-      fastAPIService.initialize(null, baseUrl); // No API key needed for your friend's API
+  // const initializeAI = async (baseUrl = 'http://localhost:5000') => {
+  //   try {
+  //     fastAPIService.initialize(null, baseUrl); // No API key needed for your friend's API
 
-      const isHealthy = await fastAPIService.healthCheck();
+  //     const isHealthy = await fastAPIService.healthCheck();
 
-      if (isHealthy) {
-        setAiConnected(true);
-        setUseAI(true);
-        toast.success('AI Assistant connected!');
-      } else {
-        setAiConnected(false);
-        setUseAI(false);
-        toast.error('AI service unavailable - check if FastAPI server is running');
-      }
-    } catch (error) {
-      console.error('Failed to initialize AI:', error);
-      setAiConnected(false);
-      setUseAI(false);
-      toast.error('Failed to connect to AI service: ' + error.message);
-    }
-  };
+  //     if (isHealthy) {
+  //       setAiConnected(true);
+  //       setUseAI(true);
+  //       toast.success('AI Assistant connected!');
+  //     } else {
+  //       setAiConnected(false);
+  //       setUseAI(false);
+  //       toast.error('AI service unavailable - check if FastAPI server is running');
+  //     }
+  //   } catch (error) {
+  //     console.error('Failed to initialize AI:', error);
+  //     setAiConnected(false);
+  //     setUseAI(false);
+  //     toast.error('Failed to connect to AI service: ' + error.message);
+  //   }
+  // };
 
-  const setAPIUrl = () => {
-    const currentUrl = localStorage.getItem('neuropath_ai_api_url') || 'http://localhost:5000';
-    const apiUrl = prompt('Enter your FastAPI URL:', currentUrl);
-    if (apiUrl) {
-      localStorage.setItem('neuropath_ai_api_url', apiUrl);
-      initializeAI(apiUrl);
-    }
-  };
+  // const setAPIUrl = () => {
+  //   const currentUrl = localStorage.getItem('neuropath_ai_api_url') || 'http://localhost:5000';
+  //   const apiUrl = prompt('Enter your FastAPI URL:', currentUrl);
+  //   if (apiUrl) {
+  //     localStorage.setItem('neuropath_ai_api_url', apiUrl);
+  //     initializeAI(apiUrl);
+  //   }
+  // };
 
   const initializeEEG = async (baseUrl = 'http://localhost:8002') => {
     try {
@@ -235,7 +234,7 @@ const ChatBot = ({ isOpen, onToggle }) => {
     const alzheimerUrl = prompt('Enter your Alzheimer API URL:', currentUrl);
     if (alzheimerUrl) {
       localStorage.setItem('neuropath_alzheimer_api_url', alzheimerUrl);
-      // const apiKey = localStorage.getItem('neuropath_alzheimer_api_key') || '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';
+      // const apiKey = localStorage.getItem('neuropath_alzheimer_api_key') || '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';
       
       const apiKey = import.meta.env.VITE_API_KEY;
       initializeAlzheimer(apiKey, alzheimerUrl);
@@ -363,116 +362,117 @@ const ChatBot = ({ isOpen, onToggle }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const getBotResponse = (userMessage) => {
-    const message = userMessage.toLowerCase();
+  // const getBotResponse = (userMessage) => {
+  //   const message = userMessage.toLowerCase();
 
-    // Find matching keyword
-    for (const [keywords, responseType] of Object.entries(keywordMapping)) {
-      if (keywords === 'default') continue;
+  //   // Find matching keyword
+  //   for (const [keywords, responseType] of Object.entries(keywordMapping)) {
+  //     if (keywords === 'default') continue;
 
-      const keywordRegex = new RegExp(keywords, 'i');
-      if (keywordRegex.test(message)) {
-        const responses = predefinedResponses[responseType];
-        return responses[Math.floor(Math.random() * responses.length)];
-      }
-    }
+  //     const keywordRegex = new RegExp(keywords, 'i');
+  //     if (keywordRegex.test(message)) {
+  //       const responses = predefinedResponses[responseType];
+  //       return responses[Math.floor(Math.random() * responses.length)];
+  //     }
+  //   }
 
-    // Default response
-    const defaultResponses = predefinedResponses.general;
-    return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
-  };
+  //   // Default response
+  //   const defaultResponses = predefinedResponses.general;
+  //   return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+  // };
 
-  const handleSendMessage = async () => {
-    if (!inputMessage.trim()) return;
+  // const handleSendMessage = async () => {
+  //   if (!inputMessage.trim()) return;
 
-    const userMessage = {
-      id: Date.now(),
-      text: inputMessage,
-      sender: 'user',
-      timestamp: new Date()
-    };
+  //   const userMessage = {
+  //     id: Date.now(),
+  //     text: inputMessage,
+  //     sender: 'user',
+  //     timestamp: new Date()
+  //   };
 
-    setMessages(prev => [...prev, userMessage]);
-    setInputMessage('');
-    setIsTyping(true);
+  //   setMessages(prev => [...prev, userMessage]);
+  //   setInputMessage('');
+  //   setIsTyping(true);
 
-    try {
-      let botResponse;
+  //   try {
+  //     let botResponse;
 
-      // Check if user is asking for EEG analysis or Alzheimer analysis
-      const message = inputMessage.toLowerCase();
-      if (message.includes('eeg') || message.includes('brain') || message.includes('seizure') || message.includes('analysis')) {
-        if (eegConnected) {
-          botResponse = "I can help you analyze EEG data! Please upload a CSV file with your EEG signals, and I'll process it to detect seizure activity.";
-        } else {
-          botResponse = "EEG analysis service is currently unavailable. Please check that the backend server is running and try configuring the backend URL.";
-        }
-      } else if (message.includes('alzheimer') || message.includes('mri') || message.includes('brain scan') || message.includes('dementia') || message.includes('cognitive')) {
-        if (alzheimerConnected) {
-          botResponse = "I can help you analyze MRI brain scans for Alzheimer's disease detection! Please upload an MRI image (jpg, jpeg, or png), and I'll analyze it to assess the level of impairment.";
-        } else {
-          botResponse = "Alzheimer's analysis service is currently unavailable. Please check that the Python API server is running and try configuring the Alzheimer API URL.";
-        }
-      } else if (useAI && aiConnected) {
-        // Use AI model for response
-        botResponse = await fastAPIService.sendMessage(inputMessage, {
-          sessionId,
-          platform: 'NeuroPath',
-          userRole: 'patient' // This could be dynamic based on current user
-        });
-      } else {
-        // Use predefined responses
-        botResponse = getBotResponse(inputMessage);
-      }
+  //     // Check if user is asking for EEG analysis or Alzheimer analysis
+  //     const message = inputMessage.toLowerCase();
+  //     if (message.includes('eeg') || message.includes('brain') || message.includes('seizure') || message.includes('analysis')) {
+  //       if (eegConnected) {
+  //         botResponse = "I can help you analyze EEG data! Please upload a CSV file with your EEG signals, and I'll process it to detect seizure activity.";
+  //       } else {
+  //         botResponse = "EEG analysis service is currently unavailable. Please check that the backend server is running and try configuring the backend URL.";
+  //       }
+  //     } else if (message.includes('alzheimer') || message.includes('mri') || message.includes('brain scan') || message.includes('dementia') || message.includes('cognitive')) {
+  //       if (alzheimerConnected) {
+  //         botResponse = "I can help you analyze MRI brain scans for Alzheimer's disease detection! Please upload an MRI image (jpg, jpeg, or png), and I'll analyze it to assess the level of impairment.";
+  //       } else {
+  //         botResponse = "Alzheimer's analysis service is currently unavailable. Please check that the Python API server is running and try configuring the Alzheimer API URL.";
+  //       }
+  //     }
+  //     //  else if (useAI && aiConnected) {
+  //     //   // Use AI model for response
+  //     //   botResponse = await fastAPIService.sendMessage(inputMessage, {
+  //     //     sessionId,
+  //     //     platform: 'NeuroPath',
+  //     //     userRole: 'patient' // This could be dynamic based on current user
+  //     //   });
+  //     // } else {
+  //     //   // Use predefined responses
+  //     //   botResponse = getBotResponse(inputMessage);
+  //     // }
 
-      const botMessage = {
-        id: Date.now() + 1,
-        text: botResponse,
-        sender: 'bot',
-        timestamp: new Date(),
-        source: useAI && aiConnected ? 'ai' : 'predefined'
-      };
+  //     const botMessage = {
+  //       id: Date.now() + 1,
+  //       text: botResponse,
+  //       sender: 'bot',
+  //       timestamp: new Date(),
+  //       source: useAI && aiConnected ? 'ai' : 'predefined'
+  //     };
 
-      setMessages(prev => [...prev, botMessage]);
-    } catch (error) {
-      console.error('Error getting response:', error);
+  //     setMessages(prev => [...prev, botMessage]);
+  //   } catch (error) {
+  //     console.error('Error getting response:', error);
 
-      // Fallback to predefined response
-      const fallbackResponse = getBotResponse(inputMessage);
-      const botMessage = {
-        id: Date.now() + 1,
-        text: fallbackResponse,
-        sender: 'bot',
-        timestamp: new Date(),
-        source: 'fallback'
-      };
+  //     // Fallback to predefined response
+  //     // const fallbackResponse = getBotResponse(inputMessage);
+  //     const botMessage = {
+  //       id: Date.now() + 1,
+  //       text: fallbackResponse,
+  //       sender: 'bot',
+  //       timestamp: new Date(),
+  //       source: 'fallback'
+  //     };
 
-      setMessages(prev => [...prev, botMessage]);
-      toast.error('AI service error, using fallback response');
-    } finally {
-      setIsTyping(false);
-    }
-  };
+  //     setMessages(prev => [...prev, botMessage]);
+  //     toast.error('AI service error, using fallback response');
+  //   } finally {
+  //     setIsTyping(false);
+  //   }
+  // };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      handleSendMessage();
-    }
-  };
+  // const handleKeyPress = (e) => {
+  //   if (e.key === 'Enter' && !e.shiftKey) {
+  //     e.preventDefault();
+  //     handleSendMessage();
+  //   }
+  // };
 
-  const clearChat = () => {
-    setMessages([
-      {
-        id: 1,
-        text: "Hello! I'm NeuroPath Assistant. How can I help you today?",
-        sender: 'bot',
-        timestamp: new Date(),
-        type: 'welcome'
-      }
-    ]);
-    toast.success('Chat cleared');
-  };
+  // const clearChat = () => {
+  //   setMessages([
+  //     {
+  //       id: 1,
+  //       text: "Hello! I'm NeuroPath Assistant. How can I help you today?",
+  //       sender: 'bot',
+  //       timestamp: new Date(),
+  //       type: 'welcome'
+  //     }
+  //   ]);
+  //   toast.success('Chat cleared');
+  // };
 
   if (!isOpen) {
     return (
@@ -512,12 +512,12 @@ const ChatBot = ({ isOpen, onToggle }) => {
                 </h3>
                 <p className={`text-xs flex items-center space-x-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'
                   }`}>
-                  <span>AI-powered support</span>
-                  {aiConnected ? (
+                  <span>File upload analysis</span>
+                  {/* {aiConnected ? (
                     <Zap className="h-3 w-3 text-green-500" title="AI Connected" />
                   ) : (
                     <Settings className="h-3 w-3 text-gray-400" title="AI Disconnected" />
-                  )}
+                  )} */}
                   {eegConnected ? (
                     <Brain className="h-3 w-3 text-blue-500 ml-1" title="EEG Analysis Connected" />
                   ) : (
@@ -532,7 +532,7 @@ const ChatBot = ({ isOpen, onToggle }) => {
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <Button
+              {/* <Button
                 variant="ghost"
                 size="sm"
                 onClick={setAPIUrl}
@@ -543,7 +543,7 @@ const ChatBot = ({ isOpen, onToggle }) => {
                 title="Configure AI URL"
               >
                 <Settings className="h-4 w-4" />
-              </Button>
+              </Button> */}
               <Button
                 variant="ghost"
                 size="sm"
@@ -759,7 +759,7 @@ const ChatBot = ({ isOpen, onToggle }) => {
                 </div>
               )}
 
-              <div className="flex items-center space-x-2">
+              {/* <div className="flex items-center space-x-2">
                 <Input
                   ref={inputRef}
                   value={inputMessage}
@@ -786,10 +786,10 @@ const ChatBot = ({ isOpen, onToggle }) => {
                     <Send className="h-4 w-4 text-white" />
                   )}
                 </Button>
-              </div>
+              </div> */}
 
               {/* Quick Actions */}
-              <div className="mt-3 flex flex-wrap gap-2">
+              {/* <div className="mt-3 flex flex-wrap gap-2">
                 {['EEG Analysis'].map((action) => (
                   <Button
                     key={action}
@@ -823,7 +823,7 @@ const ChatBot = ({ isOpen, onToggle }) => {
                 >
                   Clear Chat
                 </Button>
-              </div>
+              </div> */}
             </div>
           </>
         )}
