@@ -314,8 +314,8 @@ const AIChat = () => {
 
   /* --------------------------------- UI -------------------------------- */
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-indigo-50 flex items-center justify-center p-4 md:p-6">
-      <div className="w-full max-w-5xl bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[85vh] border border-white/40 relative">
+    <div className=" bg-gradient-to-br from-teal-50 via-blue-50 to-indigo-50 flex items-center justify-center">
+      <div className="w-full min-h-screen bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[85vh] border border-white/40 relative">
 
         {/* Floating Voice Recorder Popup */}
         {isRecording && (
@@ -368,6 +368,7 @@ const AIChat = () => {
         )}
 
         {/* Header */}
+        
         <header className="bg-white/90 backdrop-blur-md border-b border-gray-100 p-4 md:p-5 flex items-center justify-between sticky top-0 z-10">
           <div className="flex items-center gap-4">
             <div className="relative">
