@@ -2,6 +2,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
+
+import ChatBot from './ChatBot.jsx';
 import { Badge } from '../ui/Badge';
 import {
   Bot,
@@ -70,6 +72,7 @@ const t = {
 
 const AIChat = () => {
   /* ------------------------------- STATE ------------------------------- */
+   const [isChatBotOpen, setIsChatBotOpen] = useState(false); 
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -540,6 +543,12 @@ const AIChat = () => {
           </div>
         </footer>
       </div>
+
+      
+      <ChatBot
+        isOpen={isChatBotOpen}
+        onToggle={() => setIsChatBotOpen(!isChatBotOpen)}
+      />
 
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {

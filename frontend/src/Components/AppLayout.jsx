@@ -11,7 +11,6 @@ import {
   ChevronRight,
   LogOut
 } from 'lucide-react';
-import ChatBot from '../ui/ChatBot.jsx';
 import LP from '../assets/logo.png';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/Avatar';
 import { Button } from '../ui/Button';
@@ -35,10 +34,9 @@ const adminNavItems = [
   { path: '/institutions', label: 'Institutions', icon: Building2 },
 ];
 
-const AppLayout = ({ userRole, user, onLogout, systemStats, onRefreshMoodData }) => {
+const AppLayout = ({ userRole, user, onLogout }) => {
   const location = useLocation();
-  const [isChatBotOpen, setIsChatBotOpen] = useState(false);
-
+ 
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const navItems = userRole === 'student' ? studentNavItems : adminNavItems;
 
@@ -173,10 +171,6 @@ const AppLayout = ({ userRole, user, onLogout, systemStats, onRefreshMoodData })
         </main>
       </div>
 
-      <ChatBot
-        isOpen={isChatBotOpen}
-        onToggle={() => setIsChatBotOpen(!isChatBotOpen)}
-      />
     </div>
   );
 };

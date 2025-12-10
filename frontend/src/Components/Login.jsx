@@ -264,24 +264,25 @@ const Login = ({ onLogin, onShowUserSignup, onLoginError }) => {
 
       {/* Left Section (Logo and Info) */}
       <div className="w-1/2 relative flex flex-col items-center justify-center p-8 z-10">
-        {/* Header Logo */}
-        <div className=" top-8 left-8">
-          <div className="flex items-center space-x-3 group cursor-pointer" onClick={() => window.location.href = '/'}>
-            <div className="relative">
-              <div className="w-12 h-12  rounded-2xl flex items-center justify-center shadow-lg">
-                <img src={LP} alt="Logo" className="w-12 h-12 object-contain rounded-md" />
-              </div>
 
-            </div>
-            <div className="text-slate-800">
-              <h2 className="font-bold text-xl tracking-wide">MEDHYA</h2>
-              <p className="text-xs text-slate-600 opacity-80">Mental Wellness Platform</p>
+
+        <div className="flex-1 flex flex-col items-center justify-center max-w-lg">
+          {/* Header Logo */}
+          <div className=" top-8 left-8 mb-4">
+            <div className="flex items-center space-x-3 group cursor-pointer" onClick={() => window.location.href = '/'}>
+              <div className="relative">
+                <div className="w-12 h-12  rounded-2xl flex items-center justify-center shadow-lg">
+                  <img src={LP} alt="Logo" className="w-12 h-12 object-contain rounded-md" />
+                </div>
+
+              </div>
+              <div className="text-slate-800">
+                <h2 className="font-bold text-xl tracking-wide">MEDHYA</h2>
+                <p className="text-xs text-slate-600 opacity-80">Mental Wellness Platform</p>
+              </div>
             </div>
           </div>
-        </div>
-
-        {/* Main Wellness Image */}
-        <div className="flex-1 flex flex-col items-center justify-center max-w-lg">
+          {/* Main Wellness Image */}
           <div className="relative group mb-8">
             <div className="absolute inset-0 bg-gradient-to-br from-emerald-400/20 to-teal-400/20 rounded-3xl blur-2xl group-hover:blur-xl transition-all duration-500"></div>
             <ImageWithFallback
@@ -346,23 +347,7 @@ xlwZGl0YXRpb24lMjBuYXR1cmUlMjB3ZWxsbmVzc3xlbnwxfHx8fDE3NTc2NTczNzN8MA&ixlib=rb-4
           </div>
         </div>
 
-        {/* Bottom Stats */}
-        <div className="absolute bottom-8 left-8 right-8">
-          <div className="flex justify-center space-x-8 text-slate-600">
-            <div className="flex items-center space-x-2">
-              <Users className="w-4 h-4 text-emerald-600" />
-              <span className="text-sm">10K+ Students</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Heart className="w-4 h-4 text-rose-500" />
-              <span className="text-sm">500+ Counselors</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Shield className="w-4 h-4 text-sky-600" />
-              <span className="text-sm">100% Secure</span>
-            </div>
-          </div>
-        </div>
+
       </div>
 
       {/* Right Section (Login Card) */}

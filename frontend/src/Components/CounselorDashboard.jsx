@@ -49,8 +49,8 @@ const CounselorDashboard = () => {
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [messageContent, setMessageContent] = useState('');
- 
-  
+
+
   // Password change modal state
   const [showPasswordChangeModal, setShowPasswordChangeModal] = useState(false);
   const [passwordData, setPasswordData] = useState({
@@ -727,20 +727,20 @@ const CounselorDashboard = () => {
                   </CardContent>
                 </Card>
               </div> */}
-{/* <div className=' gap-6 md:grid-cols-2'> */}
+              {/* <div className=' gap-6 md:grid-cols-2'> */}
 
               <div className="grid gap-6 md:grid-cols-2">
                 <Messages
-              sessions={sessions}
-              messages={messages}
-              loadMessages={loadMessages}
-              loadDashboardData={loadDashboardData}
-              loading={loading}
-              user={user}
-            />
+                  sessions={sessions}
+                  messages={messages}
+                  loadMessages={loadMessages}
+                  loadDashboardData={loadDashboardData}
+                  loading={loading}
+                  user={user}
+                />
                 <DashboardGraphs />
               </div>
-{/* </div> */}
+              {/* </div> */}
             </>
           )}
           {activeView === 'sessions' && (
@@ -1071,7 +1071,7 @@ const CounselorDashboard = () => {
           )}
         </div>
       </main>
-{showMessageModal && (
+      {showMessageModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden animate-in fade-in-50 zoom-in-95">
             {/* Modal Header */}

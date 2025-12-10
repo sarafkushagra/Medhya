@@ -316,7 +316,7 @@ const ResourceContent = () => {
                                             src={currentResource?.url}
                                             className="w-full h-full border-0"
                                             title={currentResource?.title}
-                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; allow-presentation"
                                             allowFullScreen
                                             onLoad={handleIframeLoad}
                                             onError={handleIframeError}
@@ -329,7 +329,7 @@ const ResourceContent = () => {
                                             src={currentResource?.url}
                                             className="w-full h-full border-0"
                                             title={currentResource?.title}
-                                            sandbox="allow-same-origin allow-scripts allow-forms allow-popups"
+                                            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-presentation"
                                             onLoad={handleIframeLoad}
                                             onError={handleIframeError}
                                         />
