@@ -38,7 +38,7 @@ print("[OK] Alzheimer ONNX model loaded successfully.")
 # 🧠 Flask App Setup
 # =====================================
 app = Flask(__name__)
-CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
+CORS(app)
 
 # =====================================
 # 🔐 Helper: Verify API Key
