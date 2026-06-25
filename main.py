@@ -15,7 +15,7 @@ load_dotenv()
 # API key for the EEG prediction API. Set this in your environment or an .env file as EEG_API_KEY
 API_KEY = "test-key"  # Hardcoded for testing
 if not API_KEY:
-    print("⚠️  EEG_API_KEY not set in environment. Requests to /predict will be rejected unless you set the key.")
+    print("[WARNING] EEG_API_KEY not set in environment. Requests to /predict will be rejected unless you set the key.")
 UPLOAD_DIR = "uploads"
 MODEL_PATH = "neuro_chatbot_model(eeg)/dataset/best_eeg_model.pth"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -67,11 +67,11 @@ def load_model():
         try:
             checkpoint = torch.load(MODEL_PATH, map_location=device, weights_only=True)
             model.load_state_dict(checkpoint)
-            print("✅ Model loaded successfully (weights_only=True).")
+            print("[OK] Model loaded successfully (weights_only=True).")
         except TypeError:
             checkpoint = torch.load(MODEL_PATH, map_location=device)
             model.load_state_dict(checkpoint)
-            print("✅ Model loaded successfully (legacy mode).")
+            print("[OK] Model loaded successfully (legacy mode).")
         model.eval()
     return model
 
@@ -152,7 +152,7 @@ async def predict(
         with open(save_path, "wb") as f:
             f.write(contents)
 
-        print(f"✅ File saved: {save_path}")
+        print(f"[OK] File saved: {save_path}")
 
         # Read & predict
         import pandas as pd
@@ -174,4 +174,4 @@ async def predict(
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(eeg_app, host="127.0.0.1", port=8001)
+    uvicorn.run(eeg_app, host="127.0.0.1", port=8002)

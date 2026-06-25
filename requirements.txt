@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+flask
+flask-cors
+requests
+python-dotenv
+torch
+torchvision
+pillow
+scikit-learn
+pandas

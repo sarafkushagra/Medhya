@@ -47,12 +47,23 @@ const ChatBot = ({ isOpen, onToggle }) => {
 
   useEffect(() => {
     localStorage.removeItem('neuropath_ai_api_url');
-    localStorage.setItem('neuropath_backend_url', 'http://localhost:8002');
-    localStorage.setItem('neuropath_alzheimer_api_url', 'http://localhost:8000');
+    
+    // Read URLs from environment or fall back to localhost defaults
+    const defaultEegUrl = import.meta.env.VITE_EEG_API_URL || 'http://localhost:8002';
+    const defaultAlzUrl = import.meta.env.VITE_ALZHEIMER_API_URL || 'http://localhost:8000';
+    
+    localStorage.setItem('neuropath_backend_url', defaultEegUrl);
+    localStorage.setItem('neuropath_alzheimer_api_url', defaultAlzUrl);
 
-    const alzheimerUrl = localStorage.getItem('neuropath_alzheimer_api_url') || 'http://localhost:8000';
-    const alzheimerApiKey = localStorage.getItem('neuropath_alzheimer_api_key') || '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';
+    const alzheimerUrl = localStorage.getItem('neuropath_alzheimer_api_url') || defaultAlzUrl;
+    // Read Alzheimer API Key from environment or fall back to dev-key
+    const alzheimerApiKey = localStorage.getItem('neuropath_alzheimer_api_key') || 
+                            import.meta.env.VITE_ALZHEIMER_API_KEY || 
+                            'dev-key-alzheimer';
+                            
     initializeAlzheimer(alzheimerApiKey, alzheimerUrl);
+
+    initializeEEG(defaultEegUrl);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const initializeEEG = async (baseUrl = 'http://localhost:8002') => {

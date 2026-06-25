@@ -15,9 +15,9 @@ load_dotenv()
 
 MODEL_PATH = "best_alzheimer_model.pth"
 # Load API key from environment (recommended). To set it locally, create a .env file with ALZHEIMER_API_KEY=...
-API_KEY = os.environ.get("ALZHEIMER_API_KEY", "")
+API_KEY = os.environ.get("ALZHEIMER_API_KEY", "dev-key-alzheimer")
 if not API_KEY:
-    print("⚠️  ALZHEIMER_API_KEY not set in environment. Requests to /predict will be rejected unless you set the key.")
+    print("[WARNING] ALZHEIMER_API_KEY not set in environment. Requests to /predict will be rejected unless you set the key.")
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # =====================================
@@ -33,7 +33,7 @@ CLASS_DESCRIPTIONS = {
 }
 
 def load_model():
-    print(f"🧠 Using device: {DEVICE}")
+    print(f"[INFO] Using device: {DEVICE}")
     try:
         model = models.resnet18(weights=None)
         model.fc = nn.Linear(model.fc.in_features, len(CLASS_NAMES))
@@ -41,19 +41,19 @@ def load_model():
         if os.path.exists(MODEL_PATH):
             try:
                 model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE, weights_only=True))
-                print("✅ Model loaded successfully (weights_only=True).")
+                print("[OK] Model loaded successfully (weights_only=True).")
             except TypeError:
                 model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE))
-                print("✅ Model loaded successfully (legacy mode).")
+                print("[OK] Model loaded successfully (legacy mode).")
         else:
-            print(f"⚠️  Model file not found at {MODEL_PATH}. Using untrained model for testing.")
-            print("📝 To use a trained model, place your 'best_alzheimer_model.pth' file in the same directory as this script.")
+            print(f"[WARNING] Model file not found at {MODEL_PATH}. Using untrained model for testing.")
+            print("[NOTE] To use a trained model, place your 'best_alzheimer_model.pth' file in the same directory as this script.")
 
         model.to(DEVICE)
         model.eval()
         return model
     except Exception as e:
-        print(f"❌ Error loading model: {e}")
+        print(f"[ERROR] Error loading model: {e}")
         # Return a simple model for testing
         model = models.resnet18(weights=None)
         model.fc = nn.Linear(model.fc.in_features, len(CLASS_NAMES))
@@ -73,9 +73,7 @@ CORS(app, origins=["http://localhost:5173"], supports_credentials=True)
 # 🔐 Helper: Verify API Key
 # =====================================
 def verify_api_key(api_key):
-    if api_key != API_KEY:
-        return False
-    return True
+    return api_key == API_KEY
 
 # =====================================
 # 🧼 Image Preprocessing
@@ -144,5 +142,5 @@ def home():
 # 🚀 Run the Server
 # =====================================
 if __name__ == "__main__":
-    print("🚀 Starting Alzheimer MRI Classifier API server with Flask...")
+    print("[INFO] Starting Alzheimer MRI Classifier API server with Flask...")
     app.run(host="127.0.0.1", port=8000, debug=True)

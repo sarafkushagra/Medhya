@@ -26,37 +26,103 @@ const stripMarkdown = (text) => {
 };
 
 export const openRouterChat = async (userMessage, lang = 'en-US') => {
-  const response = await fetch(OPENROUTER_URL, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
-      "Content-Type": "application/json",
-      "HTTP-Referer": process.env.APP_URL || "http://localhost:3000",
-      "X-Title": "NeuroPath Health",
-    },
-    body: JSON.stringify({
-      model: MODEL_ID,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userMessage },
-      ],
-      temperature: 0.7,
-      max_tokens: 512,
-    }),
-  });
+  const models = [
+    "meta-llama/llama-3.3-70b-instruct:free",
+    "openrouter/free"
+  ];
 
-  if (!response.ok) {
-    const err = await response.text();
-    throw new Error(`OpenRouter error: ${response.status} – ${err}`);
+  let lastError = null;
+
+  for (const model of models) {
+    const maxRetries = 2; // Try up to 2 times for 429s on each model
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        console.log(`[OpenRouter] Attempting model: ${model} (Attempt ${attempt}/${maxRetries})`);
+        const response = await fetch(OPENROUTER_URL, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+            "Content-Type": "application/json",
+            "HTTP-Referer": process.env.APP_URL || "http://localhost:3000",
+            "X-Title": "NeuroPath Health",
+          },
+          body: JSON.stringify({
+            model: model,
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: userMessage },
+            ],
+            temperature: 0.7,
+            max_tokens: 512,
+          }),
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          let errorJson = null;
+          try {
+            errorJson = JSON.parse(errText);
+          } catch (e) {
+            // Not JSON
+          }
+
+          if (response.status === 429) {
+            // Extract retry delay
+            const retryAfter = errorJson?.error?.metadata?.retry_after_seconds || 
+                               errorJson?.error?.metadata?.retry_after_seconds_raw;
+            const retryAfterHeader = response.headers.get("retry-after");
+            
+            let delayMs = 2000; // default backoff
+            if (retryAfter) {
+              delayMs = parseFloat(retryAfter) * 1000;
+            } else if (retryAfterHeader) {
+              const parsedHeader = parseFloat(retryAfterHeader);
+              if (!isNaN(parsedHeader)) {
+                delayMs = parsedHeader * 1000;
+              }
+            }
+
+            console.warn(`[OpenRouter] Rate limited (429) on ${model}. Suggested delay: ${delayMs}ms.`);
+
+            // If wait time is too long (> 10s), don't block the user, switch to the next fallback model
+            if (delayMs > 10000) {
+              console.warn(`[OpenRouter] Delay is too long (>10s). Switching to fallback model.`);
+              lastError = new Error(`Rate limit delay too long: ${delayMs}ms`);
+              break; // break the attempt loop, moves to the next model
+            }
+
+            if (attempt < maxRetries) {
+              const waitTime = delayMs + 500; // Add 500ms safety buffer
+              console.log(`[OpenRouter] Waiting ${waitTime}ms before retry...`);
+              await new Promise(resolve => setTimeout(resolve, waitTime));
+              continue; // retry the attempt loop
+            } else {
+              console.warn(`[OpenRouter] Max retries reached for ${model}.`);
+              lastError = new Error(`Rate limit exceeded after retries: ${errText}`);
+              break; // moves to next model
+            }
+          } else {
+            // Other error status (e.g. 500, 503, 401)
+            console.warn(`[OpenRouter] Received error status ${response.status} for ${model}: ${errText}`);
+            lastError = new Error(`Status ${response.status}: ${errText}`);
+            break; // break the attempt loop, moves to the next model immediately
+          }
+        }
+
+        const data = await response.json();
+        const rawContent = data.choices?.[0]?.message?.content || "No response.";
+        return stripMarkdown(rawContent);
+
+      } catch (err) {
+        console.error(`[OpenRouter] Network or unexpected error for ${model}:`, err);
+        lastError = err;
+        break; // moves to the next model
+      }
+    }
   }
 
-  const data = await response.json();
-  const rawContent = data.choices?.[0]?.message?.content || "No response.";
-
-  // Clean Markdown formatting
-  const cleanContent = stripMarkdown(rawContent);
-
-  return cleanContent;
+  // If we exhausted all models
+  throw new Error(`All OpenRouter models failed. Last error: ${lastError?.message}`);
 };
 
 

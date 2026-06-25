@@ -550,7 +550,7 @@ const AIChat = () => {
         onToggle={() => setIsChatBotOpen(!isChatBotOpen)}
       />
 
-      <style jsx>{`
+      <style>{`
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
         }

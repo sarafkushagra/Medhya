@@ -1,0 +1,11 @@
+{
+  "name": "medhya-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start-frontend": "npm run dev --prefix frontend",
+    "start-backend": "npm run dev --prefix backend",
+    "start-eeg": ".venv\\Scripts\\python.exe main.py",
+    "start-alzheimer": ".venv\\Scripts\\python.exe alzheimer_flask.py"
+  }
+}
