@@ -4,8 +4,7 @@ flask
 flask-cors
 requests
 python-dotenv
-torch
-torchvision
+onnxruntime
 pillow
 scikit-learn
 pandas

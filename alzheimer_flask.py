@@ -1,10 +1,9 @@
 import os
 import io
+import numpy as np
 from dotenv import load_dotenv
-import torch
-import torch.nn as nn
-from torchvision import transforms, models
 from PIL import Image
+import onnxruntime as ort
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
@@ -13,15 +12,14 @@ from flask_cors import CORS
 # =====================================
 load_dotenv()
 
-MODEL_PATH = "best_alzheimer_model.pth"
-# Load API key from environment (recommended). To set it locally, create a .env file with ALZHEIMER_API_KEY=...
+ONNX_PATH = "best_alzheimer_model.onnx"
+# Load API key from environment (recommended).
 API_KEY = os.environ.get("ALZHEIMER_API_KEY", "dev-key-alzheimer")
 if not API_KEY:
     print("[WARNING] ALZHEIMER_API_KEY not set in environment. Requests to /predict will be rejected unless you set the key.")
-DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # =====================================
-# 🧩 Model Setup
+# 🧩 Model Setup (ONNX Runtime)
 # =====================================
 CLASS_NAMES = ["Mild Impairment", "Moderate Impairment", "No Impairment", "Very Mild Impairment"]
 
@@ -32,36 +30,9 @@ CLASS_DESCRIPTIONS = {
     "Moderate Impairment": "More noticeable cognitive impairment, requiring assistance."
 }
 
-def load_model():
-    print(f"[INFO] Using device: {DEVICE}")
-    try:
-        model = models.resnet18(weights=None)
-        model.fc = nn.Linear(model.fc.in_features, len(CLASS_NAMES))
-
-        if os.path.exists(MODEL_PATH):
-            try:
-                model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE, weights_only=True))
-                print("[OK] Model loaded successfully (weights_only=True).")
-            except TypeError:
-                model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE))
-                print("[OK] Model loaded successfully (legacy mode).")
-        else:
-            print(f"[WARNING] Model file not found at {MODEL_PATH}. Using untrained model for testing.")
-            print("[NOTE] To use a trained model, place your 'best_alzheimer_model.pth' file in the same directory as this script.")
-
-        model.to(DEVICE)
-        model.eval()
-        return model
-    except Exception as e:
-        print(f"[ERROR] Error loading model: {e}")
-        # Return a simple model for testing
-        model = models.resnet18(weights=None)
-        model.fc = nn.Linear(model.fc.in_features, len(CLASS_NAMES))
-        model.to(DEVICE)
-        model.eval()
-        return model
-
-model = load_model()
+print("[INFO] Loading Alzheimer ONNX model...")
+ort_session = ort.InferenceSession(ONNX_PATH)
+print("[OK] Alzheimer ONNX model loaded successfully.")
 
 # =====================================
 # 🧠 Flask App Setup
@@ -79,14 +50,21 @@ def verify_api_key(api_key):
 # 🧼 Image Preprocessing
 # =====================================
 def preprocess_image(image_bytes):
-    transform = transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                             std=[0.229, 0.224, 0.225])
-    ])
+    # Open image and convert to RGB
     image = Image.open(io.BytesIO(image_bytes)).convert("RGB")
-    return transform(image).unsqueeze(0)
+    # Resize to 224x224 (equivalent to transforms.Resize((224, 224)))
+    image = image.resize((224, 224), Image.Resampling.BILINEAR)
+    # Convert to numpy array and scale to [0, 1] (equivalent to transforms.ToTensor())
+    img_np = np.array(image).astype(np.float32) / 255.0
+    # Transpose channels from HWC to CHW
+    img_np = np.transpose(img_np, (2, 0, 1))
+    # Normalize mean and std (equivalent to transforms.Normalize())
+    mean = np.array([0.485, 0.456, 0.406], dtype=np.float32).reshape(3, 1, 1)
+    std = np.array([0.229, 0.224, 0.225], dtype=np.float32).reshape(3, 1, 1)
+    img_np = (img_np - mean) / std
+    # Add batch dimension (equivalent to unsqueeze(0))
+    img_np = np.expand_dims(img_np, axis=0)
+    return img_np
 
 # =====================================
 # 🔮 Prediction Endpoint
@@ -111,14 +89,14 @@ def predict():
 
         # Read image bytes
         image_bytes = file.read()
-        image_tensor = preprocess_image(image_bytes).to(DEVICE)
+        image_tensor = preprocess_image(image_bytes)
 
-        # Model prediction
-        with torch.no_grad():
-            outputs = model(image_tensor)
-            _, predicted = torch.max(outputs, 1)
-            predicted_class = CLASS_NAMES[predicted.item()]
-            meaning = CLASS_DESCRIPTIONS.get(predicted_class, "No description available.")
+        # Model prediction using ONNX runtime
+        ort_inputs = {ort_session.get_inputs()[0].name: image_tensor}
+        ort_outs = ort_session.run(None, ort_inputs)
+        predicted = np.argmax(ort_outs[0], axis=1)
+        predicted_class = CLASS_NAMES[predicted[0]]
+        meaning = CLASS_DESCRIPTIONS.get(predicted_class, "No description available.")
 
         return jsonify({
             "prediction": predicted_class,
